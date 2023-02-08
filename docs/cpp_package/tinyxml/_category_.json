@@ -1,0 +1,8 @@
+{
+  "label": "TinyXML",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "简便的读取XML的库。"
+  }
+}

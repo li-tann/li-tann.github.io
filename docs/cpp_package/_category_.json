@@ -1,0 +1,8 @@
+{
+  "label": "C++依赖库",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "常用C++依赖库的使用说明。"
+  }
+}
