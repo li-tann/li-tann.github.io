@@ -1,47 +1,31 @@
+# li-tann's notebook
+
 ---
-sidebar_position: 4
+
+这是一个因不懂前端知识，只能用markdown攒出一个首页...😂
+
 ---
 
-# Tutorial Intro
+我是一名小小的SAR软件研发工程师👨‍💻/👨‍🔬
 
-Let's discover **Docusaurus in less than 5 minutes**.
+主要从事InSAR方向🛰️的软件研发工作
 
-## Getting Started
+生活和工作中常常会遇到一些“奇奇怪怪”的问题
 
-Get started by **creating a new site**.
+在解决问题的过程中又会学到一些“稀奇古怪”的知识
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+有些知识使用间隔很久很久，等到下次用到时大概率会忘记
 
-### What you'll need
+于是遍有了这本笔记📓，又或是工具箱🧰
 
-- [Node.js](https://nodejs.org/en/download/) version 16.14 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+现在它主要用于记录一些“冷门”（对我来说）的知识点，以及一些常用的需要不定期巩固的知识点
 
-## Generate a new site
+目前它主要包含，
 
-Generate a new Docusaurus site using the **classic template**.
+- 遥感（InSAR方向）知识点
+- C++标准库、Qt库、三方库的使用说明
+- GAMMA源码学习（没空学习...）
+- CMake学习
+- git、markdown等常用工具语法说明
 
-The classic template will automatically be added to your project after you run the command:
-
-```bash
-npm init docusaurus@latest my-website classic
-```
-
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
-
-The command also installs all necessary dependencies you need to run Docusaurus.
-
-## Start your site
-
-Run the development server:
-
-```bash
-cd my-website
-npm run start
-```
-
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
-
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+希望这样的一个网站可以帮助有缘人（犯同样错且查到这里的）解决一些问题~💡
