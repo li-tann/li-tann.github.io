@@ -100,6 +100,8 @@ QMAKE_CFLAGS_ISYSTEM=-I
 
 由于还不会上述操作，暂时使用`QMAKE_PRE_LINK`+`COPY`代替。
 
+### QMAKE_PRE_LINK
+
 首先确定待拷贝文件的地址以及需要拷贝到的路径。
 
 ```qmake
@@ -113,3 +115,22 @@ QMAKE_PRE_LINK += copy /Y $$src_dll $$dst_dll
 src_dll就是存储多有dll地址的文件，dst_dll是dll拷贝到的路径，使用copy指令执行copy操作。 一次只能copy一个或一批可以用*号替换的文件。
 
 windows中（至少是windows）的copy操作，只能识别`\\`windows版本的分隔符。
+
+### COPIES
+
+使用该方法可以复制整个文件夹
+
+```qmake
+CONFIG += file_copies
+example.files += $$PWD/folder   #$$PWD指当前pro文件的路径
+example.path = $$DESTDIR        #$$DESTDIR指编译输出路径
+
+#如果是windows系统的话 需要把地址从 ../../.. 更换为..\\..\\..
+win32: example.files ~= s,/,\\,g
+win32: example.path ~= s,/,\\,g
+
+COPIES += example
+```
+
+该方法很方便，但是不确定是编译前还是编译后，不一定可以替代`QMAKE_PRE_LINK`
+
