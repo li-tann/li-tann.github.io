@@ -52,6 +52,8 @@ const config = {
         },
         blog: {
           showReadingTime: true,
+          blogSidebarTitle: '全部博文',
+          blogSidebarCount: 'ALL',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
