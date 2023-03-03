@@ -13,3 +13,5 @@ tags: [gdal, gdal_translate]
 该命令可以将img_input.tif中所有值为`NoData`的值转换为`0`，并且为影像添加数据`NoData Value=0`，
 
 转换完成后，再次使用arcmap加载该影像，即可得到无“黑边”的地理编码后影像。
+
+但使用GDAL库的方式还没有成功，有机会再继续补充
