@@ -8,7 +8,7 @@ const katex = require('rehype-katex');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'lt\'s notebook',
+  title: 'li-tann',
   tagline: 'li-tann\'s notebook',
   favicon: 'img/SAR-LOGO2.png',
 
@@ -52,7 +52,7 @@ const config = {
         },
         blog: {
           showReadingTime: true,
-          blogSidebarTitle: '全部博文',
+          blogSidebarTitle: 'All Blogs',
           blogSidebarCount: 'ALL',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
@@ -82,7 +82,8 @@ const config = {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
-        title: 'Home',
+        hideOnScroll: true,
+        title: 'li-tann\'s Nootbook',
         logo: {
           alt: 'Logo',
           src: 'img/SAR-LOGO2.png',
@@ -91,12 +92,11 @@ const config = {
           {
             type: 'doc',
             docId: 'intro',//链接第一个界面的名称, 对应resume.md
-            position: 'left',
+            position: 'right',
             label: 'Docs',
           },
-          {to: '/blog', label: 'Blog', position: 'left'},
+          {to: '/blog', label: 'Blog', position: 'right'},
           {
-            // href: 'https://github.com/facebook/docusaurus',
             href: 'https://github.com/li-tann/li-tann.github.io',
             label: 'GitHub',
             position: 'right',
@@ -104,42 +104,19 @@ const config = {
         ],
       },
       footer: {
-        style: 'dark',
+        style: 'light',
         links: [
           {
-            title: 'Documents',
-            items: [
-              {
-                label: 'Docs',
-                to: '/docs/intro',
-              },
-              {
-                label: 'Blog',
-                to: '/blog',
-              },
-            ],
+            label:'Docs',
+            to:'/docs/intro',
           },
           {
-            title: 'Platform',
-            items: [
-              {
-                label: 'GitHub',
-                href: 'https://github.com/li-tann/li-tann.github.io',
-              },
-            ],
+            label:'Blog',
+            to:'/blog',
           },
           {
-            title: 'Organization',
-            items: [
-              {
-                label: 'LASAC',
-                href: 'http://lasac.cn/',
-              },
-              {
-                label: 'Beijing SatImage',
-                href: 'http://www.satimage.cn/',
-              },
-            ],
+            label:'GitHub',
+            href: 'https://github.com/li-tann/li-tann.github.io',
           },
         ],
         copyright: `Copyright © ${new Date().getFullYear()} li-tann's nootbook, Inc. Built with Docusaurus.`,
