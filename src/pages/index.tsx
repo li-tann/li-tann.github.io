@@ -28,37 +28,32 @@ function Home() {
 	const lines = [
 		translate({
 			id: 'homepage.description.descriptionLine_1',
-			message: '我是一名小小的SAR软件研发工程师👨‍💻/👨‍🔬，目前主要从事InSAR方向🛰️的软件研发工作。',
-			description: 'The first line of description',
+			message: 'SAR软件研发工程师',
+			description: 'The fst line of description',
+		}),
+		translate({
+			id: 'homepage.description.descriptionLine_2',
+			message: '从事InSAR软件研发与测试工作',
+			description: 'The sec line of description',
 		}),
 		translate({
 			id: 'homepage.description.descriptionLine_1',
-			message: '-',
+			message: '👨‍💻/👨‍🔬',
+			description: 'The fst line of description',
+		}),
+		translate({
+			id: 'homepage.description.descriptionLine_5',
+			message: '分享所学所见',
 			description: 'The first line of description',
 		}),
 		translate({
-			id: 'homepage.description.descriptionLine_1',
-			message: '工作中常常会遇到一些“奇奇怪怪”的问题，在解决问题的过程中又会学到一些“稀奇古怪”的知识',
+			id: 'homepage.description.descriptionLine_5',
+			message: '(Ctrl+C -> Ctrl+V)',
 			description: 'The first line of description',
 		}),
 		translate({
-			id: 'homepage.description.descriptionLine_1',
-			message: '-',
-			description: 'The first line of description',
-		}),
-		translate({
-			id: 'homepage.description.descriptionLine_1',
-			message: '有些知识使用间隔很久，等到下次用到时大概率会忘记，于是遍有了这本笔记📓，又或是工具箱🧰',
-			description: 'The first line of description',
-		}),
-		translate({
-			id: 'homepage.description.descriptionLine_1',
-			message: '-',
-			description: 'The first line of description',
-		}),
-		translate({
-			id: 'homepage.description.descriptionLine_1',
-			message: '现在它主要用于记录一些“冷门”（对我来说）的知识点，以及一些常用的需要不定期巩固的知识点',
+			id: 'homepage.description.descriptionLine_4',
+			message: 'InSAR / C++ / Qt / CMake / ...',
 			description: 'The first line of description',
 		}),
 	];

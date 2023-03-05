@@ -1,4 +1,4 @@
-# CMAKE COMMAND: LIST
+# LIST
 
 list命令共包含 Reading, Search, Modification, Ordering四部分：
 

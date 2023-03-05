@@ -1,6 +1,6 @@
 {
-  "label": "C++依赖库",
-  "position": 5,
+  "label": "C++ 外部库",
+  "position": 4,
   "link": {
     "type": "generated-index",
     "description": "常用C++依赖库的使用说明。"

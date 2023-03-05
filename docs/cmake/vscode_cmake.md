@@ -1,6 +1,5 @@
-# VSCode环境配置
+# vscode + cmake + vcpkg
 
-vscode + cmake + vcpkg
 ## cmake
 
 `crtl`+`shift`+`p`，输入`setting`，打开用户设置或打开工作区域设置

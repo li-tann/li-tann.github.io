@@ -1,8 +1,10 @@
-# .mat读取
+# matlab
 
-.mat读取
+matlab与c++混合编程
 
-## VS工程设置
+## .mat读取
+
+### 环境设置
 
 1. VC++目录->包含目录 添加: \
     MATLAB\R2010b\extern\include \
@@ -28,7 +30,7 @@
 E:\DevTools\MATLAB\R2010b\extern\lib\win64\microsoft; \
 E:\DevTools\MATLAB\R2010b\bin\win64;  
 
-## mat读取代码
+### mat读取代码
 
 ```C++
 MATFile *pmatFile = NULL;

@@ -103,7 +103,3 @@ $$
     0 &,\lvert t\rvert \geqslant 2
 \end{cases}
 $$
-
-## 代码
-
-参考 [[eigen_interp.md]](../../cpp_package/eigen/eigen_interp.md)

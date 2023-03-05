@@ -14,4 +14,16 @@ tags: [gdal, gdal_translate]
 
 转换完成后，再次使用arcmap加载该影像，即可得到无“黑边”的地理编码后影像。
 
-但使用GDAL库的方式还没有成功，有机会再继续补充
+伪代码：
+
+```c++
+GDALDataset* p_ds = static_cast<GDALDataset*>(GDALOpen("",GA_Update));
+int bands = p_ds->GetRasterCount();
+for(int b = 1; b<bands; b++)
+{
+    GDALRasterBand* rb = p_ds->GetRasterBnad(b);
+    rb->setNoDataValue(0);
+}
+GDALClose(p_ds);
+
+```

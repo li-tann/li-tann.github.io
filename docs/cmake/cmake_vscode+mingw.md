@@ -1,4 +1,4 @@
-# windows: vscode + mingw
+# vscode + mingw(windows)
 
 仅记录vscode与mingw的组合使用方法，不涉及复杂的cmake语法。
 

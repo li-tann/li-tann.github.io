@@ -1,4 +1,79 @@
-# 与Matlab命令对比
+# Eigen
+
+only-header的矩阵运算库
+
+## 线性方程求解
+
+Eigen线性方程求解
+
+解决密集矩阵的线性最小二乘问题
+
+ $$Ax=b$$
+
+ Eigen文档中提供了三种方法，分别是SVD分解，QR分解和正规方程三种方式。其中，SVD分解通常是最准确但也是最慢的，正规方程最快但最不准确，QR介于两者之间。
+
+### SVD分解 (SVD decomposition)
+
+``` C++
+#include <iostream>
+#include <Eigen/Dense>
+ 
+using namespace std;
+using namespace Eigen;
+ 
+int main()
+{
+   MatrixXf A = MatrixXf::Random(3, 2);
+   cout << "Here is the matrix A:\n" << A << endl;
+   VectorXf b = VectorXf::Random(3);
+   cout << "Here is the right hand side b:\n" << b << endl;
+   cout << "The least-squares solution is:\n"
+        << A.bdcSvd(ComputeThinU | ComputeThinV).solve(b) << endl;
+}
+
+//output:
+Here is the matrix A:
+  0.68  0.597
+-0.211  0.823
+ 0.566 -0.605
+Here is the right hand side b:
+ -0.33
+ 0.536
+-0.444
+The least-squares solution is:
+-0.67
+0.314
+```
+
+### QR分解 (QR decomposition)
+
+ **HouseholderQR** (no pivoting, fast but unstable if your matrix is not rull rank), **ColPivHouseholderQR** (column pivoting, thus a bit slower but more stable) and **FullPivHouseholderQR** (full pivoting, so slowest and slightly more stable than ColPivHouseholderQR).
+
+```C++
+MatrixXf A = MatrixXf::Random(3, 2);
+VectorXf b = VectorXf::Random(3);
+cout << "The solution using the QR decomposition is:\n"
+     << A.colPivHouseholderQr().solve(b) << endl;
+```
+
+### 正规方程 (normal equations)
+
+$$
+\begin{aligned}
+   & Ax = b \\
+\Rightarrow & A^TAx=A^Tb \\
+\Rightarrow & x=(A^TA)^{-1}A^Tb \\
+\end{aligned}
+$$
+
+```C++
+MatrixXf A = MatrixXf::Random(3, 2);
+VectorXf b = VectorXf::Random(3);
+cout << "The solution using normal equations is:\n"
+     << (A.transpose() * A).ldlt().solve(A.transpose() * b) << endl;
+```
+
+## 与Matlab命令对比
 
 Eigen与Matlab命令对比
 
@@ -22,7 +97,8 @@ double s;
 
 // Basic usage
 
-## 矩阵/向量的尺寸、值
+### 矩阵/向量的尺寸、值
+
 ```C++
 // Eigen          // Matlab           // comments
 x.size()          // length(x)        // vector size
@@ -32,15 +108,18 @@ x(i)              // x(i+1)           // Matlab is 1-based
 C(i,j)            // C(i+1,j+1)       //
 ```
 
-## 矩阵重定义大小
+### 矩阵重定义大小
+
 ```C++
 A.resize(4, 4);   // Runtime error if assertions are on.
 B.resize(4, 9);   // Runtime error if assertions are on.
 A.resize(3, 3);   // Ok; size didn't change.
 B.resize(3, 9);   // Ok; only dynamic cols changed.
 ```
-## 矩阵填充
-```C++           
+
+### 矩阵填充
+
+```C++
 A << 1, 2, 3,     // Initialize A. The elements can also be
      4, 5, 6,     // matrices, which are stacked along cols
      7, 8, 9;     // and then the rows are stacked.
@@ -48,7 +127,8 @@ B << A, A, A;     // B is three horizontally stacked A's.
 A.fill(10);       // Fill A with all 10's.
 ```
 
-## 特殊矩阵构建
+### 特殊矩阵构建
+
 ```C++
 // Eigen                                    // Matlab
 //单位矩阵
@@ -65,7 +145,8 @@ MatrixXd::Random(rows,cols)                 // rand(rows,cols)*2-1            //
 C.setRandom(rows,cols)                      // C = rand(rows,cols)*2-1
 ```
 
-## 向量的等距分布
+### 向量的等距分布
+
 ```C++
 VectorXd::LinSpaced(size,low,high)          // linspace(low,high,size)'
 v.setLinSpaced(size,low,high)               // v = linspace(low,high,size)'
@@ -74,6 +155,7 @@ VectorXi::LinSpaced(((hi-low)/step)+1,      // low:step:hi
 
 ```
 
+```c++
 // Matrix slicing and blocks. All expressions listed here are read/write.\
 // Templated size versions are faster. Note that Matlab is 1-based (a size N\
 // vector is x(1)...x(N)).\
@@ -84,8 +166,10 @@ VectorXi::LinSpaced(((hi-low)/step)+1,      // low:step:hi
 /* slicing and indexing from arrays:                                          */
 
 /* http://eigen.tuxfamily.org/dox-devel/group__TutorialSlicingIndexing.html   */
+```
 
-## 矩阵/向量的区域选取（块）
+### 矩阵/向量的区域选取（块）
+
 ```C++
 Matrix3f P;    
 Vector3f x;
@@ -121,6 +205,9 @@ P.topRightCorner<rows,cols>()      // P(1:rows, end-cols+1:end)
 P.bottomLeftCorner<rows,cols>()    // P(end-rows+1:end, 1:cols)
 P.bottomRightCorner<rows,cols>()   // P(end-rows+1:end, end-cols+1:end)
 ```
+
+```c++
+
 // Of particular note is Eigen's swap function which is highly optimized.
 // Eigen                           // Matlab
 R.row(i) = P.col(j);               // R(i, :) = P(:, j)
@@ -133,8 +220,10 @@ R.col(j1).swap(mat1.col(j2));      // R(:, [j1 j2]) = R(:, [j2, j1])
 /* Eigen 3.4 supports a new API for reshaping:                                */
 
 /* http://eigen.tuxfamily.org/dox-devel/group__TutorialReshape.html           */
+```
 
-## 矩阵的转置、共轭等
+### 矩阵的转置、共轭等
+
 ```C++
 // Eigen                           // Matlab
 R.adjoint()                        // R'
@@ -146,7 +235,9 @@ R.rowwise().reverse()              // fliplr(R)
 R.colwise().reverse()              // flipud(R)
 R.replicate(i,j)                   // repmat(P,i,j)
 ```
-## 矩阵运算
+
+### 矩阵运算
+
 ```C++
 // All the same as Matlab, but matlab doesn't have *= style operators.
 // Matrix-vector.  Matrix-matrix.   Matrix-scalar.
@@ -193,7 +284,8 @@ R = (Q.array()==0).select(P,R) // R(Q==0) = P(Q==0)
 R = P.unaryExpr(ptr_fun(func)) // R = arrayfun(func, P)   // with: scalar func(const scalar &x);
 ```
 
-## 矩阵的数值操作
+### 矩阵的数值操作
+
 ```C++
 // Reductions.
 int r, c;
@@ -217,7 +309,8 @@ R.colwise().any()         // any(R)
 R.rowwise().any()         // any(R, 2)
 ```
 
-## 点积、范数等
+### 点积、范数等
+
 ```C++
 // Dot products, norms, etc.
 // Eigen                  // Matlab
@@ -227,7 +320,8 @@ x.dot(y)                  // dot(x, y)
 x.cross(y)                // cross(x, y) Requires #include <Eigen/Geometry>
 ```
 
-## 格式转换
+### 格式转换
+
 ```C++
 //// Type conversion
 // Eigen                  // Matlab
@@ -245,7 +339,9 @@ MatrixXf F = MatrixXf::Zero(3,3);
 A += F;                // illegal in Eigen. In Matlab A = A+F is allowed
 A += F.cast<double>(); // F converted to double and then added (generally, conversion happens on-the-fly)
 ```
-## 数组与Eigen矩阵的关联
+
+### 数组与Eigen矩阵的关联
+
 ```C++
 // Eigen can map existing memory into Eigen matrices.
 float array[3];
@@ -270,7 +366,8 @@ x = A.svd() .solve(b));  // Stable, slowest. #include <Eigen/SVD>
 // .svd()  -> .matrixU(), .singularValues(), and .matrixV()
 ```
 
-## 特征值问题
+### 特征值问题
+
 ```C++
 // Eigenvalue problems
 // Eigen                          // Matlab

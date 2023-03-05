@@ -22,7 +22,6 @@ export default function HomePage({ title, tagline, descriptionLines }) {
                 {descriptionLines &&
                     descriptionLines.map((d, i) => <p key={i}>{d}</p>)}
             </div>
-            <hr className={styles.divider} />
             <div>
                 <br></br>
                 <br></br>

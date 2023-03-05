@@ -35,7 +35,10 @@ const config = {
     defaultLocale: 'en',
     locales: ['en'],
   },
-
+  markdown:{
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
   presets: [
     [
       'classic',
@@ -83,7 +86,7 @@ const config = {
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
         hideOnScroll: true,
-        title: 'li-tann\'s Nootbook',
+        title: 'li-tann\'s Notebook',
         logo: {
           alt: 'Logo',
           src: 'img/SAR-LOGO2.png',

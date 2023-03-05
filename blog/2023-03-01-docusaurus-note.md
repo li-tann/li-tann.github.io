@@ -15,7 +15,7 @@ tags: [docusaurus]
 
 github部署，
 
-`cmd /C "set "GIT_USER=li-tann" && yarn deploy"`，
+`cmd /C 'set "GIT_USER=li-tann" && yarn deploy'`，
 
 或
 

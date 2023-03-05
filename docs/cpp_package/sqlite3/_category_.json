@@ -1,8 +1,0 @@
-{
-  "label": "sqlite3",
-  "position": 4,
-  "link": {
-    "type": "generated-index",
-    "description": "轻量的、常用于嵌入式编程的数据库读取库"
-  }
-}

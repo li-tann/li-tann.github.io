@@ -1,8 +1,0 @@
-{
-  "label": "GDAL",
-  "position": 1,
-  "link": {
-    "type": "generated-index",
-    "description": "地学常用的图像处理库"
-  }
-}

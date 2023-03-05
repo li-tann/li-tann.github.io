@@ -1,8 +1,0 @@
-{
-  "label": "Eigen",
-  "position": 2,
-  "link": {
-    "type": "generated-index",
-    "description": "only-header的矩阵运算库"
-  }
-}

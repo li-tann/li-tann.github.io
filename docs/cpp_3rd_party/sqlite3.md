@@ -1,33 +1,30 @@
 # sqlite3
 
-<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
-
-## 概况
-
 sqlite3 是一个基于c/c++实现的轻量级数据库，对环境依赖非常小，所以常应用于嵌入式开发（与该文档无关）。
 
 gdal也使用了sqlite3库。
 
 ## 主要函数
 
+打开数据库文件，如果没有则会自动创建，
+
 `int sqlite3_open(const char *filename,sqlite3 **ppDb)`
 
-> 打开数据库文件，如果没有则会自动创建。
+关闭数据库文件，
 
 `int sqlite3_close(sqlite3*)`
 
-> 关闭数据库文件。
+数据库的执行命令, 指定数据库，输入执行语句，根据实际执行名命令编写回调函数，执行，
 
 `int sqlite3_exec(sqlite3* db, const char *sql, callback, void *, char **errmsg)`
 
-> 数据库的执行命令, 指定数据库，输入执行语句，根据实际执行名命令编写回调函数，执行。
 > 该命令是执行数据库相关操作的主要命令。
 > sql的写法即为数据库查添删改等操作的语法。
 > 回调函数一定要写返回值，否则再次调用时会报错。
 
-`sqlite3_free(void*)`
+释放内存，通常用于每次exec结束后，释放存储错误信息的`errmsg`字符串
 
-> 释放内存，通常用于每次exec结束后，释放存储错误信息的`errmsg`字符串。
+`sqlite3_free(void*)`
 
 ## 回调函数
 
