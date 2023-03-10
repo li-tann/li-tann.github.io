@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>li-tann Blog</title>
+        <link>https://li-tann.github.io/blog</link>
+        <description>li-tann Blog</description>
+        <lastBuildDate>Tue, 07 Mar 2023 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <language>en</language>
+        <item>
+            <title><![CDATA[Word 框内打勾]]></title>
+            <link>https://li-tann.github.io/blog/2023/03/07/word-check-mark</link>
+            <guid>https://li-tann.github.io/blog/2023/03/07/word-check-mark</guid>
+            <pubDate>Tue, 07 Mar 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[在word输入2611, 按ALT+X, 即可生成“框内打勾✅”的特殊字符。]]></description>
+            <content:encoded><![CDATA[<p>在word输入<code>2611</code>, 按<code>ALT</code>+<code>X</code>, 即可生成“框内打勾✅”的特殊字符。</p>]]></content:encoded>
+            <category>word</category>
+        </item>
+        <item>
+            <title><![CDATA[github stars显示方法]]></title>
+            <link>https://li-tann.github.io/blog/2023/03/03/github-stars</link>
+            <guid>https://li-tann.github.io/blog/2023/03/03/github-stars</guid>
+            <pubDate>Fri, 03 Mar 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[Github中经常见到类似的标签，]]></description>
+            <content:encoded><![CDATA[<p>Github中经常见到类似的标签，</p><p><img loading="lazy" src="https://img.shields.io/github/stars/li-tann/li-tann.github.io.svg" alt="starts" class="img_ev3q"> <img loading="lazy" src="https://img.shields.io/badge/li--tann-InSAR-brightgreen" alt="example label" class="img_ev3q"></p><p>前者是li-tann.github.io的实时stars，后者是自定义生成的静态内容。</p><p>类似的标签，都是通过<a href="https://shields.io/" target="_blank" rel="noopener noreferrer">Shield IO</a>网站实现的。</p><p>实时的github stars:</p><p><code>https://img.shields.io/github/stars/&lt;user&gt;/&lt;repository&gt;.svg</code></p><p>以该网页为例，</p><p>用户名是<code>li-tann</code>, 仓库是<code>litan.github.io</code>，</p><p>该仓库的实时stars: <code>https://img.shields.io/github/stars/li-tann/li-tann.github.io.svg</code></p>]]></content:encoded>
+            <category>github stars</category>
+        </item>
+        <item>
+            <title><![CDATA[zotero+OneDrive实现云同步]]></title>
+            <link>https://li-tann.github.io/blog/2023/03/03/zotero-onedrive</link>
+            <guid>https://li-tann.github.io/blog/2023/03/03/zotero-onedrive</guid>
+            <pubDate>Fri, 03 Mar 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[zotero.logo]]></description>
+            <content:encoded><![CDATA[<p><img loading="lazy" src="https://www.zotero.org/static/images/theme/zotero-logo.1519312231.svg" alt="zotero.logo" class="img_ev3q"></p><p>zotero是一款免费的文献管理工具(包括但不限于文件管理功能)，其本身提供收费的云端文件存储服务（免费向每个账户提供300Mb云空间）。</p><p>但将本地存储搭建在OneDrive中，云端只同步文献基本信息（不上传附件内容），即可实现免费的多设备同步。</p><h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="操作说明">操作说明<a href="#操作说明" class="hash-link" aria-label="Direct link to 操作说明" title="Direct link to 操作说明">​</a></h2><ol><li><p>zotero编辑-&gt;首选项-&gt;同步-&gt;设置，取消文件同步的两个选项（不同步附件）；</p></li><li><p>zotero编辑-&gt;首选项-&gt;高级-&gt;文件和文件夹：数据存储位置选择自定义，修改文件存储位置（如：<code>E:\zotero_library</code>）；</p><blockquote><p>长期积累的文献较大，不建议放在默认的C盘</p></blockquote></li><li><p>将<code>E:\zotero_library\storage</code>移动到OneDrive网盘中，如：<code>D:\OneDrive\Zorero_storage\storage</code>；</p></li><li><p>建立链接</p></li></ol><p><code>mklink /J "E:\zotero_library\storage" "D:\OneDrive\Zorero_storage\storage"</code></p><p>到此为止，实现同步。</p><p>若直接将zotero数据存储位置放至OneDrive会提示有风险（数据同步的异常情况），所以将storage放置云盘，并建立云盘与本地的链接风险更低。</p>]]></content:encoded>
+            <category>zotero</category>
+            <category>OneDrive</category>
+        </item>
+        <item>
+            <title><![CDATA[gdal_translate去除编码影像黑边]]></title>
+            <link>https://li-tann.github.io/blog/2023/03/02/gdal_translate</link>
+            <guid>https://li-tann.github.io/blog/2023/03/02/gdal_translate</guid>
+            <pubDate>Thu, 02 Mar 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[地理编码后影像的四个角点一般都有“黑边”(对于float以上数据，显示为NoData，值为NAN)，在arcgis中显示时非常影响观感，需要消除。]]></description>
+            <content:encoded><![CDATA[<p>地理编码后影像的四个角点一般都有“黑边”(对于float以上数据，显示为NoData，值为NAN)，在arcgis中显示时非常影响观感，需要消除。</p><p>使用gdal_translate.exe工具，可以有效消除“黑边”，命令如下：</p><p><code>gdal_translate.exe img_input.tif img_output.tif -a_nodata 0</code></p><p>该命令可以将img_input.tif中所有值为<code>NoData</code>的值转换为<code>0</code>，并且为影像添加数据<code>NoData Value=0</code>，</p><p>转换完成后，再次使用arcmap加载该影像，即可得到无“黑边”的地理编码后影像。</p><p>伪代码：</p><div class="language-c++ codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-c++ codeBlock_bY9V thin-scrollbar"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">GDALDataset* p_ds = static_cast&lt;GDALDataset*&gt;(GDALOpen("",GA_Update));</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">int bands = p_ds-&gt;GetRasterCount();</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">for(int b = 1; b&lt;bands; b++)</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">{</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    GDALRasterBand* rb = p_ds-&gt;GetRasterBnad(b);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    rb-&gt;setNoDataValue(0);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">}</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">GDALClose(p_ds);</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg class="copyButtonIcon_y97N" viewBox="0 0 24 24"><path d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg class="copyButtonSuccessIcon_LjdS" viewBox="0 0 24 24"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>]]></content:encoded>
+            <category>gdal</category>
+            <category>gdal_translate</category>
+        </item>
+        <item>
+            <title><![CDATA[docusaurus常用命令]]></title>
+            <link>https://li-tann.github.io/blog/sec-blog</link>
+            <guid>https://li-tann.github.io/blog/sec-blog</guid>
+            <pubDate>Wed, 01 Mar 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[下载标准版本，]]></description>
+            <content:encoded><![CDATA[<p>下载标准版本，</p><p><code>npx create-docusaurus@latest my-website classic</code></p><p>下载特定版本的math和katex插件，</p><p><code>npm install --save remark-math@3 rehype-katex@5 hast-util-is-element@1.1.0</code></p><p>github部署，</p><p><code>cmd /C 'set "GIT_USER=li-tann" &amp;&amp; yarn deploy'</code>，</p><p>或</p><p><code>cmd /C 'set "USE_SSH=true" &amp;&amp; yarn deploy'</code></p>]]></content:encoded>
+            <category>docusaurus</category>
+        </item>
+        <item>
+            <title><![CDATA[My First Blog in docusaurus]]></title>
+            <link>https://li-tann.github.io/blog/fst-blog</link>
+            <guid>https://li-tann.github.io/blog/fst-blog</guid>
+            <pubDate>Wed, 08 Feb 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[hello, docusaurus]]></description>
+            <content:encoded><![CDATA[<p>hello, docusaurus</p><p>--li-tann</p>]]></content:encoded>
+            <category>hello</category>
+            <category>docusaurus</category>
+        </item>
+    </channel>
+</rss>
