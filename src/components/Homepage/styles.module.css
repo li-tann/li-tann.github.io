@@ -65,6 +65,11 @@
     letter-spacing: 0.05rem;
 }
 
+img{
+    margin: auto;
+    display: flex;
+}
+
 @media (max-width: 640px) {
     .subtitle {
         font-size: 1.2rem;

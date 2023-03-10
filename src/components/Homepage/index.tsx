@@ -13,7 +13,7 @@ export default function HomePage({ title, tagline, descriptionLines }) {
                 className={clsx('footer__link-item', styles.title)}
                 to='/docs/intro'
             >
-                <img src={require('@site/static/img/me.jpg').default} width="800"/>
+                <img src={require('@site/static/img/me.jpg').default} />
                 <span>{title}</span>
             </Link>
             <span className={styles.subtitle}>{tagline}</span>
