@@ -21,6 +21,8 @@
     min-width: 15%;
     max-width: 30%;
     border: 3px solid;
+    margin: auto;
+    display: flex;
 }
 
 .title > span {
@@ -65,10 +67,10 @@
     letter-spacing: 0.05rem;
 }
 
-img{
+/* img{
     margin: auto;
     display: flex;
-}
+} */
 
 @media (max-width: 640px) {
     .subtitle {
