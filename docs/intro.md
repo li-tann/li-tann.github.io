@@ -12,11 +12,19 @@ sidebar_position: 1
 
 下载Node.js，
 
+Node.js查看镜像源和换源,
+
+`npm config get registry`, 查看镜像源，默认是"https://registry.npmjs.org"
+
+`npm config set registry https://registry.npm.taobao.org`, 修改淘宝的镜像源。
+
+下载默认的docusaurus模板,
+
 `npx create-docusaurus@latest my-website classic`,
 
-npm start，
+切换到my-website地址下, 命令行输入`npm start`启动默认模板，
 
-完成本地部署
+完成本地部署。
 
 ## 自定义修改
 

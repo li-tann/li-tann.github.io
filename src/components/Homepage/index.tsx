@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 import styles from './styles.module.css';
 // import Newsletter from '../Newsletter';
-import config from '../../../website_config.json';
+// import config from '../../../website_config.json';
 
 export default function HomePage({ title, tagline, descriptionLines }) {
     return (
