@@ -122,7 +122,7 @@ const config = {
             href: 'https://github.com/li-tann/li-tann.github.io',
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} li-tann's nootbook, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} li-tann's notebook, Inc. Built with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,

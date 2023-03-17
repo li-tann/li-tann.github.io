@@ -27,7 +27,7 @@ SELECT DISTINCE column_name1, column_name2 FROM table_name;
 附加条件，WHERE用于提取满足条件的信息。
 
 ```sql
-SELECT DISTINCE column_name1, column_name2 FROM table_name WHERE condition;
+SELECT column_name1, column_name2 FROM table_name WHERE condition;
 ```
 
 `condition`, 判断条件, 例如: `column_name1=100`。
@@ -60,3 +60,54 @@ Select * from tab where val in (1500,2000,2500);
 ```
 
 查询tab表中，val值等于1500, 2500, 3000的数据。
+
+### ORDER BY
+
+对结果集进行排序
+
+```sql
+SELECT column_name1, column_name2 FROM table_name ORDER BY column_name1 ASC;
+```
+
+显示tab表中的column_name1, column_name2两列, 并且按照column_name1升序排列。如果降序则是`DESC`, 可以选择多列排序
+
+### INSERT INTO
+
+向表中插入新记录。
+
+insert into 有两种用法,
+
+```sql
+INSERT INTO table_name VALUES (value1,value2,value3,...);
+```
+
+或,
+
+```sql
+INSERT INTO table_name(column_name1,column_name2,column_name3,...) VALUES (value1,value2,value3,...);
+```
+
+### UPDATE
+
+更新表中的记录。
+
+```sql
+UPDATE table_name
+SET column_name1 = value1, column_name2 = value2, ...
+WHERE condition;
+```
+
+将表tab内满足condition的字段的column_name1对应的值修改为value1, column_name2对应的值修改为value2...
+
+注意, 如果WHERE筛选的条件不唯一, 或未使用WHERE筛选数据, 会修改表中所有数据。
+
+### DELETE
+
+```sql
+DELETE FROM table_name
+WHERE condition;
+```
+
+从表格tab中将所有满足条件condition的数据删除。
+
+与`UPDATE`类似, 如果没有使用WHERE, `DELETE FROM table_name`, 会删除表中所有数据。
