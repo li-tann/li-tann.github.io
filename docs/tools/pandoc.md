@@ -12,7 +12,7 @@ pandoc -v
 
 ## md 转 docx
 
-`pandoc -s \*.md -o \*.docx`
+`pandoc -s *.md -o *.docx`
 
 不确定-s -o能否应用于其他类型的转换
 
@@ -21,3 +21,11 @@ pandoc -v
 ```cmd
 pandoc C:\Users\lenovo>pandoc -s D:\OneDrive\exam\file\in.md -o D:\OneDrive\exam\file\out.docx
 ```
+
+## docx 转 md
+
+带图像的docx文件转换到markdown的方法如下:
+
+`pandoc -f docx -t markdown --extract-media ./images -o *.md *.docx`
+
+word文档中的图片会被存放到./images路径下。
