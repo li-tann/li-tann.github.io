@@ -1,0 +1,8 @@
+{
+  "label": "Cpp",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "C++标准库及依赖库的使用方法记录"
+  }
+}

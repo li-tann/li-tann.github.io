@@ -1,4 +1,8 @@
-# 基于标准库的小函数
+---
+sidebar_position: 1
+---
+
+# Std based Funs
 
 ## 读取二进制float数据
 

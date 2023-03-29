@@ -149,7 +149,7 @@ docusaurus提供deploy命令，可以一键部署到github中，需要提供GIT_
 
 `cmd /C "set "GIT_USER=<GITHUB_USERNAME>" && yarn deploy"`
 
-例如: `cmd /C "set "GIT_USER=li-tann" && yarn deploy"`
+例如: `cmd /C 'set "GIT_USER=li-tann" && yarn deploy'`
 
 :::caution
 
