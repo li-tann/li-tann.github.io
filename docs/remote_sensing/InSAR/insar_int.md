@@ -35,7 +35,7 @@ u_1=\lvert u_1\rvert e^{j\phi_1}=a+bi
 $$
 
 $$
-u_1=\lvert u_2\rvert e^{j\phi_2}=c+di
+u_2=\lvert u_2\rvert e^{j\phi_2}=c+di
 $$
 
 ### 强度相位表现形式
@@ -43,7 +43,7 @@ $$
 $$
 \begin{aligned}
    u_{int} &=u_1\cdot u_2^* \\
-&=\lvert u_1\rvert e^{j\phi_1}\cdot \lvert u_2\rvert e^{j\phi_2} \\
+&=\lvert u_1\rvert e^{j\phi_1}\cdot \lvert u_2\rvert e^{-j\phi_2} \\
 &= \lvert u_1\rvert \lvert u_2\rvert e^{j(\phi_1-\phi_2)} \\
 &= \lvert u_1\rvert \lvert u_2\rvert e^{-j(\phi_2-\phi_1)}
 \end{aligned}
