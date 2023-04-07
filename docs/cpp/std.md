@@ -218,14 +218,17 @@ std::cout <<"matrices allocated and initialized"
 
 示例：
 
-通过调用cmd，执行`gdalinfo.exe --formats`命令，该命令是查看gdalinfo支持的数据格式（前提是要有gdalinfo且环境变量可查到该文件）
+通过调用cmd，执行`pip list`命令，该命令是查看pip包管理工具中已安装的依赖库
 
 ```C++
-char buffer[4096];
-const char* szCmd = "gdalinfo.exe --formats";
+char buffer[1024];
+const char* szCmd = "pip";
 FILE* pipe = _popen(szCmd, "r");
-if (!pipe) {
-    return 1;
+if (pipe != nullptr) {
+    while (fgets(buffer, 1024, pipe) != NULL){
+        std::cout << std::string(buffer);
+    }
+    fclose(pipe);
 }
 
 ```
