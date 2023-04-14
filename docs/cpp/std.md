@@ -164,15 +164,16 @@ std::string str = ss.str();
 put_time的链接中包含了支持的各种格式说明，同样适用于get_time
 
 例如：
+
 说明符 |  替换 | 示例
- :---: | :---: | :---:
+:---: | :---: | :---:
 %y|年份，最后两位数字（00-99）|01
 %Y|年份，四位数字|2001
 %m|月份的十进制数（01-12）|08
 %M|分钟（00-59）|56
 %d|月份中的某一天，用零填充（01-31）|23
 %D|MM/DD/YY日期的简写，相当于％m/％d/％y|08/23/19
-%F|YYYY-MM-DD日期的简写，相当于％Y-％m-％d
+%F|YYYY-MM-DD日期的简写，相当于％Y-％m-％d|2023-04-14
 ...|...|...
 
 示例：
@@ -232,6 +233,119 @@ if (pipe != nullptr) {
 }
 
 ```
+
+## map
+
+### map与三种函数关联的方法
+
+通过map容器，将枚举或字符串与函数（通过函数指针或std::function等方法）相关联, 可以实现在循环中根据枚举或字符串选择函数的功能。
+
+#### 普通的函数指针
+
+适用于调用普通的函数
+
+```c++
+bool fun1(int){
+    ///...
+}
+bool fun2(int){
+    ///...
+}
+
+std::map<std::string, bool(*)(int)> funs_ = {
+    {"fun1", func1},
+    {"fun2", func2}
+}
+
+bool b = funs_["fun1"](10);
+```
+
+#### 类函数指针
+
+可以调用类里的函数
+
+```c++
+/// .h
+class Cs
+{
+    /// ...
+    void func1(const std::string&);
+    void func2(const std::string&);
+
+    /// 定义函数指针
+    typedef void(Cs::*funcs_ptr)(const std::string&);
+    std::map<std::string, funcs_ptr> funs = {
+        {"func1",func1},
+        {"func2",func2}
+    };
+
+    void work(std::string, const std::string&);
+}
+
+/// .cpp
+void Cs::work(std::string func_name, const std::string& func_par)
+{
+    funs[func_name](func_par);
+}
+```
+
+#### lambda函数
+
+使用函数指针或fucntion都可以实现, 但实际写代码时发现使用函数指针搭配lambda函数, 如果lambda函数的“捕获列表”不为空时会有报错提醒，但使用function则不会出现报错提示，所以更建议使用map + function + lambda的组合方式。
+
+应用场景, 读取json文件时, 不同的对象可能是不同的类型, 如果每次读取对象都要写几行代码, 不省时省力, 还很难拓展, 使用map+lambda函数解决该问题。
+
+```c++
+/// .h
+enum class para_type{string, number};
+/// tuple<bool, std::string> bool记录函数的处理结果, string记录错误(或成功)信息
+using tuple_bs = std::tuple<bool, std::string>;
+class read_json
+{
+    ///...
+    std::map<para_type, std::function<tuple_bs(nlohmann::ordered_json, const std::string&)>> para_check =
+    {
+        {para_type::string, [](nlohmann::ordered_json json_pars, const std::string& name) {
+            nlohmann::ordered_json json_par = json_pars[name];
+            if (json_par.is_null() || !json_par.is_string())
+                return std::make_tuple(false, fmt::format("\"{}\" is null or isn't string;", name));
+            return std::make_tuple(true, fmt::format("\"{}\" is qualified;", name));
+        }},
+        {para_type::number, [](nlohmann::ordered_json json_pars, const std::string& name) {
+            nlohmann::ordered_json json_par = json_pars[name];
+            if (json_par.is_null() || !json_par.is_number())
+                return std::make_tuple(false, fmt::format("\"{}\" is null or isn't number;", name));
+            return std::make_tuple(true, fmt::format("\"{}\" is qualified;", name));
+        }},
+    };
+}
+
+/// .cpp
+
+tuple_bs rst;
+bool no_error_par = true;
+/// 定义好所有变量名以及其对应的para_type
+std::map<para_type, std::string> pars_info ={
+    {para_type::string, "xml_filepath"},
+    {para_type::number, "threshold"}
+};
+for(auto it = pars_info.begin(); it != pars_info.end(); it++){
+    rst = para_check[it->first](json_pars, it->second);
+    /// 如果返回值为true, 则无需错误信息
+    if (!std::get<0>(rst))
+        pars_err_info += std::get<1>(rst);
+    /// 将每个参数返回的bool值与之前所有的bool值进行'&&'与运算, 当出现一个false时，最终结果为false
+    no_error_par = no_error_par && std::get<0>(rst);
+}
+/// 如果no_error_par为false, 说明有参数的检测结果为false, 否则说明全部参数都通过检测
+if (!no_error_par) {
+    return std::make_tuple(false, pars_err_info);
+}
+
+return std::make_tuple(true, "inheritance read(ldsarXml_to_sbJson::read) success.");
+```
+
+该方法在类中写函数, 使用map+函数指针的方式同样可以实现。
 
 ## terminal(cmd) color
 
