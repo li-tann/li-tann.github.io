@@ -6,14 +6,18 @@
 
 在clash for windows的主页，勾选允许局域网，并确定自己的ip号以及端口（通常是7890）
 
-在wsl的~/.bashrc中填入一些四行信息(修改为自己的ip以及端口号)
+在wsl的`~/.bashrc`中填入一些四行信息(修改为自己的ip以及端口号)
 
+```shell
 export http_proxy='http://192.168.3.93:7890'
 export https_proxy='http://192.168.3.93:7890'
 export all_proxy='socks5://192.168.3.93:7890'
 export ALL_PROXY='socks5://192.168.3.93:7890'
+```
 
+```shell
 source ~/.bashrc
+```
 
 使用`wget www.google.com`, 查看返回信息以确定是否可以正常使用clash
 
