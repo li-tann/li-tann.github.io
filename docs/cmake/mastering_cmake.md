@@ -181,33 +181,135 @@ CMake is **no longer case sensitive** to command names, so where you see `comman
 
 ### Conditional Statements (if)
 
-if else,
-
-```cmake
-if(FOO)
-  # do something here
-else()
-  # do something else
-endif()
-```
-
-if elseif,
+if, elseif, else的基本用法:
 
 ```cmake
 if(MSVC80)
   # do something here
-elseif(MSVC90)
+elseif(MSVC90)      
   # do something else
 elseif(APPLE)
   # do something else
+else()
 endif()
 ```
 
+详细使用方法参考: [if](https://cmake.org/cmake/help/latest/command/if.html#command:if)
+
+主要是对if判断条件语法(Condition Syntax)的拓展，包含
+
+- 基础字符的处理、
+- 逻辑判断（Logic Operators: NOT, AND, OR...）
+- 存在检查（Existence Checks）
+- 文件判断（File Operations: EXISTS, IS_NEWER_THAN, IS_DIRECTORY, IS_SYMLINK, IS_ABSOLUTE..）
+- 变量或字符的比较（MATCHES, LESS, GREATER, EQUAL, LESS_EQUAL...）
+- 版本比较(Version Comparisons(暂时还没有仔细看"版本比较"是什么意思))
+
+:::info
+
+应该还得有一个详细的解释或者示例
+
+:::
+
 ### Looping Constructs (foreach, while)
 
-foreach
+The foreach command enables you to execute a group of CMake commands repeatedly on the members of a list.
+
+用foreach命令, 可以在for循环汇总, 使用同一个变量代替数组内的其他变量
+
+```cmake
+foreach(tfile
+        TestAnisotropicDiffusion2D
+        TestButterworthLowPass
+        TestButterworthHighPass
+        TestCityBlockDistance
+        TestConvolve
+        )
+
+message("tfile:" ${tfile})
+endforeach()        
+```
+
+上述示例代码中, 将会执行5次循环, 第一次循环中`${tfile}`为TestAnisotropicDiffusion2D, 第二次循环中`${tfile}`是TestButterworthLowPass... 一次类推
+
+foreach可以用于嵌套, 比如: (设想的应用场景)
+
+```cmake
+foreach(package OpenMP GDAL Eigen3 fmt)
+find_package(${package} CONFIG REQUIRED)
+if(NOT ${package}_FOUND)
+message(FATAL_ERROR "${package} not found!")
+endif()
+endforeach()
+```
+
+搜索各个库, 搜索不到的话就报错退出。
+
+foreach的详细用法参考：[foreach](https://cmake.org/cmake/help/latest/command/foreach.html#command:foreach)
+
+:::info
+
+应该还得有一个详细的解释或者示例
+
+:::
+
+while用法是当满足判断条件时执行循环操作, 直到不满足判断条件为止。语法形如：
+
+```cmake
+while(<condition>)
+  <commands>
+endwhile()
+```
+
+`<condition>`的语法与`if(<condition>)endif()`相同。
+
+The commands break() and continue() provide means to escape from the normal control flow.
+
+while中提供了`break()`和`continue()`两个指令, 来跳出和跳过当前循环, 用法与C++近似。
 
 ### Procedure definitions (macro, function)
+
+The main differences (between `macro` and `function`) are that a macro does not push and pop a new variable scope, and that the arguments to a macro are not treated as variables but as strings replaced prior to execution.
+
+`macro`和`function`的区别与C++中宏和函数的区别类似，`macro`可以理解为将一段代码进行替换, 而`function`则是开辟一块新的空间，在空间内部执行相应指令，即function内部变量的改动不会改变其在function外部的值。所以，如果想在function中设置变量，且希望其在function结束后仍然生效，需要添加`PARENT_SCOPE`指令，即`set(${var} "value" PARENT_SCOPE)`。
+
+参数( ARGC, ARGV, ARGV#i, ARGN)
+
+- ${ARGC}, the number of arguments passed into the function (macro), 输入的参数个数
+- ${ARGV}, A list of all arguments given to the function (macro)， 所有参数(不包含超过定义参数个数的可变参数, 即ARGN部分)
+- ${ARGV#i}, ARGV0 represents the first argument to the macro, 第i个参数
+- ${ARGN}, a list of all the arguments after the formal arguments, 所有超过定义参数格式之后的可变参数
+
+```cmake
+macro(regist mas sla)
+  message(STATUS ARGC=${ARGC})
+  message(STATUS ARGV=${ARGV})
+  message(STATUS ARGN=${ARGN})
+  message(STATUS ARGV0=${ARGV0})
+  message(STATUS ARGV1=${ARGV1})
+  message(STATUS ARGV2=${ARGV2})
+  message(STATUS ARGV3=${ARGV3})
+endmacro()
+
+regist(mas sla aux)
+
+# 输出:
+[cmake] -- ARGC=3
+[cmake] -- ARGV=masslaaux
+[cmake] -- ARGN=aux
+[cmake] -- ARGV0=mas
+[cmake] -- ARGV1=sla
+[cmake] -- ARGV2=aux
+[cmake] -- ARGV3=
+```
+
+The `return` command returns from a function, directory or file.
+
+`return`命令可以返回一个函数、目录或文件。由于`macro`和`function`的机制不同（`macro`没有开辟新空间而是原地展开/替换）, `macro`不能使用`return`指令。
+
+### Regular Expressions
+
+### Advanced Commands
 
 ## CMake Cache
 
