@@ -39,6 +39,93 @@ const config = {
     mermaid: true,
   },
   themes: ['@docusaurus/theme-mermaid'],
+  plugins:[
+    // [
+    //   "@docusaurus/plugin-content-docs",
+    //   {
+    //     id: "code",
+    //     path: "code",
+    //     routeBasePath: "code",
+    //     sidebarPath: require.resolve("./sidebars.js"),
+    //     // showLastUpdateAuthor: true,
+    //     // showLastUpdateTime: true,
+    //     // breadcrumbs: false,
+    //   },
+    // ],
+    // [
+    //   "@docusaurus/plugin-content-docs",
+    //   {
+    //     id: "work_1",
+    //     path: "work/work_1",
+    //     routeBasePath: "work_1",
+    //     sidebarPath: require.resolve("./sidebars.js"),
+    //     // showLastUpdateAuthor: true,
+    //     // showLastUpdateTime: true,
+    //     // breadcrumbs: false,
+    //   },
+    // ],
+    // [
+    //   "@docusaurus/plugin-content-docs",
+    //   {
+    //     id: "work_2",
+    //     path: "work/work_2",
+    //     routeBasePath: "work_2",
+    //     sidebarPath: require.resolve("./sidebars.js"),
+    //     // showLastUpdateAuthor: true,
+    //     // showLastUpdateTime: true,
+    //     // breadcrumbs: false,
+    //   },
+    // ],
+    ///
+    [
+      "@docusaurus/plugin-content-docs",
+      {
+        id: "cmake",
+        path: "code/cmake",
+        routeBasePath: "cmake",
+        sidebarPath: require.resolve("./sidebars.js"),
+        // showLastUpdateAuthor: true,
+        // showLastUpdateTime: true,
+        // breadcrumbs: false,
+      },
+    ],
+    [
+      "@docusaurus/plugin-content-docs",
+      {
+        id: "cpp",
+        path: "code/cpp",
+        routeBasePath: "cpp",
+        sidebarPath: require.resolve("./sidebars.js"),
+        // showLastUpdateAuthor: true,
+        // showLastUpdateTime: true,
+        // breadcrumbs: false,
+      },
+    ],
+    [
+      "@docusaurus/plugin-content-docs",
+      {
+        id: "python",
+        path: "code/python",
+        routeBasePath: "python",
+        sidebarPath: require.resolve("./sidebars.js"),
+        // showLastUpdateAuthor: true,
+        // showLastUpdateTime: true,
+        // breadcrumbs: false,
+      },
+    ],
+    [
+      "@docusaurus/plugin-content-docs",
+      {
+        id: "cuda",
+        path: "code/cuda",
+        routeBasePath: "cuda",
+        sidebarPath: require.resolve("./sidebars.js"),
+        // showLastUpdateAuthor: true,
+        // showLastUpdateTime: true,
+        // breadcrumbs: false,
+      },
+    ],
+  ],
   presets: [
     [
       'classic',
@@ -96,9 +183,56 @@ const config = {
             type: 'doc',
             docId: 'intro',//链接第一个界面的名称, 对应resume.md
             position: 'right',
-            label: 'Docs',
+            label: '💬Docs',
           },
-          {to: '/blog', label: 'Blog', position: 'right'},
+          {
+            position:"right",
+            label:"🧙Code",
+            // to:"/code/intro"
+            items:[
+              {
+                label: "🧙C++",
+                to:"cpp/intro"
+              },
+              {
+                label: "🧬CMake",
+                to:"cmake/intro"
+              },
+              {
+                label: "🐍Python",
+                to:"python/intro"
+              },
+              {
+                label: "🧩CUDA",
+                to:"cuda/intro"
+              },
+            ]
+          },
+          // {
+          //   position:"right",
+          //   label:"Work",
+          //   items:[
+          //     {
+          //       label: "work_1",
+          //       to:"/work_1/intro"
+          //     },
+          //     {
+          //       label: "work_2",
+          //       to:"/work_2/intro"
+          //     }
+          //   ]
+          // },
+          // {
+          //   position:"right",
+          //   label:"Code2",
+          //   items:[
+          //     {
+          //       label: "Qt_notebook",
+          //       to:"qt_notebook/intro"
+          //     },
+          //   ]
+          // },
+          {to: '/blog', label: '🏷️Blog', position: 'right'},
           {
             href: 'https://github.com/li-tann/li-tann.github.io',
             label: 'GitHub',

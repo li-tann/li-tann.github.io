@@ -1,0 +1,8 @@
+{
+  "label": "3rd library",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "C++第三方库的使用方法记录"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "label": "Std library",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "C++标准库的使用方法记录"
+  }
+}

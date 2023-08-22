@@ -1,3 +1,7 @@
+---
+sidebar_position: 98
+---
+
 # 色卡
 
 |color|name| rgb |rgb(0x)|color|name| rgb |rgb(0x)|

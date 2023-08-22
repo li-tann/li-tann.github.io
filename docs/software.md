@@ -1,4 +1,8 @@
-# 软件推荐
+---
+sidebar_position: 99
+---
+
+# Software Introduction
 
 软件、工具推荐
 
@@ -36,7 +40,7 @@ markdownlint，markdown语法检测和提示。
 
 强烈推荐 docusaurus
 
-![dcousaurus.logo](../../static/img/docusaurus.png)
+![dcousaurus.logo](../static/img/docusaurus.png)
 
 ## vcpkg
 

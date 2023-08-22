@@ -1,8 +1,0 @@
-{
-  "label": "CUDA",
-  "position": 5,
-  "link": {
-    "type": "generated-index",
-    "description": "CUDA学习过程中踩的雷"
-  }
-}
