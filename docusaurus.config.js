@@ -174,10 +174,10 @@ const config = {
           {to: '/blog', label: '🏷️Blog', position: 'right'},
           {
             href: 'https://github.com/li-tann/li-tann.github.io',
-            // label: 'GitHub',
+            label: '🚀GitHub',
             position: 'right',
-            className: 'header-github-link', ///doesn't work
-            'aria-label': 'GitHub repository',///doesn't work
+            // className: 'header-github-link', ///doesn't work
+            // 'aria-label': 'GitHub repository',///doesn't work
           },
           {
             type: 'search',///doesn't work
@@ -191,6 +191,10 @@ const config = {
           {
             label:'Docs',
             to:'/docs/intro',
+          },
+          {
+            label:'C++',
+            to:'cpp/intro',
           },
           {
             label:'Blog',
