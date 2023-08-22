@@ -162,3 +162,194 @@ docusaurus提供deploy命令，可以一键部署到github中，需要提供GIT_
 在实际操作中可能会失败很多次，不确定其原因，但一直提交总会有成功的时候...
 
 有时，搭配`cmd /C 'set "USE_SSH=true" && yarn deploy'`有奇效...
+
+## 多文档实现
+
+在docusaurus默认的结构中, 所有文档都存在docs文件中。但文件内容过多时，会使docs看起来很臃肿，这时就需要多个文档来分开存储内容。
+
+### 单层文档
+
+首先，在文档中，创建文件夹（这里命名为code），并在文件夹内创建“欢迎页”“intro.md”。
+
+```shell
+ - project
+   - ...
+   - blog
+   - code
+     - intro.md
+   - docs
+   - ...
+```
+
+在docusaurus.config.js文件中添加插件
+
+```js
+themes: [...],
+plugins:[
+  [
+    "@docusaurus/plugin-content-docs",
+    {
+      id: "code",
+      path: "code",
+      routeBasePath: "code",
+      sidebarPath: require.resolve("./sidebars.js"),
+    },
+  ],
+],
+  presets: [.....],
+```
+
+创建完成后，使用`npm start`启动工程（主要是为了编译一次）。
+
+```js
+themeConfig:
+    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+    ({
+      // Replace with your project's social card
+      image: 'img/docusaurus-social-card.jpg',
+      navbar: {
+        //...
+        items: [
+          {
+            type: 'doc', 
+            docId: 'intro',
+            position: 'right',
+            label: 'Docs',
+          },
+          {to: '/blog', label: 'Blog', position: 'right'},
+          {///// here
+            position:"right",
+            label:"Code",
+            to:"/code/intro"
+          },/////
+          {
+            href: 'https://github.com/li-tann/li-tann.github.io',
+            label: 'GitHub',
+            position: 'right',
+          },
+        ],
+      },
+```
+
+在themeConfig-navbar-items中添加`{label:"what your want",to:"code/intro"}`, 再次更新后即可成功添加到页面导航栏中。
+
+点击“按钮”可以连接到`code/intro`中。
+
+### 多层文档
+
+多层文档实现的效果是，当鼠标悬停到这里时，会出现一个“下拉”菜单，点击菜单中任意一个按钮会转到相应的链接。
+
+示例代码对应的文件结构是：
+
+```shell
+ - project
+   - ...
+   - blog
+   - code
+     - cmake
+       - intro.md
+     - cpp
+       - intro.md
+     - python
+       - intro.md
+     - cuda
+       - intro.md
+   - docs
+   - ...
+```
+
+在plugins中添加相应的id，
+
+```js
+themes: [...],
+plugins:[
+  [
+    "@docusaurus/plugin-content-docs",
+    {
+      id: "cmake",
+      path: "code/cmake",
+      routeBasePath: "cmake",
+      sidebarPath: require.resolve("./sidebars.js"),
+    },
+  ],
+  [
+    "@docusaurus/plugin-content-docs",
+    {
+      id: "cpp",
+      path: "code/cpp",
+      routeBasePath: "cpp",
+      sidebarPath: require.resolve("./sidebars.js"),
+    },
+  ],
+  [
+    "@docusaurus/plugin-content-docs",
+    {
+      id: "python",
+      path: "code/python",
+      routeBasePath: "python",
+      sidebarPath: require.resolve("./sidebars.js"),
+    },
+  ],
+  [
+    "@docusaurus/plugin-content-docs",
+    {
+      id: "cuda",
+      path: "code/cuda",
+      routeBasePath: "cuda",
+      sidebarPath: require.resolve("./sidebars.js"),
+    },
+  ],
+],
+  presets: [.....],
+```
+
+启动工程后,
+
+```js
+themeConfig:
+    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+    ({
+      // Replace with your project's social card
+      image: 'img/docusaurus-social-card.jpg',
+      navbar: {
+        //...
+        items: [
+          {
+            type: 'doc', 
+            docId: 'intro',
+            position: 'right',
+            label: 'Docs',
+          },
+          {to: '/blog', label: 'Blog', position: 'right'},
+          { /// here
+            position:"right",
+            label:"Code",
+            items:[
+              {
+                label: "C++",
+                to:"cpp/intro"
+              },
+              {
+                label: "CMake",
+                to:"cmake/intro"
+              },
+              {
+                label: "Python",
+                to:"python/intro"
+              },
+              {
+                label: "CUDA",
+                to:"cuda/intro"
+              },
+            ]
+          }, ///here
+          {
+            href: 'https://github.com/li-tann/li-tann.github.io',
+            label: 'GitHub',
+            position: 'right',
+          },
+        ],
+      },
+```
+
+即可。
