@@ -40,43 +40,6 @@ const config = {
   },
   themes: ['@docusaurus/theme-mermaid'],
   plugins:[
-    // [
-    //   "@docusaurus/plugin-content-docs",
-    //   {
-    //     id: "code",
-    //     path: "code",
-    //     routeBasePath: "code",
-    //     sidebarPath: require.resolve("./sidebars.js"),
-    //     // showLastUpdateAuthor: true,
-    //     // showLastUpdateTime: true,
-    //     // breadcrumbs: false,
-    //   },
-    // ],
-    // [
-    //   "@docusaurus/plugin-content-docs",
-    //   {
-    //     id: "work_1",
-    //     path: "work/work_1",
-    //     routeBasePath: "work_1",
-    //     sidebarPath: require.resolve("./sidebars.js"),
-    //     // showLastUpdateAuthor: true,
-    //     // showLastUpdateTime: true,
-    //     // breadcrumbs: false,
-    //   },
-    // ],
-    // [
-    //   "@docusaurus/plugin-content-docs",
-    //   {
-    //     id: "work_2",
-    //     path: "work/work_2",
-    //     routeBasePath: "work_2",
-    //     sidebarPath: require.resolve("./sidebars.js"),
-    //     // showLastUpdateAuthor: true,
-    //     // showLastUpdateTime: true,
-    //     // breadcrumbs: false,
-    //   },
-    // ],
-    ///
     [
       "@docusaurus/plugin-content-docs",
       {
@@ -208,34 +171,16 @@ const config = {
               },
             ]
           },
-          // {
-          //   position:"right",
-          //   label:"Work",
-          //   items:[
-          //     {
-          //       label: "work_1",
-          //       to:"/work_1/intro"
-          //     },
-          //     {
-          //       label: "work_2",
-          //       to:"/work_2/intro"
-          //     }
-          //   ]
-          // },
-          // {
-          //   position:"right",
-          //   label:"Code2",
-          //   items:[
-          //     {
-          //       label: "Qt_notebook",
-          //       to:"qt_notebook/intro"
-          //     },
-          //   ]
-          // },
           {to: '/blog', label: '🏷️Blog', position: 'right'},
           {
             href: 'https://github.com/li-tann/li-tann.github.io',
-            label: 'GitHub',
+            // label: 'GitHub',
+            position: 'right',
+            className: 'header-github-link', ///doesn't work
+            'aria-label': 'GitHub repository',///doesn't work
+          },
+          {
+            type: 'search',///doesn't work
             position: 'right',
           },
         ],
