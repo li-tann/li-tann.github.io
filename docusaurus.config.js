@@ -155,11 +155,12 @@ const config = {
             items:[
               {
                 label: "🧙C++",
-                to:"cpp/intro"
+                to:"cpp/std"
               },
               {
                 label: "🧬CMake",
-                to:"cmake/intro"
+                to:"cmake/mastering_cmake",
+                // to:"cmake/intro",
               },
               {
                 label: "🐍Python",
@@ -194,7 +195,11 @@ const config = {
           },
           {
             label:'C++',
-            to:'cpp/intro',
+            to:'cpp/std',
+          },
+          {
+            label: "CMake",
+            to:"cmake/mastering_cmake",
           },
           {
             label:'Blog',
