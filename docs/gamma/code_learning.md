@@ -1,12 +1,12 @@
 ---
-toc: true
+title: 源码分析
 ---
 
-# geo_loc(...)函数实现原理推测
+## geo_loc
 
 GAMMA geo_loc函数 源码解析
 
-## 源码
+### 源码
 
 ```C
 void geo_loc(double ra, double e2, double rho, double fd, double fc, double alt, int s_flag, VEC *s, VEC *v, double *lat, double *lon) {
@@ -99,8 +99,6 @@ void geo_loc(double ra, double e2, double rho, double fd, double fc, double alt,
 #endif
 }
 ```
-
-## 公式推算
 
 ### 几何关系
 
