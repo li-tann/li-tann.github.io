@@ -1,104 +1,10 @@
 ---
-title: 源码分析
+title: 理论学习
 ---
 
 ## geo_loc
 
-GAMMA geo_loc函数 源码解析
-
-### 源码
-
-```C
-void geo_loc(double ra, double e2, double rho, double fd, double fc, double alt, int s_flag, VEC *s, VEC *v, double *lat, double *lon) {
-  /*
-  	subroutine to calculate the lat/lon/altitude of the intersection of the
-  	radar look vector with the geoid for a specfied average terrain height.
-
-    ra ellipsoid semi-major axis
-    e2  ellipsoid square of eccentricity
-    rho slant range (m)
-    fd  Doppler frequency (Hz)
-    fc  radar carrier frequency (Hz)
-    alt nominal terrain altitude (m)
-    s_flag  flag to determine if right or left looking (left looking=1, right looking= -1)
-    s   position vector of the radar, (earth fixed coordinates)(m)
-    v   velocity vector of the radar (earth fixed coordinates)(m/s)
-    lat output latitude (decimal degrees)
-    lon output longitude(decimal degrees)
-
-  */
-  double a, b, c, r, r1, lam;
-  double s2, v2, t2, sv, det;
-  double lat1, lon1, alt1, c1, c2, c3;
-  double r_new;
-  VEC q, t;
-  int iter;
-
-  lam = C / fc;
-  s2 = dot(s, s);
-  v2 = dot(v, v);
-  sv = dot(v, s);
-  xyz_ll(ra, e2, s, &lat1, &lon1, &alt1);
-  r = sqrt(s2) - alt1;
-  cross(s, v, &t);
-  t2 = dot(&t, &t);
-
-#ifdef DEBUG_GEO
-  printf("T vector:        %13.6e %13.6e %13.6e\n", t.x, t.y, t.z);
-  printf("position vector: %13.6e %13.6e %13.6e\n", s->x, s->y, s->z);
-  printf("velocity vector: %13.6e %13.6e %13.6e\n", v->x, v->y, v->z);
-  printf("SAR lat,lon,alt: %12.5f %12.5f %12.3f\n", lat1, lon1, alt1);
-  printf("initial estimate of earth radius: %12.3f\n", r);
-#endif
-
-  iter = 0;
-  while (iter < 8 ) {
-    iter++;
-    a = (s2 + SQR(r + alt) - SQR(rho)) / 2.0;
-    b = (lam * rho * fd + 2.0 * sv) / 2.0;
-    c = SQR(r + alt);
-#ifdef DEBUG_GEO
-    printf("a,b,c: %13.6e %13.6e %13.6e\n", a, b, c);
-#endif
-
-    det = s2 * v2 - SQR(sv);
-
-    c1 = (a * v2 - b * sv) / det;
-    c2 = (b * s2 - a * sv) / det;
-    c3 = (double)s_flag * sqrt((c - SQR(c1) * s2 - SQR(c2) * v2 - 2.0 * c1 * c2 * sv) / t2);
-#ifdef DEBUG_GEO
-    printf("\niteration: %2d c1,c2,c3:        %13.6e %13.6e %13.6e\n", iter, c1, c2, c3);
-#endif
-
-    /*  radius vector to image point is q = c1*s + c2*v + c3*t */
-
-    q.x = c1 * s->x + c2 * v->x + c3 * t.x;
-    q.y = c1 * s->y + c2 * v->y + c3 * t.y;
-    q.z = c1 * s->z + c2 * v->z + c3 * t.z;
-#ifdef DEBUG_GEO
-    printf("iteration: %2d position vector: %13.6e %13.6e %13.6e\n", iter, q.x, q.y, q.z);
-#endif
-    xyz_ll(ra, e2, &q, &lat1, &lon1, &alt1);
-#ifdef DEBUG_GEO
-    printf("latitude:  %12.6f  longitude: %12.6f   altitude: %12.3f\n", lat1, lon1, alt1);
-#endif
-
-    r1 = norm(&q);  /* includes surface altitude of alt1, earth radius=r1-alt1 */
-    r_new = r1 - alt1;
-    if (fabs(r_new - r) < .001)break;
-    r = r_new;
-  }
-
-  *lat = lat1;  /* return solution */
-  *lon = lon1;
-
-#ifdef DEBUG_GEO
-  printf("re*s:  %13.6e\n", dot(&q, s));
-  printf("re*v:  %13.6e\n", dot(&q, v));
-  printf("re*re: %13.6e\n", dot(&q, &q));
-#endif
-}
-```
+通过指定的斜距 $rho$和轨道位置矢量 $s$, $v$计算出其对应的大地坐标 $lat$, $lon$
 
 ### 几何关系
 
@@ -194,3 +100,68 @@ q \ne c_1 \cdot s + c_2 \cdot v + c_3 \cdot t
 $$
 
 通过上式得到的向量 $\hat q_{k+1}$的模长介于 $\lvert \hat q_k\rvert$和 $\lvert q\rvert$之间，满足迭代收敛条件。
+
+### 代码学习
+
+```C
+/// @brief: subroutine to calculate the lat/lon/altitude of the intersection of the radar look vector with the geoid for a specfied average terrain height.
+/// @param ra: ellipsoid semi-major axis
+/// @param e2: ellipsoid square of eccentricity
+/// @param rho: slant range (m)
+/// @param fd: Doppler frequency (Hz)
+/// @param fc: radar carrier frequency (Hz)
+/// @param alt: nominal terrain altitude (m)
+/// @param s_flag: flag to determine if right or left looking (left looking=1, right looking= -1)
+/// @param s: position vector of the radar, (earth fixed coordinates)(m)
+/// @param v: velocity vector of the radar (earth fixed coordinates)(m/s)
+/// @param lat: output latitude (decimal degrees)
+/// @param lon: output longitude(decimal degrees)
+void geo_loc(double ra, double e2, double rho, double fd, double fc, double alt, int s_flag, VEC *s, VEC *v, double *lat, double *lon) {
+
+  double a, b, c, r, r1, lam;
+  double s2, v2, t2, sv, det;
+  double lat1, lon1, alt1, c1, c2, c3;
+  double r_new;
+  VEC q, t;
+  int iter;
+
+  lam = C / fc;
+  s2 = dot(s, s);
+  v2 = dot(v, v);
+  sv = dot(v, s);
+  xyz_ll(ra, e2, s, &lat1, &lon1, &alt1);
+  r = sqrt(s2) - alt1;
+  cross(s, v, &t);
+  t2 = dot(&t, &t);
+
+  iter = 0;
+  while (iter < 8 ) {
+    iter++;
+    a = (s2 + SQR(r + alt) - SQR(rho)) / 2.0;
+    b = (lam * rho * fd + 2.0 * sv) / 2.0;
+    c = SQR(r + alt);
+
+    det = s2 * v2 - SQR(sv);
+
+    c1 = (a * v2 - b * sv) / det;
+    c2 = (b * s2 - a * sv) / det;
+    c3 = (double)s_flag * sqrt((c - SQR(c1) * s2 - SQR(c2) * v2 - 2.0 * c1 * c2 * sv) / t2);
+
+    /*  radius vector to image point is q = c1*s + c2*v + c3*t */
+
+    q.x = c1 * s->x + c2 * v->x + c3 * t.x;
+    q.y = c1 * s->y + c2 * v->y + c3 * t.y;
+    q.z = c1 * s->z + c2 * v->z + c3 * t.z;
+
+    xyz_ll(ra, e2, &q, &lat1, &lon1, &alt1);
+
+    r1 = norm(&q);  /* includes surface altitude of alt1, earth radius=r1-alt1 */
+    r_new = r1 - alt1;
+    if (fabs(r_new - r) < .001)break;
+    r = r_new;
+  }
+
+  *lat = lat1;  /* return solution */
+  *lon = lon1;
+}
+```
