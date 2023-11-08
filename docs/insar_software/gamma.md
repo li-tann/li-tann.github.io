@@ -1,5 +1,5 @@
 ---
-title: 学习笔记
+title: GAMMA
 sidebar_position: 0
 ---
 
@@ -62,7 +62,7 @@ par_EORC_PALSAR <CEOS_leader> <SLC_par> <CEOS_data> [SLC]
 # [SLC] 转换后的数据文件, 通常设置为"date.slc"
 ```
 
-### InSAR基本操作(配准>>>干涉)
+### 配准>>>干涉
 
 准备好一组干涉数据, 如master.slc, master.slc.par, slave.slc, slave.slc.par
 
@@ -110,3 +110,19 @@ offset_fit指令说明
 通过`grep poly mas-sla.off`可以快速查看配准偏移量的多项式系数
 
 #### 辅影像重采样
+
+#### 主辅影像干涉
+
+(干涉完记着多视)
+
+### 生成DSM
+
+去平地、滤波、解缠、相高转换等
+
+### 地理编码
+
+create_dem_par, replace_values, interp_ad, gc_map, geocode, create_diff_par, init_offsetm, offset_pwrm, offset_fitm, gc_map_fine, geocode_back等等
+
+### 差分干涉
+
+介绍去除地形相位后解缠以及 解缠后再去除地形相位等方法

@@ -1,4 +1,7 @@
-# ISCE2学习与使用
+---
+title: ISCE2
+sidebar_position: 1
+---
 
 ## WSL安装ISCE2
 
