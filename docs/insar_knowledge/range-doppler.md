@@ -313,7 +313,7 @@ $$
 c_1 = &\frac{\lvert \hat{q}\rvert cos(\angle \hat{q}os)}{\lvert s \rvert} \\
 c_2 = &\frac{\lvert q\rvert cos(\angle qov)}{\lvert v \rvert} \\
 c_3 =& \pm \frac{\sqrt{\hat{q}^2 - \lvert \hat{q} \rvert^2 cos^2(\angle \hat{q}os)-\lvert q \rvert^2 cos^2(\angle qov)}}{\lvert t \rvert} \\
-    \approx& \pm \frac{\lvert \hat{q}\rvert cos(\angle \hat{q}ot)}{\lvert t\rvert} \\ 
+    \approx& \pm \frac{\lvert \hat{q}\rvert cos(\angle \hat{q}ot)}{\lvert t\rvert} \\
 \end{aligned}
 $$
 
@@ -333,17 +333,17 @@ $$
 
 在地面点坐标和其他卫星参数已知的情况下, 方位向多普勒方程仅卫星位置矢量为未知条件, 且卫星位置矢量又是方位向时间的变量, 所以满足基本解算条件。
 
-设卫星位置矢量的初始值为 $R_{S0}$（通过初始时间$t_0$计算得到）, 满足多普勒频移公式的真实卫星位置矢量为 $\^{R_S}$, 初始值与真值的相对位置关系为
+设卫星位置矢量的初始值为 $R_{S0}$（通过初始时间$t_0$计算得到）, 满足多普勒频移公式的真实卫星位置矢量为 $\hat{R_S}$, 初始值与真值的相对位置关系为
 
 $$
-\^{R_S} = R_{S0} + R_{\Delta}
+\hat{R_S} = R_{S0} + R_{\Delta}
 $$
 
 三组位置矢量的相对位置关系如图所示，
 
 ![位置矢量相对关系](./pics/get_time_iter.png)
 
-因为位置矢量真值$\^{R_S}$与地面点坐标之间多普勒频移公式，所以将真值代入公式并简单整理后可得
+因为位置矢量真值$\hat{R_S}$与地面点坐标之间多普勒频移公式，所以将真值代入公式并简单整理后可得
 
 $$
 \frac{f_d \lambda}{2}\lvert R_{S}-R_T\rvert = (R_{S}-R_T)V_S
@@ -365,7 +365,7 @@ $$
 \end{aligned}
 $$
 
-由 $\^{R_S}$、 $R_{S0}$和 $R_{\Delta}$的几何关系图可知 $\lvert R_{\Delta}\rvert = \Delta_t \lvert V_S\rvert$, 代入公式可得，
+由 $\hat{R_S}$、 $R_{S0}$和 $R_{\Delta}$的几何关系图可知 $\lvert R_{\Delta}\rvert = \Delta_t \lvert V_S\rvert$, 代入公式可得，
 
 $$
 \Delta_t = \frac{\frac{1}{2}f_d \lambda\lvert R_{S0}-R_T\rvert - (R_{S0}-R_T)V_S}{{\lvert V_S\rvert}^2}
