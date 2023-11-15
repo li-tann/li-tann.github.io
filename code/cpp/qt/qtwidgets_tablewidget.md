@@ -10,7 +10,7 @@ QTableWidget可以**存放QWidget**，以**颜色表展示**窗口为例。
 
 代码如下：
 
-```C++
+```cpp
 /// 展示界面的构造函数
 ///“colortable_display_wgt::colortable_display_wgt(QWidget *parent) : QWidget(parent)”中
 ///(考虑到之后可能是一个子模块，所以没有用QDialog, 而是QWidget)
@@ -68,7 +68,7 @@ QTableWidget 的设置大部分和cell相关，而关于表格属性值的设置
 
 ### Code
 
-```C++
+```cpp
 QTimer timer;
 bool is_clicked;
 

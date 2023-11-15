@@ -27,7 +27,7 @@ Very fast, header-only/compiled, C++ logging library.
 
 ### Create basic logger
 
-```c++
+```cpp
 #include "spdlog/sinks/basic_file_sink.h"
 void basic_logfile_example()
 {
@@ -42,7 +42,7 @@ void basic_logfile_example()
 
 ### Create rotating logger
 
-```c++
+```cpp
 #include "spdlog/sinks/rotating_file_sink.h"
 void rotating_example()
 {
@@ -55,7 +55,7 @@ void rotating_example()
 
 ### Create daily logger
 
-```c++
+```cpp
 #include "spdlog/sinks/daily_file_sink.h"
 void daily_example()
 {
@@ -74,7 +74,7 @@ spdlog使用了fmt库, 可以使用与python类似的格式打印文本信息。
 
 ### 控制台打印日志信息
 
-```c++
+```cpp
 #include "spdlog/spdlog.h"
 
 int main() 
@@ -105,7 +105,7 @@ spdlog中打印的信息登记被分为`info`, `warn`, `error`, 和`critical`四
 
 ### 创建日志文件
 
-```c++
+```cpp
 #include <iostream>
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/basic_file_sink.h" // support for basic file logging

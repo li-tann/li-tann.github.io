@@ -26,7 +26,7 @@
 
 ### 懒汉版
 
-```C++
+```cpp
 //Singleton.h
 #pragma once
 

@@ -32,7 +32,7 @@ gdal也使用了sqlite3库。
 
 在GUI程序中，每次程序启动前需要查询数据库，读取所有的NAME字段并填写到comboBox中。它的回调函数为：
 
-```c++
+```cpp
 int MainWindow::callback_widget_init(void *data, int argc, char **argv, char **azColName)
 {
     Q_UNUSED(data);
@@ -59,7 +59,7 @@ int MainWindow::callback_widget_init(void *data, int argc, char **argv, char **a
 解决方法：
 在类中声明一个该类的静态类，在cpp中对该类定义（nullptr即可）。
 
-```c++
+```cpp
 /// myClass.h
 class myClass
 {
@@ -72,7 +72,7 @@ class myClass
 }
 ```
 
-```c++
+```cpp
 /// myClass.cpp
 myClass myClass::static_myClass = nullptr; //很重要
 int myClass::callback(void *data, int argc, char **argv, char **azColName)

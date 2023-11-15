@@ -32,7 +32,7 @@ E:\DevTools\MATLAB\R2010b\bin\win64;
 
 ### mat读取代码
 
-```C++
+```cpp
 MATFile *pmatFile = NULL;
 mxArray *pMxArray = NULL;
 const char **dir;//元素名列表

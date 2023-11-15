@@ -12,7 +12,7 @@ Qt提供的QCryptographicHash类，有但不仅限于字符串转换为md5码的
 
 函数使用非常简单：
 
-```C++
+```cpp
 QString strToMd5(QString str)
 {
     QByteArray qba = QCryptographicHash::hash(str.toLatin1(), QCryptographicHash::Md5);

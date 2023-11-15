@@ -16,7 +16,7 @@ tags: [gdal, gdal_translate]
 
 伪代码：
 
-```c++
+```cpp
 GDALDataset* p_ds = static_cast<GDALDataset*>(GDALOpen("",GA_Update));
 int bands = p_ds->GetRasterCount();
 for(int b = 1; b<bands; b++)

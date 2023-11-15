@@ -8,7 +8,7 @@ sidebar_position: 2
 
 ## ofstream
 
-```C++
+```cpp
 #include<fstream>
 ofstream temp(Filepath.txt);
 temp<<………;
@@ -17,7 +17,7 @@ temp.close();
 
 ### 精度设置
 
-```C++
+```cpp
 std::ofstream(const char* filepath);
 // 不适用科学计数法表示
 ofs<<std::fixed 
@@ -37,7 +37,7 @@ ofs.close();
 
 ### 占位符 & 输出位置
 
-```C++
+```cpp
 ofs<<std::right;
     ofs<<std::setw(4)<<1<<std::setw(4)<<10<<std::setw(4)<<100<<std::endl;
     ofs.close();
@@ -48,7 +48,7 @@ ofs<<std::right;
 
 ## ifstream
 
-```c++
+```cpp
 ifstream ifs;
 ifs.open(txtsrc);
 if (!ifs.is_open()){
@@ -68,7 +68,7 @@ ifs.close();
 
 场景：2022.3.17 其他软件无法正常显示.dat
 
-```C++
+```cpp
 std::ifstream ifs("filepath",ifsteam::binary);
 if(!ifs.is_open()){
     return false;
@@ -104,7 +104,7 @@ ios_base::seekDir:
 
 c++17, 类似于QFileInfo
 
-```C++
+```cpp
 #include <filesystem>
 namespace fs = std::filesystem;
 std::string root_path;
@@ -131,7 +131,7 @@ for (auto& iter : recursive_directory_iterator(root_path)){
 
 ### 计时功能
 
-```c++
+```cpp
 auto start = std::chrono::system_clock::now();
 func();/// 一个费时的函数
 auto end = std::chrono::system_clock::now();
@@ -178,7 +178,7 @@ put_time的链接中包含了支持的各种格式说明，同样适用于get_ti
 
 示例：
 
-```c++
+```cpp
 std::tm t = {};
 std::istringstream ss("2011-Februar-18 23:12:34");
 ss.imbue(std::locale("de_DE.utf-8"));
@@ -192,7 +192,7 @@ else
 
 copy from CMake Cookbook 3.7章节
 
-```c++
+```cpp
 // copy from CMake Cookbook 3.7章节
 std::chrono::time_point<std::chrono::system_clock> start, end;
 std::chrono::duration<double> elapsed_seconds;
@@ -221,7 +221,7 @@ std::cout <<"matrices allocated and initialized"
 
 通过调用cmd，执行`pip list`命令，该命令是查看pip包管理工具中已安装的依赖库
 
-```C++
+```cpp
 char buffer[1024];
 const char* szCmd = "pip";
 FILE* pipe = _popen(szCmd, "r");
@@ -244,7 +244,7 @@ if (pipe != nullptr) {
 
 适用于调用普通的函数
 
-```c++
+```cpp
 bool fun1(int){
     ///...
 }
@@ -264,7 +264,7 @@ bool b = funs_["fun1"](10);
 
 可以调用类里的函数
 
-```c++
+```cpp
 /// .h
 class Cs
 {
@@ -295,7 +295,7 @@ void Cs::work(std::string func_name, const std::string& func_par)
 
 应用场景, 读取json文件时, 不同的对象可能是不同的类型, 如果每次读取对象都要写几行代码, 不省时省力, 还很难拓展, 使用map+lambda函数解决该问题。
 
-```c++
+```cpp
 /// .h
 enum class para_type{string, number};
 /// tuple<bool, std::string> bool记录函数的处理结果, string记录错误(或成功)信息
@@ -357,7 +357,7 @@ windows, linux控制台打印彩色文字
 
 输出颜色表的代码
 
-```c++
+```cpp
 #include <windows.h>
 #include <iostream>
 
@@ -376,7 +376,7 @@ for(int i=0; i<16; i++){
 
 windows.h与glog冲突，需要进行设置：
 
-```c++
+```cpp
 #define GLOG_NO_ABBREVIATED_SEVERITIES
 #include <windows.h>
 #include <glog/logging.h>
@@ -386,7 +386,7 @@ windows.h与glog冲突，需要进行设置：
 
 linux中就简单很多，不需要添加库，iostream即可
 
-```c++
+```cpp
 std::cout<<"\033[42m[INFO]\033[0m:"<<"this is a info information"<<std::endl;
 std::cout<<"\033[43m[WARNING]\033[0m:"<<"this is a warnding information"<<std::endl;
 std::cout<<"\033[41m[ERROR]\033[0m:"<<"this is a error information"<<std::endl;

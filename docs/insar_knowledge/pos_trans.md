@@ -10,7 +10,7 @@
 
 ### 代码实现
 
-```c++
+```cpp
 /// class llh{
 ///   double longitude, latitude, height; 
 ///   xyz to_xyz(); // 转换到空间直角坐标系
@@ -241,7 +241,7 @@ $$
 
 ### 代码实现
 
-```c++
+```cpp
 double parameter_sar::get_state_t_iter(xyz target_point, bool& iter_succeed)
 {
     int iter = 0;

@@ -22,7 +22,7 @@ QString的转码功能介绍
 
 通过查询资料可知，QString是使用Unicode编码格式存储信息的，所以，手写输入的中文数据可以先写入到QString中，再根据需要转换为gb2312或者是utf-8。
 
-```C++
+```cpp
 QString test = "中文";
 printf(%s\n",test.toLocal8Bit().data());
 LOG(INFO)<<test.toUtf8().data()<<"\n";

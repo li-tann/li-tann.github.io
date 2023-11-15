@@ -49,7 +49,7 @@ The least-squares solution is:
 
  **HouseholderQR** (no pivoting, fast but unstable if your matrix is not rull rank), **ColPivHouseholderQR** (column pivoting, thus a bit slower but more stable) and **FullPivHouseholderQR** (full pivoting, so slowest and slightly more stable than ColPivHouseholderQR).
 
-```C++
+```Cpp
 MatrixXf A = MatrixXf::Random(3, 2);
 VectorXf b = VectorXf::Random(3);
 cout << "The solution using the QR decomposition is:\n"
@@ -66,7 +66,7 @@ $$
 \end{aligned}
 $$
 
-```C++
+```Cpp
 MatrixXf A = MatrixXf::Random(3, 2);
 VectorXf b = VectorXf::Random(3);
 cout << "The solution using normal equations is:\n"
@@ -81,7 +81,7 @@ Eigen与Matlab命令对比
 
 // Main author: Keir Mierle
 
-``` C++
+``` Cpp
 #include <Eigen/Dense>
 
 Matrix<double, 3, 3> A;               // Fixed rows and cols. Same as Matrix3d.
@@ -99,7 +99,7 @@ double s;
 
 ### 矩阵/向量的尺寸、值
 
-```C++
+```Cpp
 // Eigen          // Matlab           // comments
 x.size()          // length(x)        // vector size
 C.rows()          // size(C,1)        // number of rows
@@ -110,7 +110,7 @@ C(i,j)            // C(i+1,j+1)       //
 
 ### 矩阵重定义大小
 
-```C++
+```Cpp
 A.resize(4, 4);   // Runtime error if assertions are on.
 B.resize(4, 9);   // Runtime error if assertions are on.
 A.resize(3, 3);   // Ok; size didn't change.
@@ -119,7 +119,7 @@ B.resize(3, 9);   // Ok; only dynamic cols changed.
 
 ### 矩阵填充
 
-```C++
+```Cpp
 A << 1, 2, 3,     // Initialize A. The elements can also be
      4, 5, 6,     // matrices, which are stacked along cols
      7, 8, 9;     // and then the rows are stacked.
@@ -129,7 +129,7 @@ A.fill(10);       // Fill A with all 10's.
 
 ### 特殊矩阵构建
 
-```C++
+```Cpp
 // Eigen                                    // Matlab
 //单位矩阵
 MatrixXd::Identity(rows,cols)               // eye(rows,cols)
@@ -147,7 +147,7 @@ C.setRandom(rows,cols)                      // C = rand(rows,cols)*2-1
 
 ### 向量的等距分布
 
-```C++
+```Cpp
 VectorXd::LinSpaced(size,low,high)          // linspace(low,high,size)'
 v.setLinSpaced(size,low,high)               // v = linspace(low,high,size)'
 VectorXi::LinSpaced(((hi-low)/step)+1,      // low:step:hi
@@ -155,7 +155,7 @@ VectorXi::LinSpaced(((hi-low)/step)+1,      // low:step:hi
 
 ```
 
-```c++
+```cpp
 // Matrix slicing and blocks. All expressions listed here are read/write.\
 // Templated size versions are faster. Note that Matlab is 1-based (a size N\
 // vector is x(1)...x(N)).\
@@ -170,7 +170,7 @@ VectorXi::LinSpaced(((hi-low)/step)+1,      // low:step:hi
 
 ### 矩阵/向量的区域选取（块）
 
-```C++
+```Cpp
 Matrix3f P;    
 Vector3f x;
 // Eigen                           // Matlab
@@ -206,7 +206,7 @@ P.bottomLeftCorner<rows,cols>()    // P(end-rows+1:end, 1:cols)
 P.bottomRightCorner<rows,cols>()   // P(end-rows+1:end, end-cols+1:end)
 ```
 
-```c++
+```cpp
 
 // Of particular note is Eigen's swap function which is highly optimized.
 // Eigen                           // Matlab
@@ -224,7 +224,7 @@ R.col(j1).swap(mat1.col(j2));      // R(:, [j1 j2]) = R(:, [j2, j1])
 
 ### 矩阵的转置、共轭等
 
-```C++
+```Cpp
 // Eigen                           // Matlab
 R.adjoint()                        // R'
 R.transpose()                      // R.' or conj(R')       // Read-write
@@ -238,7 +238,7 @@ R.replicate(i,j)                   // repmat(P,i,j)
 
 ### 矩阵运算
 
-```C++
+```Cpp
 // All the same as Matlab, but matlab doesn't have *= style operators.
 // Matrix-vector.  Matrix-matrix.   Matrix-scalar.
 y  = M*x;          R  = P*Q;        R  = P*s;
@@ -286,7 +286,7 @@ R = P.unaryExpr(ptr_fun(func)) // R = arrayfun(func, P)   // with: scalar func(c
 
 ### 矩阵的数值操作
 
-```C++
+```Cpp
 // Reductions.
 int r, c;
 // Eigen                  // Matlab
@@ -311,7 +311,7 @@ R.rowwise().any()         // any(R, 2)
 
 ### 点积、范数等
 
-```C++
+```Cpp
 // Dot products, norms, etc.
 // Eigen                  // Matlab
 x.norm()                  // norm(x).    Note that norm(R) doesn't work in Eigen.
@@ -322,7 +322,7 @@ x.cross(y)                // cross(x, y) Requires #include <Eigen/Geometry>
 
 ### 格式转换
 
-```C++
+```Cpp
 //// Type conversion
 // Eigen                  // Matlab
 A.cast<double>();         // double(A)
@@ -333,7 +333,7 @@ A.imag();                 // imag(A)
 // if the original type equals destination type, no work is done
 ```
 
-```C++
+```Cpp
 // Note that for most operations Eigen requires all operands to have the same type:
 MatrixXf F = MatrixXf::Zero(3,3);
 A += F;                // illegal in Eigen. In Matlab A = A+F is allowed
@@ -342,7 +342,7 @@ A += F.cast<double>(); // F converted to double and then added (generally, conve
 
 ### 数组与Eigen矩阵的关联
 
-```C++
+```Cpp
 // Eigen can map existing memory into Eigen matrices.
 float array[3];
 Vector3f::Map(array).fill(10);            // create a temporary Map over array and sets entries to 10
@@ -352,7 +352,7 @@ Matrix2i::Map(data) = 2*mat2x2;           // overwrite elements of data with 2*m
 MatrixXi::Map(data, 2, 2) += mat2x2;      // adds mat2x2 to elements of data (alternative syntax if size is not know at compile time)
 ```
 
-```C++
+```Cpp
 // Solve Ax = b. Result stored in x. Matlab: x = A \ b.
 x = A.ldlt().solve(b));  // A sym. p.s.d.    #include <Eigen/Cholesky>
 x = A.llt() .solve(b));  // A sym. p.d.      #include <Eigen/Cholesky>
@@ -368,7 +368,7 @@ x = A.svd() .solve(b));  // Stable, slowest. #include <Eigen/SVD>
 
 ### 特征值问题
 
-```C++
+```Cpp
 // Eigenvalue problems
 // Eigen                          // Matlab
 A.eigenvalues();                  // eig(A);

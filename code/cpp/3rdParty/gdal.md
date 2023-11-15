@@ -26,7 +26,7 @@ graph TD;
 
 ### Create, Read, Write
 
-```c++
+```cpp
 
 使用GDALOpen()读取影像信息存储至GDALDataset，有GA_ReadOnly和GA_Update两种方式，顾名思义。
 
@@ -34,7 +34,7 @@ graph TD;
 
 创建影像需要
 
-```c++
+```cpp
 int image_read(const char* imgpath)
 {
     /// 加载所有注册器
@@ -112,7 +112,7 @@ GDAL的数据读取是使用GDALOpen等函数读写数据时，都需要输入�
 
 使用gdal自带的gdalwarp对数据进行开窗、重采样处理，由于代码只支持整景影像的重采样，所以需要使用RasterIO(..)提取出窗口数据，保存在内存中，再传入gdalWarp进行重采样处理。
 
-```C++
+```cpp
 //代码回头在写...
 GDALDataset* pSrcDS = (GDALDataset*)GDALOpen(pszSrcFile,GA_ReadOnly);
 if(pSrcDS == nullptr){
@@ -130,7 +130,7 @@ sprintf_s(c_src_mem_path, 256, "MEM:::DATAPOINTER=%d,PIXELS=%d,LINES=%d,BANDS=%d
 
 核心是MEM数据的写法，如下所示：
 
-```c++
+```cpp
 sprintf_s(c_src_mem_path, 256, "MEM:::DATAPOINTER=%d,PIXELS=%d,LINES=%d,BANDS=%d,DATATYPE=%s", arr, iSrcWidth, iSrcHeight, iBandCount, GDALGetDataTypeName(eDT));
 ```
 
@@ -140,7 +140,7 @@ sprintf_s(c_src_mem_path, 256, "MEM:::DATAPOINTER=%d,PIXELS=%d,LINES=%d,BANDS=%d
 
 参考网址：[4326坐标系统字符串格式](https://spatialreference.org/ref/epsg/4326/html/)
 
-```C++
+```cpp
 /// 此处为了整齐 切了很多行, 实际使用时会报错，需要将所有字符修改到同一行中。
 const char* projection = "GEOGCS[\"WGS 84\",
     DATUM[\"WGS_1984\",
@@ -170,7 +170,7 @@ gdal的进度条都是通过回调函数使用的。
 
 首先写进度值返回函数：
 
-```C++
+```cpp
 int gdalprocess_tmp(double dfComplete,char * pszMessage,void * pProgressArg)
 {
     int prog = static_cast<int>(dfComplete * 10);
@@ -190,7 +190,7 @@ int gdalprocess_tmp(double dfComplete,char * pszMessage,void * pProgressArg)
 
 main：
 
-```c++
+```cpp
 #include <gdal/gdal_priv.h>
 #include <gdal/gdal.h>
 

@@ -16,7 +16,7 @@ view和scene的坐标系统也是不完全相同的，view的坐标系统与其�
 
 实现鼠标追踪, 需要写一个自己的scene（继承）
 
-```c++
+```cpp
 /// my_scene.h
 #ifndef MY_SCENE
 #define MY_SCENE
@@ -42,7 +42,7 @@ protected:
 #endif // !MY_SCENE
 ```
 
-```c++
+```cpp
 /// my_scene.cpp
 #include "my_scene.h"
 #include <qevent.h>
@@ -80,7 +80,7 @@ void nodeeditor_scene::keyPressEvent(QKeyEvent* event) {
 
 创建好自定义的scene后，在widget中添加scene等控件
 
-```c++
+```cpp
 /// mainwindow.h
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
@@ -110,7 +110,7 @@ public:
 #endif // !MAINWINDOW_H
 ```
 
-```c++
+```cpp
 #include "mainwindow.h"
 
 #include <qfiledialog.h>
@@ -164,7 +164,7 @@ mainwindow::~mainwindow()
 
 最后在主函数中启动mainwindow, 即可。
 
-```c++
+```cpp
 /// main.cpp
 #include <qapplication.h>
 #include "mainwindows.h"
@@ -201,7 +201,7 @@ QPen负责描绘外侧轮廓，QBrush负责填充item内部颜色，collding用�
 
 由于QGraphicsItem并非继承自QObject, 如果想要使自定义的Item带有信号槽功能，可以通过多重继承的方式正常使用信号槽功能。
 
-```c++
+```cpp
 class my_item : public QObject, public QGraphicsItem
 {
     Q_OBJECT

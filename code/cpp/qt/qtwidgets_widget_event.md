@@ -12,7 +12,7 @@ paintEvent(QPaintEvent *event) 主要用于图形的绘制，当设置布局（l
 
 创建一个“plus”版的widget控件，重载paintEvent事件，不关注`mousePressEvent`
 
-```C++
+```cpp
 //// .h
 class widget_plus1 : public QWidget
 {
@@ -35,7 +35,7 @@ signals:
 
 函数的定义：
 
-```C++
+```cpp
 /// .cpp 
 widget_plus1::widget_plus1(QWidget *parent):QWidget(parent){}
 
@@ -109,7 +109,7 @@ This event handler is called when the drag is dropped on this widget. The event 
 
 基本思想是将image填充到widget的窗口中，代码为：
 
-```C++
+```cpp
 QPainter painter;
 QImage image = QImage(....);
 QRectF target = QRectF(0, 0, this->width(), this->height());
@@ -123,7 +123,7 @@ source的确定：
 
 由于影像与窗口的长宽比例不同，直接将整景影像打印到窗口中会出现横向或纵向的拉伸效果。**错误**代码如下：
 
-```C++
+```cpp
 QPainter painter;
 QImage image = QImage(....);
 QRectF target = QRectF(0, 0, this->width(), this->height());
@@ -141,7 +141,7 @@ painter.drawImage(target, image, source);
 若影像高宽比小于窗口高宽比，说明影像比例横向更长；需要以影像的宽为基准，计算影像需要显示在窗口的高度，如下图所示：
 ![影像高宽比小于窗口高宽比](./pics/image_h_w_rate_less_than_widget_h_w_rate.png)
 
-```C++
+```cpp
 double image_h_w_rate = image.height() / image.width();
 double widget_h_w_rate = this->height() / this->width();
 QSizeF source_size;
@@ -163,7 +163,7 @@ painter.drawImage(target, image, source);
 
 此处使用的image.size是经过上一步改变比例后的image，比例与widget相同。
 
-```c++
+```cpp
 QSizeF source_size;
 double rate_image_divide_widget;
 if(image_h_w_rate > widget_h_w_rate)
@@ -183,7 +183,7 @@ if(image_h_w_rate > widget_h_w_rate)
 
 同理，如果影像高宽比小于窗口高宽比，需要将影像显示范围向上移动：窗口高度换算为影像尺寸的高度后，与影像高度相减除以2的距离，即为将影像在中心显示时，影像显示区域起点的坐标。代码如下：
 
-```C++
+```cpp
 if(image_h_w_rate > widget_h_w_rate)
     source = QRectF(QPointF(-(this->width() * rate_image_divide_widget - image.width())/2,0),source_size);
 else
@@ -192,7 +192,7 @@ else
 
 综上，影像以正常比例，居中显示在窗口的代码为：
 
-```c++
+```cpp
 QPainter painter;
 QImage image = QImage(....);
 QRectF target = QRectF(0, 0, this->width(), this->height());
@@ -234,7 +234,7 @@ painter.drawImage(target, image, source);
 
 代码如下：
 
-```C++
+```cpp
 QPointF cursor_widget = this->mapFromGlobal(cursor().pos());
 QPointF cursor_image  = source.topLeft() + cursor_widget * rate_image_divide_widget;
 QPointF source_topLeft_new = cursor_image - cursor_widget * rate_image_divide_widget_new;
@@ -244,7 +244,7 @@ rate_image_divide_widget = rate_image_divide_widget_new;
 
 当缩放系数改变时，同样需要修改影像的显示尺寸`source_size`
 
-```c++
+```cpp
 if(image_h_w_rate > widget_h_w_rate){
     source_size = QSizeF(image.height() / widget_h_w_rate * rate_wheel,image.height() * rate_wheel);
     rate_image_divide_widget_new = image.height() * rate_wheel / target.height();
@@ -256,7 +256,7 @@ if(image_h_w_rate > widget_h_w_rate){
 
 综上，支持影像正常成像和缩放的代码如下所示：
 
-```c++
+```cpp
 QPainter painter(this);
 
 if(image_h_w_rate > widget_h_w_rate){

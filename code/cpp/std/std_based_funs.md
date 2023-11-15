@@ -48,7 +48,7 @@ bool slcRead(const char *src,float *fReal, float *fImag)
 
 ## 根据指定标识符分割字符串
 
-```C++
+```cpp
 void strSplit_ver2(std::string input, std::vector<std::string>& output, std::string split, bool clearVector = true)
 {
     if(clearVector)
@@ -72,7 +72,7 @@ void strSplit_ver2(std::string input, std::vector<std::string>& output, std::str
 
 ## $2^n$检测方法
 
-```C++
+```cpp
 bool check_2n(uint x)
 {
     if(x == 0)
@@ -98,7 +98,7 @@ $$
 
 动态数组:
 
-```C++
+```cpp
 size_t x = 20;
 double * arr = new double [x];
 std::cout<<_msize(arr)/sizeof(*arr)<<std::endl;
@@ -107,7 +107,7 @@ std::cout<<_msize(arr)/sizeof(*arr)<<std::endl;
 
 静态数组:
 
-```C++
+```cpp
 double arr[15];
 std::cout<<sizeof(arr)/sizeof(*arr)<<std::endl;
 // cmd: 15

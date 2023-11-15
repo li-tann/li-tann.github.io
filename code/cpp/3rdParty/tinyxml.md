@@ -16,7 +16,7 @@ tinyxml2好像优化了代码以减少异常情况?
 
 ### 首先设置根目录
 
-```C++
+```cpp
 TiXmlDocument doc(path);
 //  path 为const char*类的路径
 bool loadOK = doc.LoadFile();
@@ -30,7 +30,7 @@ TiXmlElement* Root = doc.RootElement();
 
 ### 按名称查找
 
-```C++
+```cpp
 FirstChildElement()或FirstChildElement("…")
 //不加名称时是子集中第一个元素
 //加名称时是在子集中按名称查找相应元素
@@ -69,7 +69,7 @@ xml
 
 代码：
 
-```c++
+```cpp
 tinyxml2::XMLDocument doc;
  
 //1.添加声明
@@ -107,7 +107,7 @@ doc.SaveFile(“school.xml”);
 
 与tinyxml相似。
 
-```c++
+```cpp
 tinyxml2::XMLDocument doc;
  
 //1.加载xml文件

@@ -6,13 +6,13 @@ QFileSystemWatcher是Qt自带的一个文件夹监控类，可以检测某一文
 
 ## .pro
 
-```C++
+```qmake
 QT += core
 ```
 
 ## .h
 
-```C++
+```cpp
 #include <QFileSystemWatcher>
 
 class xxx
@@ -24,7 +24,7 @@ class xxx
 
 ## .cpp
 
-```C++
+```cpp
     //点击监控按钮，添加路径到fsWatcher中，或点击解除按钮，解除路径监控
 connect(ui->pushButton_watcher,&QPushButton::clicked,this,[=](){
     if(ui->pushButton_watcher->text() == "监控"){

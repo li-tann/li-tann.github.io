@@ -10,7 +10,7 @@
 
 ### code
 
-```c++
+```cpp
 int gdt_float32_img_convert_to_gdt_byte(const char* src_imgpath, const char* dst_imgpath,size_t histgram_size, double stretch_rate)
 {
     auto start = std::chrono::system_clock::now();

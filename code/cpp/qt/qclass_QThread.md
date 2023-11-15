@@ -6,7 +6,7 @@ QT 多线程类的应用
 
 以QThread为基类创建一个专门用于多线程的类。
 
-```C++
+```cpp
 class thread_work : public QThread
 {
     Q_OBJECT

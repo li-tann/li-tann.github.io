@@ -14,7 +14,7 @@ Object, Array, String, Number, Bool
 
 code:
 
-```c++
+```cpp
 nlohmann::json j;
 j["part1"]["section1_string"] = "this is string";
 j["part1"]["section2_number"] = 3.1415926;
@@ -58,7 +58,7 @@ ofs.close();
 
 以上面的json文件为例，读取该文件
 
-```c++
+```cpp
 std::ifstream ifs("path.json");
     if (!ifs.is_open()) {
         return false;
@@ -75,14 +75,14 @@ std::ifstream ifs("path.json");
 
 .h
 
-```c++
+```cpp
 void print_json(nlohmann::ordered_json json);
 void json_to_item(nlohmann::ordered_json& json, std::string json_key, QTreeWidgetItem* item);
 ```
 
 .cpp
 
-```c++
+```cpp
 void QTreeWidget_Json::print_json(nlohmann::ordered_json json)
 {
     for (nlohmann::ordered_json::iterator iter = json.begin();
