@@ -6,7 +6,7 @@
 
 ## 栅格数据处理
 
-### 基础数据类型
+### 栅格基础数据类型
 
 ```mermaid
 graph TD;
@@ -26,13 +26,7 @@ graph TD;
 
 ### Create, Read, Write
 
-```cpp
-
 使用GDALOpen()读取影像信息存储至GDALDataset，有GA_ReadOnly和GA_Update两种方式，顾名思义。
-
-从
-
-创建影像需要
 
 ```cpp
 int image_read(const char* imgpath)
@@ -216,3 +210,114 @@ int main(int argc, char *argv[])
 结果如图所示
 
 ![cmd效果展示](pics/gdal_progress.png)
+
+## 矢量数据处理
+
+### 矢量基础数据类型
+
+```mermaid
+graph TD;
+    driver[GDALDriver] --> ds[GDALDataset]
+    ds --> layer[OGRLayer]
+    layer --> feature[OGRFeature]
+    layer --> getExtent
+    layer --> spatialFilter
+    layer --> attributeFilter
+    layer --> topological
+    feature --> geometry[OGRGeometry]
+    geometry --> getExtent
+    geometry --> topological
+```
+
+了解较少，后续学习过程中会逐渐完善
+
+### 拓扑关系
+
+OGR中提供的拓扑关系有七种，函数格式相似, 形如，
+
+```cpp
+OGRLyaer::Topological(OGRLayer* pLayerMehtod,.....)
+///将当前图层记为 lyrC, 给定图层记为lyrM。
+///（lyr: layer, C: current, M: method）
+```
+
+- intersection，求lyrC与lyrM两个图层的交集
+- union，求lyrC与lyrM两个图层的并集
+- symdifference，求lyrC与lyrM两个图层的对称差
+- identity，用lyrM的要素识别lyrC的要素，图层求交，属性表求并
+- update，将给定layer更新到当前layer中
+- clip，用lyrM裁剪lyrC，
+- crase，擦除lyrC被lyrM覆盖的区域
+
+
+如果只需要计算几何关系，不考虑属性表的话，intersetion，union和symDifference应该是三种最常用的拓扑关系。
+
+### CreateLayer, wkbPolygon
+
+由点信息生成多边形shp
+
+```cpp
+vector<xy> points; /// 存储了大量的点信息
+
+OGRPolygon* polygen = (OGRPolygon*)OGRGeometryFactory::createGeometry(wkbPolygon);
+OGRLinearRing* ring = (OGRLinearRing*)OGRGeometryFactory::createGeometry(wkbLinearRing);
+OGRPoint point;
+
+for(auto& iter : points)
+{
+    point.setX(iter.x); point.setY(iter.y);
+    ring->addPoint(&point);
+}
+/// 在终点后再添加一次起点, 形成闭环
+point.setX(points[0].x); point.setY(points[0].y);
+ring->addPoint(&point);
+
+ring->closeRings();
+polygen->addRing(ring);
+```
+
+### 由Geometry生成shp文件
+
+以上面的polygon为例，
+
+```cpp
+GDALDriver* shp_driver = GetGDALDriverManager()->GetDriverByName("ESRI Shapefile");
+if (shp_driver == nullptr) {
+    return message(false, "shp driver is nullptr.");
+}
+
+/// 新版的GDAL 已经弃用了早期的OGRDataResouce, 改用GDALDataset, Create这种同一的函数
+GDALDataset* ds = shp_driver->Create(shp_file, 0, 0, 0, GDT_Unknown, NULL);
+if (ds == nullptr) {
+    return message(false, "ds is nullptr.");
+}
+
+/// 设置坐标系统
+OGRSpatialReference spatialRef;
+spatialRef.SetWellKnownGeogCS("WGS84");
+OGRLayer* layer = ds->CreateLayer("layer", &spatialRef, wkbPolygon, NULL);
+if (layer == nullptr) {
+    return message(false, "layer is nullptr.");
+}
+
+OGRFeatureDefn* featureDefn = layer->GetLayerDefn();
+OGRFeature* feature = OGRFeature::CreateFeature(featureDefn);
+OGRErr err = feature->SetGeometry((OGRGeometry*)polygen);
+if (err != OGRERR_NONE) {
+    if (err == OGRERR_UNSUPPORTED_GEOMETRY_TYPE) {
+        return message(false, "unsupported geometry type.");
+    }
+    else{
+        return message(false, "unknown setGeometry error.");
+    }
+}
+
+
+if (layer->CreateFeature(feature) != OGRERR_NONE) {
+    return message(false, "create feature in shapefile failed.");
+}
+
+
+OGRFeature::DestroyFeature(feature);
+GDALClose(ds);
+```
