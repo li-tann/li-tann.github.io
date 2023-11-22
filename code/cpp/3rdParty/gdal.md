@@ -321,3 +321,23 @@ if (layer->CreateFeature(feature) != OGRERR_NONE) {
 OGRFeature::DestroyFeature(feature);
 GDALClose(ds);
 ```
+
+## spatial reference system
+
+空间参考坐标系统
+
+使用GDAL读写数据时，当涉及到地理信息时绕不开坐标系统。
+
+GDAL中常见的两种读取和填写参考坐标系的方式有两种，
+
+一是projectionRef，以字符串的形式存储坐标系统；
+
+二是spatialRef，是以`OGRSpatialReference`类的形式存储坐标系统。
+
+两者很适合搭配使用，虽然我也不知道怎么搭配，但官方文档如是说：
+
+> const char *GetProjectionRef(void) const
+    > ...
+    > The returned string defines the projection coordinate system of the image in OpenGIS WKT format. It should be suitable for use with the OGRSpatialReference class.
+
+显然，`OGRSpatialReference`更便于空间参考坐标系统的精细化操作。
