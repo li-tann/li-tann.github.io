@@ -249,7 +249,6 @@ OGRLyaer::Topological(OGRLayer* pLayerMehtod,.....)
 - clip，用lyrM裁剪lyrC，
 - crase，擦除lyrC被lyrM覆盖的区域
 
-
 如果只需要计算几何关系，不考虑属性表的话，intersetion，union和symDifference应该是三种最常用的拓扑关系。
 
 ### CreateLayer, wkbPolygon

@@ -36,10 +36,10 @@ $$
 K_p=\displaystyle\sum_{q\in N(p)}\exp \bigg(-\frac{ {\|p-q\|}^2}{2\sigma_s^2}-\frac{ {\|J_t(p)-J_t(q)\|}^2}{2\sigma_r^2}\bigg)
 $$
 
-其中，$p$是待求点，$q$是 $p$周围的所有点的集合， $t=1,2,…,n$， $I$是原图像， $\sigma_s^2$和 $\sigma_r^2$分别控制时间权重和距离权重。( $\sigma_s^2$ and $\sigma_r^2$ control the spatial and range weights respectively )
+其中，$p$是待求点，$q$是 $p$周围的所有点的集合， $t=1,2,…,n$， $I$是原图像， $\sigma_s^2$和 $\sigma_r^2$分别控制时间权重和距离权重。
+
+> $\sigma_s^2$ and $\sigma_r^2$ control the spatial and range weights respectively
 
 ## C++代码
 
-详见[RG Filter代码](#C++代码)
-
-暂未上传。
+暂未上传，可联系作者。
