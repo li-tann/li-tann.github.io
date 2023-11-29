@@ -1,4 +1,6 @@
-# python 第三方工具
+---
+title: packages
+---
 
 ## elevation
 
@@ -24,3 +26,11 @@ clip指令的自选项:
 - --bounds FLOAT...     DEM的范围, 顺序为左, 下, 右, 上
 - -m, --margin TEXT     Decimal degree margin added to the bounds. Use '%' for percent margin.  [default: 0]
 - -r, --reference TEXT  使用GDAL/OGR的数据的范围代替bounds的边界
+
+## sentineleof
+
+Tool to download Sentinel 1 precise/restituted orbit files (.EOF files) for processing SLCs
+
+下载Sentinel-1的EOF精轨数据
+
+但还没开始使用...
