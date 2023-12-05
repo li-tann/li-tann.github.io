@@ -278,10 +278,10 @@ The main differences (between `macro` and `function`) are that a macro does not 
 
 参数( ARGC, ARGV, ARGV#i, ARGN)
 
-- ${ARGC}, the number of arguments passed into the function (macro), 输入的参数个数
-- ${ARGV}, A list of all arguments given to the function (macro)， 所有参数(不包含超过定义参数个数的可变参数, 即ARGN部分)
-- ${ARGV#i}, ARGV0 represents the first argument to the macro, 第i个参数
-- ${ARGN}, a list of all the arguments after the formal arguments, 所有超过定义参数格式之后的可变参数
+- `${ARGC}`, the number of arguments passed into the function (macro), 输入的参数个数
+- `${ARGV}`, A list of all arguments given to the function (macro)， 所有参数(不包含超过定义参数个数的可变参数, 即ARGN部分)
+- `${ARGV#i}`, ARGV0 represents the first argument to the macro, 第i个参数
+- `${ARGN}`, a list of all the arguments after the formal arguments, 所有超过定义参数格式之后的可变参数
 
 ```cmake
 macro(regist mas sla)

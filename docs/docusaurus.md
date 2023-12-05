@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# 使用Docusaurus
+# Docusaurus
 
 [docusaurus](https://docusaurus.io/zh-CN/)官网的介绍其实还挺详细的，但有的网络登录不上便简单写个blog，以备不时之需~
 
@@ -112,7 +112,7 @@ const math = require('remark-math');
 const katex = require('rehype-katex');
 ```
 
-在docs:{...}中添加
+在`docs:{...}`中添加
 
 ```js
 docs:{

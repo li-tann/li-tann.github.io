@@ -103,7 +103,7 @@ This event handler is called when the drag is dropped on this widget. The event 
 
 使用paintEvent打印图像到widget中，并且通过指针显示影像坐标（像平面坐标）
 
-下面代码如果没有特殊标注，全都是void paintEvent(QPaintEvent* event){...}槽函数中的代码。
+下面代码如果没有特殊标注，全都是`void paintEvent(QPaintEvent* event){...}`槽函数中的代码。
 
 ### 1.影像的初始化显示
 

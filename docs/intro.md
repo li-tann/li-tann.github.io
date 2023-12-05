@@ -1,5 +1,5 @@
 ---
-title: Docs Introduction
+title: Introduction
 sidebar_position: 0
 ---
 

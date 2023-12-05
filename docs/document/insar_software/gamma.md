@@ -28,7 +28,7 @@ mamba install --yes --file ~/tools/conda_envs/gamma/requirements.txt
 ln -s ${CONDA_PREFIX}/lib/libgdal.so ${GAMMA_HOME}/lib/libgdal.so.20
 ```
 
-> 注: ${CONDA_PREFIX}, ${GAMMA_HOME}等都包含在config.rc文件中，所以需要先执行
+> 注: `${CONDA_PREFIX}`, `${GAMMA_HOME}`等都包含在config.rc文件中，所以需要先执行
 > ```shell
 > source ~/tools/conda_envs/gamma/config.rc
 > ```
