@@ -39,63 +39,15 @@ const config = {
     mermaid: true,
   },
   themes: ['@docusaurus/theme-mermaid'],
-  plugins:[
-    [
-      "@docusaurus/plugin-content-docs",
-      {
-        id: "cmake",
-        path: "code/cmake",
-        routeBasePath: "cmake",
-        sidebarPath: require.resolve("./sidebars.js"),
-        // showLastUpdateAuthor: true,
-        // showLastUpdateTime: true,
-        // breadcrumbs: false,
-      },
-    ],
-    [
-      "@docusaurus/plugin-content-docs",
-      {
-        id: "cpp",
-        path: "code/cpp",
-        routeBasePath: "cpp",
-        sidebarPath: require.resolve("./sidebars.js"),
-        // showLastUpdateAuthor: true,
-        // showLastUpdateTime: true,
-        // breadcrumbs: false,
-      },
-    ],
-    [
-      "@docusaurus/plugin-content-docs",
-      {
-        id: "python",
-        path: "code/python",
-        routeBasePath: "python",
-        sidebarPath: require.resolve("./sidebars.js"),
-        // showLastUpdateAuthor: true,
-        // showLastUpdateTime: true,
-        // breadcrumbs: false,
-      },
-    ],
-    [
-      "@docusaurus/plugin-content-docs",
-      {
-        id: "cuda",
-        path: "code/cuda",
-        routeBasePath: "cuda",
-        sidebarPath: require.resolve("./sidebars.js"),
-        // showLastUpdateAuthor: true,
-        // showLastUpdateTime: true,
-        // breadcrumbs: false,
-      },
-    ],
-  ],
+  plugins:[],
   presets: [
     [
       'classic',
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
+          path: 'docs',
+          sidebarPath: require.resolve('./sidebars_2.js'),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
@@ -147,38 +99,20 @@ const config = {
           {
             type: 'doc',
             docId: 'intro',//链接第一个界面的名称, 对应resume.md
-            position: 'right',
-            label: '💬Docs',
+            position: 'left',
+            label: '💬Document',
           },
           {
-            position:"right",
-            label:"🧙Code",
-            // to:"/code/intro"
-            items:[
-              {
-                label: "🧙C++",
-                to:"cpp/std"
-              },
-              {
-                label: "🧬CMake",
-                to:"cmake/mastering_cmake",
-                // to:"cmake/intro",
-              },
-              {
-                label: "🐍Python",
-                to:"python/intro"
-              },
-              {
-                label: "🧩CUDA",
-                to:"cuda/intro"
-              },
-            ]
+            type: 'docSidebar',
+            position: 'left',
+            sidebarId: 'code',
+            label: '🧙Code',
           },
-          {to: '/blog', label: '🏷️Blog', position: 'right'},
+          {to: '/blog', label: '🏷️Blog', position: 'left'},
           {
             href: 'https://github.com/li-tann/li-tann.github.io',
             label: '🚀GitHub',
-            position: 'right',
+            position: 'left',
             // className: 'header-github-link', ///doesn't work
             // 'aria-label': 'GitHub repository',///doesn't work
           },
@@ -197,11 +131,15 @@ const config = {
           },
           {
             label:'C++',
-            to:'cpp/std',
+            to:'/docs/category/cpp',
           },
           {
             label: "CMake",
-            to:"cmake/mastering_cmake",
+            to:"/docs/category/cmake",
+          },
+          {
+            label: "Python",
+            to:"/docs/category/python",
           },
           {
             label:'Blog',

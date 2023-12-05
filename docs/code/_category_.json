@@ -1,0 +1,8 @@
+{
+  "label": "Code",
+  "position": 0,
+  "link": {
+    "type": "generated-index",
+    "description": "Cpp, Cpp-Qt, CMake, Python, CUDA..."
+  }
+}
