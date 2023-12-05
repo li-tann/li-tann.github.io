@@ -99,20 +99,20 @@ const config = {
           {
             type: 'doc',
             docId: 'intro',//链接第一个界面的名称, 对应resume.md
-            position: 'left',
+            position: 'right',
             label: '💬Document',
           },
           {
             type: 'docSidebar',
-            position: 'left',
+            position: 'right',
             sidebarId: 'code',
             label: '🧙Code',
           },
-          {to: '/blog', label: '🏷️Blog', position: 'left'},
+          {to: '/blog', label: '🏷️Blog', position: 'right'},
           {
             href: 'https://github.com/li-tann/li-tann.github.io',
             label: '🚀GitHub',
-            position: 'left',
+            position: 'right',
             // className: 'header-github-link', ///doesn't work
             // 'aria-label': 'GitHub repository',///doesn't work
           },
