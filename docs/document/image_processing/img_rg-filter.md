@@ -1,14 +1,44 @@
-# RG滤波
+# 滤波
 
-RollingGuidence滤波
+## 快速统计均值方差
 
-## image
+统计影像的均值和方差时，常规做法是先循环一遍计算均值，再循环一遍计算方差，但通过推导方差计算公式，可以简化上述操作，缩短统计耗时。
 
-|![un filter](pics/rg_filter_pics_01.png)|![filtered](pics/rg_filter_pics_02.png)|
-|:---:|:---:|
-|pic.1 before filter|pic.2 after filter|
+```cpp
+float mean = 0, std = 0;
+for(int i=0; i < arr_size; i++){
+    mean += arr[i];
+    std += arr[i] * arr[i];
+}
+mean /= valid_num;
+std = sqrtf(std / (valid_num-1) - valid_num / (valid_num-1) * mean * mean);
+```
 
-## 算法流程
+均值、方差的公式
+
+$$
+\begin{aligned}
+\bar{x} =& \frac{1}{n}\sum x_i \\
+    Std =& \sqrt{\frac{1}{n-1}\sum {(x_i - \bar{x})}^2} \\
+        =& \sqrt{\frac{1}{n-1}(\sum{{x_i}^2}-n{\bar{x}}^2)}
+\end{aligned}
+$$
+
+方差的推导过程，
+
+$$
+\begin{aligned}
+&{Std}^2&=& \frac{1}{n-1}\sum {(x_i - \bar{x})}^2 \\
+&       &=& \frac{1}{n-1}\sum ({x_i}^2 - 2\bar{x}\cdot x_i+{\bar{x}}^2) \\
+&       &=& \frac{1}{n-1}(\sum {x_i}^2 - 2 \bar{x} \cdot \sum x_i  + n {\bar{x}}^2) \\
+&       &=& \frac{1}{n-1}(\sum {x_i}^2 - 2 n {\bar{x}}^2  + n {\bar{x}}^2) \\
+&       &=& \frac{1}{n-1}(\sum {x_i}^2 -  n {\bar{x}}^2) \\ \\
+
+\Rarr & Std &=& \sqrt{\frac{1}{n-1}(\sum{{x_i}^2}-n{\bar{x}}^2)}
+\end{aligned}
+$$
+
+## Rolling Guidance Filter
 
 ![process](pics/rg_filter_pics_03.png)
 
@@ -39,46 +69,3 @@ $$
 其中，$p$是待求点，$q$是 $p$周围的所有点的集合， $t=1,2,…,n$， $I$是原图像， $\sigma_s^2$和 $\sigma_r^2$分别控制时间权重和距离权重。
 
 > $\sigma_s^2$ and $\sigma_r^2$ control the spatial and range weights respectively
-
-## C++代码
-
-暂未上传，可联系作者。
-
-## quick stat mean & std (temp)
-
-```cpp
-float mean = 0, std = 0;
-for(int i=0; i < arr_size; i++){
-    mean += arr[i];
-    std += arr[i] * arr[i];
-}
-mean /= valid_num;
-std = sqrtf(std / (valid_num-1) - valid_num / (valid_num-1) * mean * mean);
-```
-
-$$
-\bar{x} = \frac{1}{n}\sum x_i
-$$
-
-$$
-\begin{aligned}
-    Std =& \sqrt{\frac{1}{n-1}\sum {(x_i - \bar{x})}^2} \\
-        =& \sqrt{\frac{1}{n-1}(\sum{{x_i}^2}-n{\bar{x}}^2)}
-\end{aligned}
-$$
-
-推导过程：
-
-$$
-\begin{aligned}
-{Std}^2 =& \frac{1}{n-1}\sum {(x_i - \bar{x})}^2 \\
-        =& \frac{1}{n-1}\sum ({x_i}^2 - 2\bar{x}\cdot x_i+{\bar{x}}^2) \\
-        =& \frac{1}{n-1}(\sum {x_i}^2 - 2 \bar{x} \cdot \sum x_i  + n {\bar{x}}^2) \\
-        =& \frac{1}{n-1}(\sum {x_i}^2 - 2 n {\bar{x}}^2  + n {\bar{x}}^2) \\
-        =& \frac{1}{n-1}(\sum {x_i}^2 -  n {\bar{x}}^2) \\
-\end{aligned}
-$$
-
-$$
-Std = \sqrt{\frac{1}{n-1}(\sum{{x_i}^2}-n{\bar{x}}^2)}
-$$
