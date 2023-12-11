@@ -4,18 +4,18 @@ RollingGuidence滤波
 
 ## image
 
-|![](pics/rg_filter_pics_01.png)|![](pics/rg_filter_pics_02.png)|
+|![un filter](pics/rg_filter_pics_01.png)|![filtered](pics/rg_filter_pics_02.png)|
 |:---:|:---:|
 |pic.1 before filter|pic.2 after filter|
 
 ## 算法流程
 
-![](pics/rg_filter_pics_03.png)
+![process](pics/rg_filter_pics_03.png)
 
 ### Step1: Small Structure Removal
 
 $$
-J_1(p)=\frac{1}{K_p}\displaystyle\sum_{q\in N(p)}\exp \bigg(-\frac{ {\|p-q\|}^2} {2\sigma_s^2}\bigg)I(q) 
+J_1(p)=\frac{1}{K_p}\displaystyle\sum_{q\in N(p)}\exp \bigg(-\frac{ {\|p-q\|}^2} {2\sigma_s^2}\bigg)I(q)
 $$
 
 $$
@@ -43,3 +43,15 @@ $$
 ## C++代码
 
 暂未上传，可联系作者。
+
+## quick stat mean & std (temp)
+
+```cpp
+float mean = 0, std = 0;
+for(int i=0; i < arr_size; i++){
+    mean += arr[i];
+    std += arr[i] * arr[i];
+}
+mean /= valid_num;
+std = sqrtf(std / (valid_num-1) - valid_num / (valid_num-1) * mean * mean);
+```
