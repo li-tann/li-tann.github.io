@@ -55,3 +55,30 @@ for(int i=0; i < arr_size; i++){
 mean /= valid_num;
 std = sqrtf(std / (valid_num-1) - valid_num / (valid_num-1) * mean * mean);
 ```
+
+$$
+\bar{x} = \frac{1}{n}\sum x_i
+$$
+
+$$
+\begin{aligned}
+    Std =& \sqrt{\frac{1}{n-1}\sum {(x_i - \bar{x})}^2} \\
+        =& \sqrt{\frac{1}{n-1}(\sum{{x_i}^2}-n{\bar{x}}^2)}
+\end{aligned}
+$$
+
+推导过程：
+
+$$
+\begin{aligned}
+{Std}^2 =& \frac{1}{n-1}\sum {(x_i - \bar{x})}^2 \\
+        =& \frac{1}{n-1}\sum ({x_i}^2 - 2\bar{x}\cdot x_i+{\bar{x}}^2) \\
+        =& \frac{1}{n-1}(\sum {x_i}^2 - 2 \bar{x} \cdot \sum x_i  + n {\bar{x}}^2) \\
+        =& \frac{1}{n-1}(\sum {x_i}^2 - 2 n {\bar{x}}^2  + n {\bar{x}}^2) \\
+        =& \frac{1}{n-1}(\sum {x_i}^2 -  n {\bar{x}}^2) \\
+\end{aligned}
+$$
+
+$$
+Std = \sqrt{\frac{1}{n-1}(\sum{{x_i}^2}-n{\bar{x}}^2)}
+$$
