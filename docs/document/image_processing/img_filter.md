@@ -42,6 +42,8 @@ $$
 
 ![process](pics/rg_filter_pics_03.png)
 
+> Qi Zhang, Xiaoyong Shen, Li Xu, and Jiaya Jia, ‘Rolling Guidance Filter’, ECCV 2014, pp. 812–830, 2014.
+
 ### Step1: Small Structure Removal
 
 $$
@@ -69,3 +71,15 @@ $$
 其中，$p$是待求点，$q$是 $p$周围的所有点的集合， $t=1,2,…,n$， $I$是原图像， $\sigma_s^2$和 $\sigma_r^2$分别控制时间权重和距离权重。
 
 > $\sigma_s^2$ and $\sigma_r^2$ control the spatial and range weights respectively
+
+## goldstein
+
+经典的频谱滤波
+
+> R. M. Goldstein and C. L. Werner, ‘Radar interferogram filtering for geophysical applications’, Geophysical Research Letters, vol. 25, no. 21, pp. 4035–4038, 1998, doi: 10.1029/1998GL900033
+
+### formula
+
+$$
+H(u,v) = {S\{ \lvert Z(u,v)\rvert \}}^\alpha \cdot Z(u,v)
+$$
