@@ -85,3 +85,43 @@ DInSAR
 ### stackSentinel.py
 
 Preprocessing of SBAS / PS-InSAR for Sentinel-1 data
+
+#### 数据准备
+
+准备SLC数据、精轨数据、DEM数据、以及辅助计算数据。分别存放到单独文件夹内。
+
+##### sentinel-1
+
+两种下载方式，一是[search.asf](https://search.asf.alaska.edu/)，二是[dataspace.copernicus](https://dataspace.copernicus.eu/browser)。
+
+##### eof
+
+可以使用sentineleof包（工具）下载sentinel-1数据对应的精轨文件
+
+##### dem
+
+使用dem.py工具下载对应的dem数据
+
+##### aux_cal
+
+辅助计算数据，可从[Calibration Auxiliary Data [AUX_CAL]](https://sar-mpc.eu/adf/aux_cal/)下载（貌似没有也没事...）
+
+#### 脚本说明
+
+stackSentinel.py 可以在当前地址生成run_files文件，包含了13个脚本文件，依次执行即可。
+
+-s SLC数据的存放地址
+
+-d DEM文件路径
+
+-o 精轨文件存放地址
+
+-b 'lat_min lat_max lon_min lon_max' 目标区域的经纬度范围
+
+-a 辅助计算数据的存放地址
+
+-c int 干涉对数？
+
+-W 数据类型？
+
+...
