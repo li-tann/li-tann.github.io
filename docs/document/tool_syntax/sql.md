@@ -1,3 +1,7 @@
+---
+custom_edit_url: null
+---
+
 # SQL
 
 ## SQL基本语法

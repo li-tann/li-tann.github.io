@@ -1,6 +1,7 @@
 ---
 title: Mastering CMake
 sidebar_position: 0
+custom_edit_url: null
 ---
 
 *Mastering CMake* study notes

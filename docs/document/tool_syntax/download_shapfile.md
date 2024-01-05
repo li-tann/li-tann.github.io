@@ -1,3 +1,7 @@
+---
+custom_edit_url: null
+---
+
 # 在线制作shp
 
 实现流程 阿里云DataV.GeoAtlas + mapshaper

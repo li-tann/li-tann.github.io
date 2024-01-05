@@ -1,3 +1,7 @@
+---
+custom_edit_url: null
+---
+
 # 距离-多普勒模型
 
 R-D模型公式推导

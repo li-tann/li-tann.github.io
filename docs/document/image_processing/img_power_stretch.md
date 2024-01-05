@@ -1,3 +1,7 @@
+---
+custom_edit_url: null
+---
+
 # 强度影像的拉伸
 
 等比缩放

@@ -1,3 +1,7 @@
+---
+custom_edit_url: null
+---
+
 # Qt Database
 
 Qt内部的, 数据库操作功能。

@@ -1,5 +1,6 @@
 ---
 title: 浮点型数据结构
+custom_edit_url: null
 ---
 
 # float16与float32计算方式

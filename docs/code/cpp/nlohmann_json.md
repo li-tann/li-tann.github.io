@@ -1,3 +1,7 @@
+---
+custom_edit_url: null
+---
+
 # nlohmann::json
 
 [JSON for Modern C++](https://github.com/nlohmann/json)，![starts](https://img.shields.io/github/stars/nlohmann/json.svg)，详细的说明可前往github学习使用。

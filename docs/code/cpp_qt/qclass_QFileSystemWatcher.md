@@ -1,3 +1,7 @@
+---
+custom_edit_url: null
+---
+
 # 文件夹监控功能
 
 QFileSystemWatcher是Qt自带的一个文件夹监控类，可以检测某一文件或者某一路径的文件变化情况。

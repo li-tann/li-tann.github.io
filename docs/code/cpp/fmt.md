@@ -1,3 +1,7 @@
+---
+custom_edit_url: null
+---
+
 # fmt
 
 a fast and safe alternative to C stdio and C++ iostreams.

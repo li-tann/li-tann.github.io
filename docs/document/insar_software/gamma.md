@@ -1,6 +1,7 @@
 ---
 title: GAMMA
 sidebar_position: 0
+custom_edit_url: null
 ---
 
 ## 环境配置

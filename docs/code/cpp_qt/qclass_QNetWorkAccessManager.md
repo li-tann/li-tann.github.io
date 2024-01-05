@@ -1,3 +1,7 @@
+---
+custom_edit_url: null
+---
+
 # QNetWork下载文件
 
 QNetworkAccessManager + QNetWorkRequest 实现数据下载，并且可以显示下载进度。

@@ -1,5 +1,6 @@
 ---
 title: ftp
+custom_edit_url: null
 ---
 
 ## paramiko

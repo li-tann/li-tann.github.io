@@ -1,3 +1,7 @@
+---
+custom_edit_url: null
+---
+
 # 创造型模式
 
 Creational Pattern

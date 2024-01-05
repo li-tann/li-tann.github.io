@@ -1,5 +1,6 @@
 ---
 title: VSCode Vcpkg 
+custom_edit_url: null
 ---
 
 # vscode + cmake + vcpkg

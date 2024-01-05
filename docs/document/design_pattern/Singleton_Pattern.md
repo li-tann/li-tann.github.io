@@ -1,3 +1,7 @@
+---
+custom_edit_url: null
+---
+
 # Section.1 单例模式
 
 [单例模式url](https://www.cnblogs.com/leaves1024/p/10985599.html)

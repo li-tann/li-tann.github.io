@@ -1,3 +1,7 @@
+---
+custom_edit_url: null
+---
+
 # QGraphics
 
 ## Scene, View, Item的联系

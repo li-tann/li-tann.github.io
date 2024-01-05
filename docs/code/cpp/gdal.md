@@ -1,3 +1,7 @@
+---
+custom_edit_url: null
+---
+
 # GDAL
 
 地学常用的图像处理库

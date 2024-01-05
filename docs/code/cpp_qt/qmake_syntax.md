@@ -1,3 +1,7 @@
+---
+custom_edit_url: null
+---
+
 # qmake语法（pro文件写法）
 
 qmake语法

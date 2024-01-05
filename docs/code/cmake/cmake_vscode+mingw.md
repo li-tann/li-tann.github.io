@@ -1,7 +1,7 @@
 ---
 title: VSCode MinGW
+custom_edit_url: null
 ---
-
 
 # vscode + mingw(windows)
 

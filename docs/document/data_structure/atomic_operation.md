@@ -1,3 +1,7 @@
+---
+custom_edit_url: null
+---
+
 # Atomic Operation 原子性操作
 
 多线程访问资源时，需要确保所有的线程不在同一时间内访问相同的资源。

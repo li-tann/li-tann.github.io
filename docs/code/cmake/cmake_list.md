@@ -1,3 +1,7 @@
+---
+custom_edit_url: null
+---
+
 # LIST
 
 list命令共包含 Reading, Search, Modification, Ordering四部分：

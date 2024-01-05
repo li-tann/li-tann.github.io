@@ -1,3 +1,7 @@
+---
+custom_edit_url: null
+---
+
 # spdlog
 
 Very fast, header-only/compiled, C++ logging library.

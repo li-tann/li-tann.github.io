@@ -1,3 +1,7 @@
+---
+custom_edit_url: null
+---
+
 # widget控件的常用事件
 
 Qt Widget控件的拖拽、绘制等事件

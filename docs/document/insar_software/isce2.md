@@ -1,6 +1,7 @@
 ---
 title: ISCE2
 sidebar_position: 1
+custom_edit_url: null
 ---
 
 ## WSL安装ISCE2
