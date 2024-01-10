@@ -82,8 +82,24 @@ $$
 
 > R. M. Goldstein and C. L. Werner, ‘Radar interferogram filtering for geophysical applications’, Geophysical Research Letters, vol. 25, no. 21, pp. 4035–4038, 1998, doi: 10.1029/1998GL900033
 
-### formula
+### 公式
 
 $$
 H(u,v) = {S\{ \lvert Z(u,v)\rvert \}}^\alpha \cdot Z(u,v)
 $$
+
+### 派生方法
+
+优化方向主要有两种，一是优化平滑算子$s\{\cdot\}$，另一则是优化滤波系数${\cdot}^{\alpha}$。
+
+#### 滤波系数
+
+baran滤波，使用相干图作为滤波系数
+
+zhao滤波，使用伪相干图作为滤波系数
+
+#### 平滑算子
+
+某个软件，使用bessi0函数生成二维矩阵，在时域点乘后通过FFT转换到频域（时域点乘等于频域卷积），使用频域功率谱计算得到系数，将系数附加到频域后在通过IFFT转换回时域，完成滤波操作。
+
+当然，老老实实写个均值滤波算子在频域做卷积运算，也是可以的，但效果确实不如上述方法。
