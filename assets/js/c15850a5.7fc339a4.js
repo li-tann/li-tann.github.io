@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[2004],{2861:e=>{e.exports=JSON.parse('{"label":"bat","permalink":"/blog/tags/bat","allTagsPath":"/blog/tags","count":1,"unlisted":false}')}}]);

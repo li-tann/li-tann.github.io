@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://li-tann.github.io/blog</id>
+    <title>li-tann Blog</title>
+    <updated>2024-01-07T00:00:00.000Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://li-tann.github.io/blog"/>
+    <subtitle>li-tann Blog</subtitle>
+    <icon>https://li-tann.github.io/img/SAR-LOGO2.png</icon>
+    <entry>
+        <title type="html"><![CDATA[GDAL_Tools 有感]]></title>
+        <id>https://li-tann.github.io/blog/2024/01/07/gdal_tools_feeling</id>
+        <link href="https://li-tann.github.io/blog/2024/01/07/gdal_tools_feeling"/>
+        <updated>2024-01-07T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[简单过了一遍GDALTools里的所有功能，才想起这个项目的初衷是学习GDAL库中的函数，API，... 但渐渐的变成了自己写基于GDAL的RasterIO读取影像，自写算法进行数据处理的相关功能的集散地...]]></summary>
+        <content type="html"><![CDATA[<p>简单过了一遍<a href="https://github.com/li-tann/GDAL_Tools" target="_blank" rel="noopener noreferrer">GDAL_Tools</a>里的所有功能，才想起这个项目的初衷是学习GDAL库中的函数，API，... 但渐渐的变成了自己写基于GDAL的RasterIO读取影像，自写算法进行数据处理的相关功能的集散地...</p>
+<p>所以呢，有个想法，</p>
+<p>为了让这个项目重回正轨，打算将项目重构（唉，又是一次重构...），把算法类的功能拆分成一个新的项目，GDAL_Tools内只保留基于GDAL API的相关功能</p>
+<p>新模块就叫"SAR_Image_Processing_Tools"吧...很土的名字...</p>
+<p>立blog为据，防止忘记</p>]]></content>
+        <author>
+            <name>litan</name>
+            <uri>https://github.com/li-tann</uri>
+        </author>
+        <category label="GDAL" term="GDAL"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[bat脚本拆分字符串]]></title>
+        <id>https://li-tann.github.io/blog/2023/12/20/for_bat</id>
+        <link href="https://li-tann.github.io/blog/2023/12/20/for_bat"/>
+        <updated>2023-12-20T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[delims= 表示用来分割字符串的字符]]></summary>
+        <content type="html"><![CDATA[<div class="language-bat codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-bat codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">setlocal enabledelayedexpansion</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">set target=''</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">for /f "tokens=1,3 delims=," %%i in (1.txt) do (</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    set d1=%%i</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    set d2=%%j</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">)</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>delims= 表示用来分割字符串的字符</p>
+<p>tokens= 表示拆分后需要使用的第i个字段</p>
+<p>%%i, %%j 对应字符串内容</p>
+<p>例如1.txt：</p>
+<p>name,id,point
+li-tann,0,15
+li-tamm,1,19</p>
+<p>使用上述脚本，输出为：</p>
+<div class="language-cmd codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-cmd codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">d1=li-tann, d2=15</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">d1=li-tamm, d2=19</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>]]></content>
+        <author>
+            <name>litan</name>
+            <uri>https://github.com/li-tann</uri>
+        </author>
+        <category label="bat" term="bat"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[gdaladdo ovr]]></title>
+        <id>https://li-tann.github.io/blog/2023/11/29/gdaladdo</id>
+        <link href="https://li-tann.github.io/blog/2023/11/29/gdaladdo"/>
+        <updated>2023-11-29T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[通常情况我们使用ArcMap打开一张非常大的影像时，都会提示是否生成金字塔文件以便于后续影像的快速绘制和缩放。]]></summary>
+        <content type="html"><![CDATA[<p>通常情况我们使用ArcMap打开一张非常大的影像时，都会提示是否生成金字塔文件以便于后续影像的快速绘制和缩放。</p>
+<p>但当影像过大时，使用ArcMap的默认选项已经无法成功创建金字塔文件，此时就需要调用GDAL工具手动生成金字塔文件。</p>
+<p>指令如下所示，</p>
+<div class="language-shell codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-shell codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">gdaladdo -ro --config COMPRESS_OVERVIEW DEFLATE --config BIGTIFF_OVERVIEW YES dem.tif 2 4 8 16</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>但是当影像非常大时（个人经验时超过20Gb），使用上面的指令生成金字塔文件会在70%左右报错，此时就需要将指令拆分，每次只生成一个缩放比例的金字塔，多重复几次即可。</p>
+<p>指令如下所示，</p>
+<div class="language-shell codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-shell codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">gdaladdo -ro --config COMPRESS_OVERVIEW DEFLATE --config BIGTIFF_OVERVIEW YES dem.tif 16</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">gdaladdo -ro --config COMPRESS_OVERVIEW DEFLATE --config BIGTIFF_OVERVIEW YES dem.tif 8</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">gdaladdo -ro --config COMPRESS_OVERVIEW DEFLATE --config BIGTIFF_OVERVIEW YES dem.tif 4</span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">gdaladdo -ro --config COMPRESS_OVERVIEW DEFLATE --config BIGTIFF_OVERVIEW YES dem.tif 2</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>16倍缩放金字塔应该是数据导入时的缩略图比例，所以当我们成功生成16倍的金字塔时，就可以使用ArcMap读取影像，并快速将影像的缩略图绘制到视图中。</p>]]></content>
+        <author>
+            <name>litan</name>
+            <uri>https://github.com/li-tann</uri>
+        </author>
+        <category label="gdal" term="gdal"/>
+        <category label="gdaladdo" term="gdaladdo"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[BABEL Error]]></title>
+        <id>https://li-tann.github.io/blog/2023/11/08/babel-error</id>
+        <link href="https://li-tann.github.io/blog/2023/11/08/babel-error"/>
+        <updated>2023-11-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[写md文件时发现，当某个md文档过长(很可能是因为存在大量latex公式导致)，在编译期间时会弹出以下警告内容，严重影响观感... 不得已将md文档拆分后解决问题...]]></summary>
+        <content type="html"><![CDATA[<p>写md文件时发现，当某个md文档过长(很可能是因为存在大量latex公式导致)，在编译期间时会弹出以下警告内容，严重影响观感... 不得已将md文档拆分后解决问题...</p>
+<div class="language-shell codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-shell codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">[BABEL] Note: The code generator has deoptimised the styling of xxxxx.md as it exceeds the max of 500KB.</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>]]></content>
+        <author>
+            <name>litan</name>
+            <uri>https://github.com/li-tann</uri>
+        </author>
+        <category label="babel" term="babel"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Docusaurus Update to 2.4.1]]></title>
+        <id>https://li-tann.github.io/blog/2023/08/22/docusaurus_2_4_1</id>
+        <link href="https://li-tann.github.io/blog/2023/08/22/docusaurus_2_4_1"/>
+        <updated>2023-08-22T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[<div class="language-bat codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-bat codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">npm i @docusaurus/core@latest @docusaurus/preset-classic@latest @docusaurus/theme-mermaid@latest @docusaurus/module-type-aliases@latest</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>]]></content>
+        <author>
+            <name>litan</name>
+            <uri>https://github.com/li-tann</uri>
+        </author>
+        <category label="docusaurus" term="docusaurus"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Word 自定义快捷键]]></title>
+        <id>https://li-tann.github.io/blog/2023/08/01/word-customize-shortcuts</id>
+        <link href="https://li-tann.github.io/blog/2023/08/01/word-customize-shortcuts"/>
+        <updated>2023-08-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[文件-选项，打开“Word选项”对话框]]></summary>
+        <content type="html"><![CDATA[<p>文件-选项，打开“Word选项”对话框</p>
+<p>选择自定义功能区，点击“键盘快捷方式”右侧的“自定义”按钮，弹出“自定义键盘”窗口</p>
+<p>以formatParagraph功能（ 段落设置对话框）为例</p>
+<p>在左侧“类别”中选择“‘开始’选项卡”，在右侧命令中找“FormatParagraph”</p>
+<p>在“请按新快捷键”窗口内，键入你希望的快捷键（若与其他快捷键冲突会顶替当前快捷指令与其他功能的链接关系）</p>
+<p>我设置成Alt+F(旧的指令等于点击菜单栏的“文件”按钮)</p>
+<p>点击下方“指定”按钮保存快捷指令。</p>
+<p>完成。</p>
+<p><a href="https://support.microsoft.com/zh-cn/office/word-%E4%B8%AD%E7%9A%84%E9%94%AE%E7%9B%98%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F-95ef89dd-7142-4b50-afb2-f762f663ceb2" target="_blank" rel="noopener noreferrer">Word 中的键盘快捷方式</a></p>]]></content>
+        <author>
+            <name>litan</name>
+            <uri>https://github.com/li-tann</uri>
+        </author>
+        <category label="word" term="word"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Word 框内打勾]]></title>
+        <id>https://li-tann.github.io/blog/2023/03/07/word-check-mark</id>
+        <link href="https://li-tann.github.io/blog/2023/03/07/word-check-mark"/>
+        <updated>2023-03-07T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[在word输入2611, 按ALT+X, 即可生成“框内打勾✅”的特殊字符。]]></summary>
+        <content type="html"><![CDATA[<p>在word输入<code>2611</code>, 按<code>ALT</code>+<code>X</code>, 即可生成“框内打勾✅”的特殊字符。</p>]]></content>
+        <author>
+            <name>litan</name>
+            <uri>https://github.com/li-tann</uri>
+        </author>
+        <category label="word" term="word"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[github stars显示方法]]></title>
+        <id>https://li-tann.github.io/blog/2023/03/03/github-stars</id>
+        <link href="https://li-tann.github.io/blog/2023/03/03/github-stars"/>
+        <updated>2023-03-03T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Github中经常见到类似的标签，]]></summary>
+        <content type="html"><![CDATA[<p>Github中经常见到类似的标签，</p>
+<p><img loading="lazy" src="https://img.shields.io/github/stars/li-tann/li-tann.github.io.svg" alt="starts" class="img_ev3q"> <img loading="lazy" src="https://img.shields.io/badge/li--tann-InSAR-brightgreen" alt="example label" class="img_ev3q"></p>
+<p>前者是li-tann.github.io的实时stars，后者是自定义生成的静态内容。</p>
+<p>类似的标签，都是通过<a href="https://shields.io/" target="_blank" rel="noopener noreferrer">Shield IO</a>网站实现的。</p>
+<p>实时的github stars:</p>
+<p><code>https://img.shields.io/github/stars/&lt;user&gt;/&lt;repository&gt;.svg</code></p>
+<p>以该网页为例，</p>
+<p>用户名是<code>li-tann</code>, 仓库是<code>litan.github.io</code>，</p>
+<p>该仓库的实时stars: <code>https://img.shields.io/github/stars/li-tann/li-tann.github.io.svg</code></p>]]></content>
+        <author>
+            <name>litan</name>
+            <uri>https://github.com/li-tann</uri>
+        </author>
+        <category label="github stars" term="github stars"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[zotero+OneDrive实现云同步]]></title>
+        <id>https://li-tann.github.io/blog/2023/03/03/zotero-onedrive</id>
+        <link href="https://li-tann.github.io/blog/2023/03/03/zotero-onedrive"/>
+        <updated>2023-03-03T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[zotero.logo]]></summary>
+        <content type="html"><![CDATA[<p><img loading="lazy" src="https://www.zotero.org/static/images/theme/zotero-logo.1519312231.svg" alt="zotero.logo" class="img_ev3q"></p>
+<p>zotero是一款免费的文献管理工具(包括但不限于文件管理功能)，其本身提供收费的云端文件存储服务（免费向每个账户提供300Mb云空间）。</p>
+<p>但将本地存储搭建在OneDrive中，云端只同步文献基本信息（不上传附件内容），即可实现免费的多设备同步。</p>
+<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="操作说明">操作说明<a href="https://li-tann.github.io/blog/2023/03/03/zotero-onedrive#%E6%93%8D%E4%BD%9C%E8%AF%B4%E6%98%8E" class="hash-link" aria-label="Direct link to 操作说明" title="Direct link to 操作说明">​</a></h2>
+<ol>
+<li>
+<p>zotero编辑-&gt;首选项-&gt;同步-&gt;设置，取消文件同步的两个选项（不同步附件）；</p>
+</li>
+<li>
+<p>zotero编辑-&gt;首选项-&gt;高级-&gt;文件和文件夹：数据存储位置选择自定义，修改文件存储位置（如：<code>E:\zotero_library</code>）；</p>
+<blockquote>
+<p>长期积累的文献较大，不建议放在默认的C盘</p>
+</blockquote>
+</li>
+<li>
+<p>将<code>E:\zotero_library\storage</code>移动到OneDrive网盘中，如：<code>D:\OneDrive\Zorero_storage\storage</code>；</p>
+</li>
+<li>
+<p>建立链接</p>
+</li>
+</ol>
+<p><code>mklink /J "E:\zotero_library\storage" "D:\OneDrive\Zorero_storage\storage"</code></p>
+<p>到此为止，实现同步。</p>
+<p>若直接将zotero数据存储位置放至OneDrive会提示有风险（数据同步的异常情况），所以将storage放置云盘，并建立云盘与本地的链接风险更低。</p>]]></content>
+        <author>
+            <name>litan</name>
+            <uri>https://github.com/li-tann</uri>
+        </author>
+        <category label="zotero" term="zotero"/>
+        <category label="OneDrive" term="OneDrive"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[gdal_translate去除编码影像黑边]]></title>
+        <id>https://li-tann.github.io/blog/2023/03/02/gdal_translate</id>
+        <link href="https://li-tann.github.io/blog/2023/03/02/gdal_translate"/>
+        <updated>2023-03-02T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[地理编码后影像的四个角点一般都有“黑边”(对于float以上数据，显示为NoData，值为NAN)，在arcgis中显示时非常影响观感，需要消除。]]></summary>
+        <content type="html"><![CDATA[<p>地理编码后影像的四个角点一般都有“黑边”(对于float以上数据，显示为NoData，值为NAN)，在arcgis中显示时非常影响观感，需要消除。</p>
+<p>使用gdal_translate.exe工具，可以有效消除“黑边”，命令如下：</p>
+<p><code>gdal_translate.exe img_input.tif img_output.tif -a_nodata 0</code></p>
+<p>该命令可以将img_input.tif中所有值为<code>NoData</code>的值转换为<code>0</code>，并且为影像添加数据<code>NoData Value=0</code>，</p>
+<p>转换完成后，再次使用arcmap加载该影像，即可得到无“黑边”的地理编码后影像。</p>
+<p>伪代码：</p>
+<div class="language-cpp codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-cpp codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">GDALDataset</span><span class="token operator" style="color:#393A34">*</span><span class="token plain"> p_ds </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token generic-function function" style="color:#d73a49">static_cast</span><span class="token generic-function generic class-name operator" style="color:#393A34">&lt;</span><span class="token generic-function generic class-name">GDALDataset</span><span class="token generic-function generic class-name operator" style="color:#393A34">*</span><span class="token generic-function generic class-name operator" style="color:#393A34">&gt;</span><span class="token punctuation" style="color:#393A34">(</span><span class="token function" style="color:#d73a49">GDALOpen</span><span class="token punctuation" style="color:#393A34">(</span><span class="token string" style="color:#e3116c">""</span><span class="token punctuation" style="color:#393A34">,</span><span class="token plain">GA_Update</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token keyword" style="color:#00009f">int</span><span class="token plain"> bands </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> p_ds</span><span class="token operator" style="color:#393A34">-&gt;</span><span class="token function" style="color:#d73a49">GetRasterCount</span><span class="token punctuation" style="color:#393A34">(</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token keyword" style="color:#00009f">for</span><span class="token punctuation" style="color:#393A34">(</span><span class="token keyword" style="color:#00009f">int</span><span class="token plain"> b </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> </span><span class="token number" style="color:#36acaa">1</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"> b</span><span class="token operator" style="color:#393A34">&lt;</span><span class="token plain">bands</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"> b</span><span class="token operator" style="color:#393A34">++</span><span class="token punctuation" style="color:#393A34">)</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token punctuation" style="color:#393A34">{</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    GDALRasterBand</span><span class="token operator" style="color:#393A34">*</span><span class="token plain"> rb </span><span class="token operator" style="color:#393A34">=</span><span class="token plain"> p_ds</span><span class="token operator" style="color:#393A34">-&gt;</span><span class="token function" style="color:#d73a49">GetRasterBnad</span><span class="token punctuation" style="color:#393A34">(</span><span class="token plain">b</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain">    rb</span><span class="token operator" style="color:#393A34">-&gt;</span><span class="token function" style="color:#d73a49">setNoDataValue</span><span class="token punctuation" style="color:#393A34">(</span><span class="token number" style="color:#36acaa">0</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token punctuation" style="color:#393A34">}</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain"></span><span class="token function" style="color:#d73a49">GDALClose</span><span class="token punctuation" style="color:#393A34">(</span><span class="token plain">p_ds</span><span class="token punctuation" style="color:#393A34">)</span><span class="token punctuation" style="color:#393A34">;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#393A34"><span class="token plain" style="display:inline-block"></span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>]]></content>
+        <author>
+            <name>litan</name>
+            <uri>https://github.com/li-tann</uri>
+        </author>
+        <category label="gdal" term="gdal"/>
+        <category label="gdal_translate" term="gdal_translate"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[docusaurus常用命令]]></title>
+        <id>https://li-tann.github.io/blog/sec-blog</id>
+        <link href="https://li-tann.github.io/blog/sec-blog"/>
+        <updated>2023-03-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[下载标准版本，]]></summary>
+        <content type="html"><![CDATA[<p>下载标准版本，</p>
+<p><code>npx create-docusaurus@latest my-website classic</code></p>
+<p>下载特定版本的math和katex插件，</p>
+<p><code>npm install --save remark-math@3 rehype-katex@5 hast-util-is-element@1.1.0</code></p>
+<p>github部署，</p>
+<p><code>cmd /C 'set "GIT_USER=li-tann" &amp;&amp; yarn deploy'</code>，</p>
+<p>或</p>
+<p><code>cmd /C 'set "USE_SSH=true" &amp;&amp; yarn deploy'</code></p>]]></content>
+        <author>
+            <name>litan</name>
+            <uri>https://github.com/li-tann</uri>
+        </author>
+        <category label="docusaurus" term="docusaurus"/>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[My First Blog in docusaurus]]></title>
+        <id>https://li-tann.github.io/blog/fst-blog</id>
+        <link href="https://li-tann.github.io/blog/fst-blog"/>
+        <updated>2023-02-08T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[hello, docusaurus]]></summary>
+        <content type="html"><![CDATA[<p>hello, docusaurus</p>
+<p>--li-tann</p>]]></content>
+        <author>
+            <name>litan</name>
+            <uri>https://github.com/li-tann</uri>
+        </author>
+        <category label="hello" term="hello"/>
+        <category label="docusaurus" term="docusaurus"/>
+    </entry>
+</feed>

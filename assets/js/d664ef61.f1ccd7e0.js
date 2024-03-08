@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[1462],{7697:e=>{e.exports=JSON.parse('{"label":"zotero","permalink":"/blog/tags/zotero","allTagsPath":"/blog/tags","count":1,"unlisted":false}')}}]);
