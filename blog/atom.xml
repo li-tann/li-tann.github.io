@@ -2,27 +2,44 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://li-tann.github.io/blog</id>
     <title>li-tann Blog</title>
-    <updated>2024-01-07T00:00:00.000Z</updated>
+    <updated>2024-05-09T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://li-tann.github.io/blog"/>
     <subtitle>li-tann Blog</subtitle>
     <icon>https://li-tann.github.io/img/SAR-LOGO2.png</icon>
     <entry>
-        <title type="html"><![CDATA[GDAL_Tools 有感]]></title>
-        <id>https://li-tann.github.io/blog/2024/01/07/gdal_tools_feeling</id>
-        <link href="https://li-tann.github.io/blog/2024/01/07/gdal_tools_feeling"/>
-        <updated>2024-01-07T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[简单过了一遍GDALTools里的所有功能，才想起这个项目的初衷是学习GDAL库中的函数，API，... 但渐渐的变成了自己写基于GDAL的RasterIO读取影像，自写算法进行数据处理的相关功能的集散地...]]></summary>
-        <content type="html"><![CDATA[<p>简单过了一遍<a href="https://github.com/li-tann/GDAL_Tools" target="_blank" rel="noopener noreferrer">GDAL_Tools</a>里的所有功能，才想起这个项目的初衷是学习GDAL库中的函数，API，... 但渐渐的变成了自己写基于GDAL的RasterIO读取影像，自写算法进行数据处理的相关功能的集散地...</p>
-<p>所以呢，有个想法，</p>
-<p>为了让这个项目重回正轨，打算将项目重构（唉，又是一次重构...），把算法类的功能拆分成一个新的项目，GDAL_Tools内只保留基于GDAL API的相关功能</p>
-<p>新模块就叫"SAR_Image_Processing_Tools"吧...很土的名字...</p>
-<p>立blog为据，防止忘记</p>]]></content>
+        <title type="html"><![CDATA[VSCode Cpp_IntelliSense 罢工]]></title>
+        <id>https://li-tann.github.io/blog/2024/05/09/vscode_c_cpp_intelliSense_not_work</id>
+        <link href="https://li-tann.github.io/blog/2024/05/09/vscode_c_cpp_intelliSense_not_work"/>
+        <updated>2024-05-09T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[昨天（2024-05-08）下午开始，VSCode智能提示突然罢工，]]></summary>
+        <content type="html"><![CDATA[<p>昨天（2024-05-08）下午开始，VSCode智能提示突然罢工，</p>
+<p><img loading="lazy" alt="vscode_error" src="https://li-tann.github.io/assets/images/2024-05-09-vscode_error-3ecdf944976b5616a2f1d7e2ae1f9f38.png" width="945" height="389" class="img_ev3q"></p>
+<p>起初是认为MSVC编译器更新导致includepath更换导致“无法找到 源 文件”，于是便开始疯狂在settings.json和c_cpp_properties.json中添加信息</p>
+<p>settings.json:</p>
+<ul>
+<li>C_Cpp.errorSquiggles: enabled</li>
+<li>C_Cpp.intelliSenseEngineFallback: enabled</li>
+<li>C_Cpp.default.compilerPath: vs2022/community/vc/tools/msvc/14.39.33519/bin/hostx64/x64/cl.exe</li>
+<li>C_Cpp.default.includePath: vs2022/community/vc/tools/msvc/14.39.33519/include</li>
+<li>...</li>
+</ul>
+<p>json和c_cpp_properties.json:</p>
+<ul>
+<li>compilerPath" vs2022/community/vc/tools/msvc/14.39.33519/bin/hostx64/x64/cl.exe</li>
+<li>intelliSenseMode: msvc-x64,</li>
+<li>configurationProvider: ms-vscode.cmake-tools,</li>
+<li>windowsSdkVersion: 10.0.19041.0</li>
+<li>...</li>
+</ul>
+<p>自己能想到的，网上能搜到的搜试了一遍，都无济于事，直到尽早偶然发现VSCode的C/C++插件（负责cpp_intelliSense）最近一次更新是21小时前，与罢工相吻合，于是便退回了一个版本，重启VSCode后一切恢复正常...</p>
+<p><img loading="lazy" alt="vscode_error" src="https://li-tann.github.io/assets/images/2024-05-09-c_cpp_version-4062d5ef773f24f690d9f9490733e3dd.png" width="3508" height="975" class="img_ev3q"></p>]]></content>
         <author>
             <name>litan</name>
             <uri>https://github.com/li-tann</uri>
         </author>
-        <category label="GDAL" term="GDAL"/>
+        <category label="VSCode" term="VSCode"/>
+        <category label="Cpp_IntelliSense" term="Cpp_IntelliSense"/>
     </entry>
     <entry>
         <title type="html"><![CDATA[bat脚本拆分字符串]]></title>
