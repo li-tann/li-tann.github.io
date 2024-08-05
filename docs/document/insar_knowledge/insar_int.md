@@ -106,6 +106,47 @@ $$
 \end{aligned}
 $$
 
-## 方位向滤波
+## 干涉相位成分
 
-## 距离向滤波
+$$
+\phi = \phi_{flat} + \phi_{topo} + \phi_{defo} + \phi_{atm} + \phi_{noi}
+$$
+
+其中, $\phi_{flat}$是平地相位, $\phi_{topo}$是地形相位, $\phi_{defo}$是形变相位, $\phi_{atm}$是大气延迟相位, $\phi_{noi}$是随机噪声相位。
+
+### 平地相位
+
+$\phi_{flat}$平地相位(参考面相位), 是由参考椭球面引起的系统相位, 即平地情况下, 干涉图也会出现密集的条纹。
+
+<!-- [缺个图](pics/default.png) -->
+
+(缺个图)
+
+将主星位置S1, 辅星位置S2, 与平地点P组成三角形, 根据余弦定理,
+
+$$
+\begin{aligned}
+R_2 &= \sqrt{R_1^2+B^2-2BR_1\cos(\alpha+90\degree-\theta)} \\
+&=\sqrt{R_1^2+B^2-2BR_1\sin(\theta-\alpha)} \\
+& \approx \sqrt{R_1^2-2BR_1\sin(\theta-\alpha)+B^2\sin^2(\theta-\alpha)} \\
+& \approx R_1 - B\sin(\theta-\alpha)
+\end{aligned}
+$$
+
+可以得到P点的干涉相位,
+
+$$
+\begin{aligned}
+\phi_P &= -\frac{4\pi}{\lambda}(R_1-R_2) \\
+&= -\frac{4\pi}{\lambda} B\sin(\theta-\alpha) \\
+&= -\frac{4\pi}{\lambda} B_{\parallel}
+\end{aligned}
+$$
+
+根据公式可知, 平行基线 $B_{\parallel}$越短, 干涉条纹越宽, 
+
+## 滤波
+
+### 方位向滤波
+
+### 距离向滤波
