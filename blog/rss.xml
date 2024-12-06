@@ -4,10 +4,30 @@
         <title>li-tann Blog</title>
         <link>https://li-tann.github.io/blog</link>
         <description>li-tann Blog</description>
-        <lastBuildDate>Tue, 03 Dec 2024 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 06 Dec 2024 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
+        <item>
+            <title><![CDATA[Docusaurus Update to 3.6.3]]></title>
+            <link>https://li-tann.github.io/blog/2024/12/06/docusaurus_3_6_3</link>
+            <guid>https://li-tann.github.io/blog/2024/12/06/docusaurus_3_6_3</guid>
+            <pubDate>Fri, 06 Dec 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[因2024年5月, 淘宝之前的镜像彻底不能用了，也就导致使用废弃的镜像无法下载文件]]></description>
+            <content:encoded><![CDATA[<p>因2024年5月, 淘宝之前的镜像彻底不能用了，也就导致使用废弃的镜像无法下载文件</p>
+<p>首先需要先更新镜像,</p>
+<div class="language-powerShell language-powershell codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-powershell codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">npm config set registry https://registry.npmmirror.com</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>可以通过<code>npm view [package] versions</code>等方式检验npm是否可用</p>
+<p>更新镜像后，把地址切到项目地址下，输入指令更新docusaurus版本</p>
+<div class="language-powershell codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-powershell codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">npm i @docusaurus/core@latest @docusaurus/preset-classic@latest @docusaurus/module-type-aliases@latest @docusaurus/tsconfig@latest @docusaurus/types@latest</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>更新后使用<code>npm start</code>尝试启动项目, 报错, 提示信息为</p>
+<div class="language-powershell codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-powershell codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">Error: Docusaurus was unable to resolve the "@docusaurus/theme-mermaid" theme.....</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>于是又更新了@docusaurus/theme-mermaid, 更新后再次使用<code>npm start</code>就可以正常启动项目了</p>
+<div class="language-powershell codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-powershell codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">npm i @docusaurus/theme-mermaid@latest</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
+<p>启动后发现首页与之前不同，经过排查后发现, 因为我存了两版主页：<code>index.md</code>和<code>index.tsx</code>，老版软件会优先调用*.tsx，而新版主页会优先调用<code>*.md</code>，将<code>index.md</code>文件删除（或重命名）后一切恢复正常。</p>
+<p>更新成功。</p>]]></content:encoded>
+            <category>docusaurus</category>
+        </item>
         <item>
             <title><![CDATA[PowerShell查看历史记录]]></title>
             <link>https://li-tann.github.io/blog/2024/12/03/powershell_history</link>
@@ -17,11 +37,11 @@
             <content:encoded><![CDATA[<h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="1在控制台查看历史指令">1.在控制台查看历史指令<a href="https://li-tann.github.io/blog/2024/12/03/powershell_history#1%E5%9C%A8%E6%8E%A7%E5%88%B6%E5%8F%B0%E6%9F%A5%E7%9C%8B%E5%8E%86%E5%8F%B2%E6%8C%87%E4%BB%A4" class="hash-link" aria-label="Direct link to 1.在控制台查看历史指令" title="Direct link to 1.在控制台查看历史指令">​</a></h2>
 <p>使用该指令可以在控制台打印当前窗口的历史指令，但当指令超过控制台宽度时，指令会被省略号代替</p>
 <div class="language-powershell codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-powershell codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">Get-History</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
-<p><img loading="lazy" alt="powershell" src="https://li-tann.github.io/assets/images/2024-12-03-powershell_img-7564cb08540cf8d2023f32cf3b6344e9.png" width="1621" height="612" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="powershell" src="https://li-tann.github.io/assets/images/2024-12-03-powershell_img-7564cb08540cf8d2023f32cf3b6344e9.png" width="1621" height="612" class="img_ev3q"></p>
 <h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="2保存指令">2.保存指令<a href="https://li-tann.github.io/blog/2024/12/03/powershell_history#2%E4%BF%9D%E5%AD%98%E6%8C%87%E4%BB%A4" class="hash-link" aria-label="Direct link to 2.保存指令" title="Direct link to 2.保存指令">​</a></h2>
 <p>将指令输出到csv文件中，保留完整的指令，以及每条指令的启动与终止时间、耗时等信息。</p>
 <div class="language-powershell codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#393A34;--prism-background-color:#f6f8fa"><div class="codeBlockContent_biex"><pre tabindex="0" class="prism-code language-powershell codeBlock_bY9V thin-scrollbar" style="color:#393A34;background-color:#f6f8fa"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#393A34"><span class="token plain">Get-History | Export-Csv -Path tool_geocode_history.csv</span><br></span></code></pre><div class="buttonGroup__atx"><button type="button" aria-label="Copy code to clipboard" title="Copy" class="clean-btn"><span class="copyButtonIcons_eSgA" aria-hidden="true"><svg viewBox="0 0 24 24" class="copyButtonIcon_y97N"><path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"></path></svg><svg viewBox="0 0 24 24" class="copyButtonSuccessIcon_LjdS"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"></path></svg></span></button></div></div></div>
-<p><img loading="lazy" alt="powershell" src="https://li-tann.github.io/assets/images/2024-12-03-powershell_img2-f9de7eb780a9d66bd81ab5155b550f84.png" width="1708" height="403" class="img_ev3q"></p>]]></content:encoded>
+<p><img decoding="async" loading="lazy" alt="powershell" src="https://li-tann.github.io/assets/images/2024-12-03-powershell_img2-f9de7eb780a9d66bd81ab5155b550f84.png" width="1708" height="403" class="img_ev3q"></p>]]></content:encoded>
             <category>PowerShell</category>
         </item>
         <item>
@@ -31,7 +51,7 @@
             <pubDate>Thu, 09 May 2024 00:00:00 GMT</pubDate>
             <description><![CDATA[昨天（2024-05-08）下午开始，VSCode智能提示突然罢工，]]></description>
             <content:encoded><![CDATA[<p>昨天（2024-05-08）下午开始，VSCode智能提示突然罢工，</p>
-<p><img loading="lazy" alt="vscode_error" src="https://li-tann.github.io/assets/images/2024-05-09-vscode_error-3ecdf944976b5616a2f1d7e2ae1f9f38.png" width="945" height="389" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" alt="vscode_error" src="https://li-tann.github.io/assets/images/2024-05-09-vscode_error-3ecdf944976b5616a2f1d7e2ae1f9f38.png" width="945" height="389" class="img_ev3q"></p>
 <p>起初是认为MSVC编译器更新导致includepath更换导致“无法找到 源 文件”，于是便开始疯狂在settings.json和c_cpp_properties.json中添加信息</p>
 <p>settings.json:</p>
 <ul>
@@ -50,7 +70,7 @@
 <li>...</li>
 </ul>
 <p>自己能想到的，网上能搜到的搜试了一遍，都无济于事，直到尽早偶然发现VSCode的C/C++插件（负责cpp_intelliSense）最近一次更新是21小时前，与罢工相吻合，于是便退回了一个版本，重启VSCode后一切恢复正常...</p>
-<p><img loading="lazy" alt="vscode_error" src="https://li-tann.github.io/assets/images/2024-05-09-c_cpp_version-4062d5ef773f24f690d9f9490733e3dd.png" width="3508" height="975" class="img_ev3q"></p>]]></content:encoded>
+<p><img decoding="async" loading="lazy" alt="vscode_error" src="https://li-tann.github.io/assets/images/2024-05-09-c_cpp_version-4062d5ef773f24f690d9f9490733e3dd.png" width="3508" height="975" class="img_ev3q"></p>]]></content:encoded>
             <category>VSCode</category>
             <category>Cpp_IntelliSense</category>
         </item>
@@ -140,7 +160,7 @@ li-tamm,1,19</p>
             <pubDate>Fri, 03 Mar 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Github中经常见到类似的标签，]]></description>
             <content:encoded><![CDATA[<p>Github中经常见到类似的标签，</p>
-<p><img loading="lazy" src="https://img.shields.io/github/stars/li-tann/li-tann.github.io.svg" alt="starts" class="img_ev3q"> <img loading="lazy" src="https://img.shields.io/badge/li--tann-InSAR-brightgreen" alt="example label" class="img_ev3q"></p>
+<p><img decoding="async" loading="lazy" src="https://img.shields.io/github/stars/li-tann/li-tann.github.io.svg" alt="starts" class="img_ev3q"> <img decoding="async" loading="lazy" src="https://img.shields.io/badge/li--tann-InSAR-brightgreen" alt="example label" class="img_ev3q"></p>
 <p>前者是li-tann.github.io的实时stars，后者是自定义生成的静态内容。</p>
 <p>类似的标签，都是通过<a href="https://shields.io/" target="_blank" rel="noopener noreferrer">Shield IO</a>网站实现的。</p>
 <p>实时的github stars:</p>
@@ -156,7 +176,7 @@ li-tamm,1,19</p>
             <guid>https://li-tann.github.io/blog/2023/03/03/zotero-onedrive</guid>
             <pubDate>Fri, 03 Mar 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[zotero.logo]]></description>
-            <content:encoded><![CDATA[<p><img loading="lazy" src="https://www.zotero.org/static/images/theme/zotero-logo.1519312231.svg" alt="zotero.logo" class="img_ev3q"></p>
+            <content:encoded><![CDATA[<p><img decoding="async" loading="lazy" src="https://www.zotero.org/static/images/theme/zotero-logo.1519312231.svg" alt="zotero.logo" class="img_ev3q"></p>
 <p>zotero是一款免费的文献管理工具(包括但不限于文件管理功能)，其本身提供收费的云端文件存储服务（免费向每个账户提供300Mb云空间）。</p>
 <p>但将本地存储搭建在OneDrive中，云端只同步文献基本信息（不上传附件内容），即可实现免费的多设备同步。</p>
 <h2 class="anchor anchorWithHideOnScrollNavbar_WYt5" id="操作说明">操作说明<a href="https://li-tann.github.io/blog/2023/03/03/zotero-onedrive#%E6%93%8D%E4%BD%9C%E8%AF%B4%E6%98%8E" class="hash-link" aria-label="Direct link to 操作说明" title="Direct link to 操作说明">​</a></h2>
