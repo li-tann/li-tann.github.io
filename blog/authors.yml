@@ -2,4 +2,5 @@ li-tann:
   name: litan
   title: SW Engineer
   url: https://github.com/li-tann
-  image_url: https://github.com/li-tann.png
+  image_url: /img/me.jpg
+  # image_url: https://github.com/li-tann.png

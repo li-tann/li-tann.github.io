@@ -21,3 +21,5 @@ Github中经常见到类似的标签，
 用户名是`li-tann`, 仓库是`litan.github.io`，
 
 该仓库的实时stars: `https://img.shields.io/github/stars/li-tann/li-tann.github.io.svg`
+
+<!-- truncate -->

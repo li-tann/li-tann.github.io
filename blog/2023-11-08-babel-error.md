@@ -9,3 +9,5 @@ tags: [babel]
 ```shell
 [BABEL] Note: The code generator has deoptimised the styling of xxxxx.md as it exceeds the max of 500KB.
 ```
+
+<!-- truncate -->

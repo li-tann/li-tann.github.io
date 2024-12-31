@@ -29,3 +29,5 @@ json和c_cpp_properties.json:
 自己能想到的，网上能搜到的搜试了一遍，都无济于事，直到尽早偶然发现VSCode的C/C++插件（负责cpp_intelliSense）最近一次更新是21小时前，与罢工相吻合，于是便退回了一个版本，重启VSCode后一切恢复正常...
 
 ![vscode_error](blog_photos/2024-05-09-c_cpp_version.png)
+
+<!-- truncate -->

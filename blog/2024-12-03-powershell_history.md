@@ -24,3 +24,5 @@ Get-History | Export-Csv -Path tool_geocode_history.csv
 ```
 
 ![powershell](./blog_photos/2024-12-03-powershell_img2.png)
+
+<!-- truncate -->

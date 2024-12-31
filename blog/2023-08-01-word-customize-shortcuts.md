@@ -21,3 +21,5 @@ tags: [word]
 完成。
 
 [Word 中的键盘快捷方式](https://support.microsoft.com/zh-cn/office/word-%E4%B8%AD%E7%9A%84%E9%94%AE%E7%9B%98%E5%BF%AB%E6%8D%B7%E6%96%B9%E5%BC%8F-95ef89dd-7142-4b50-afb2-f762f663ceb2)
+
+<!-- truncate -->

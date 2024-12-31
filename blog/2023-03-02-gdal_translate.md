@@ -27,3 +27,5 @@ for(int b = 1; b<bands; b++)
 GDALClose(p_ds);
 
 ```
+
+<!-- truncate -->
