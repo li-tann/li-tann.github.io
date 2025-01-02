@@ -1,3 +1,10 @@
+---
+custom_edit_url: null
+last_update:
+    author: li-tann
+tags: [数据结构, UML]
+---
+
 # UML类图
 
 ## 常见定义

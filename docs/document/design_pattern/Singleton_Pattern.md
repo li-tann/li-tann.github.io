@@ -1,5 +1,8 @@
 ---
 custom_edit_url: null
+last_update:
+    author: li-tann
+tags: [数据结构, 设计模式, 单例]
 ---
 
 # Section.1 单例模式

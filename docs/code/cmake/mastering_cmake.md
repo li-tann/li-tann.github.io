@@ -2,6 +2,9 @@
 title: Mastering CMake
 sidebar_position: 0
 custom_edit_url: null
+last_update:
+    author: li-tann
+tags: [CMake]
 ---
 
 *Mastering CMake* study notes

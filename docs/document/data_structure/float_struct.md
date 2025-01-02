@@ -1,6 +1,9 @@
 ---
 title: 浮点型数据结构
 custom_edit_url: null
+last_update:
+    author: li-tann
+tags: [数据结构, float16]
 ---
 
 # float16与float32计算方式

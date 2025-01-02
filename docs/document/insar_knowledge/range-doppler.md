@@ -1,5 +1,8 @@
 ---
 custom_edit_url: null
+last_update:
+    author: li-tann
+tags: [RD-Model]
 ---
 
 # 距离-多普勒模型

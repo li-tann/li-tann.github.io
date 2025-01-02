@@ -1,6 +1,9 @@
 ---
 title: utils
 custom_edit_url: null
+last_update:
+    author: li-tann
+tags: [Python]
 ---
 
 ## 遍历搜索关键字

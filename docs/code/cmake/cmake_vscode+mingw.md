@@ -1,6 +1,9 @@
 ---
 title: VSCode MinGW
 custom_edit_url: null
+last_update:
+    author: li-tann
+tags: [CMake]
 ---
 
 # vscode + mingw(windows)

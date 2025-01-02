@@ -1,6 +1,9 @@
 ---
 title: VisualStudio
 custom_edit_url: null
+last_update:
+    author: li-tann
+tags: [CMake]
 ---
 
 # CMake + Visual Studio 设置传入参数

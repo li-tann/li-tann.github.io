@@ -1,5 +1,8 @@
 ---
 custom_edit_url: null
+last_update:
+    author: li-tann
+tags: [Cpp, Qt, MD5]
 ---
 
 # MD5码获取

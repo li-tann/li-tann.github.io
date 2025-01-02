@@ -1,6 +1,9 @@
 ---
 sidebar_position: 98
 custom_edit_url: null
+last_update:
+    author: li-tann
+tags: [颜色表]
 ---
 
 # 色卡

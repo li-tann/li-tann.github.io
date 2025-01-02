@@ -1,5 +1,8 @@
 ---
 custom_edit_url: null
+last_update:
+    author: li-tann
+tags: [图像处理, 数据拉伸]
 ---
 
 # 强度影像的拉伸
