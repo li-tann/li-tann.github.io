@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[8375],{31816:s=>{s.exports=JSON.parse('{"tag":{"label":"SQL","permalink":"/docs/tags/sql","allTagsPath":"/docs/tags","count":1,"items":[{"id":"document/tool_syntax/sql","title":"SQL","description":"SQL\u57fa\u672c\u8bed\u6cd5","permalink":"/docs/document/tool_syntax/sql"}],"unlisted":false}}')}}]);
