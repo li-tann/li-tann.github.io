@@ -6,15 +6,124 @@
 
 :::
 
+## triangle.h注释文档
+
+If you haven't read Triangle's instructions (run "triangle -h" to read them), you won't understand what follows.
+
+Triangle must be compiled into an object file (triangle.o) with the  TRILIBRARY symbol defined (generally by using the -DTRILIBRARY compiler switch).  The makefile included with Triangle will do this for you if you run "make trilibrary".  The resulting object file can be called via the procedure triangulate().
+
+If the size of the object file is important to you, you may wish to  generate a reduced version of triangle.o. The REDUCED symbol gets rid of all features that are primarily of research interest. Specifically, the -DREDUCED switch eliminates Triangle's -i, -F, -s, and -C switches. The CDT_ONLY symbol gets rid of all meshing algorithms above and beyond constrained Delaunay triangulation.  Specifically, the -DCDT_ONLY switch eliminates Triangle's -r, -q, -a, -u, -D, -Y, -S, and -s switches.
+
+IMPORTANT:  These definitions (TRILIBRARY, REDUCED, CDT_ONLY) must be made in the makefile or in triangle.c itself.  Putting these definitions in this file (triangle.h) will not create the desired effect.
+
+The calling convention for triangulate() follows.
+
+```c
+      void triangulate(triswitches, in, out, vorout)                       
+      char *triswitches;                                                   
+      struct triangulateio *in;                                            
+      struct triangulateio *out;                                           
+      struct triangulateio *vorout;                                        
+```
+
+`triswitches` is a string containing the command line switches you wish to invoke.  No initial dash is required. Some suggestions:
+
+- You'll probably find it convenient to use the 'z' switch so that points (and other items) are numbered from zero.  This simplifies indexing, because the first item of any type always starts at index [0] of the corresponding array, whether that item's number is zero or one.
+- You'll probably want to use the 'Q' (quiet) switch in your final code, but you can take advantage of Triangle's printed output (including the 'V' switch) while debugging.
+- If you are not using the 'q', 'a', 'u', 'D', 'j', or 's' switches, then the output points will be identical to the input points, except possibly for the boundary markers.  If you don't need the boundary markers, you should use the 'N' (no nodes output) switch to save memory.  (If you do need boundary markers, but need to save memory, a good nasty trick is to set out->pointlist equal to in->pointlist before calling triangulate(), so that Triangle overwrites the input points with identical copies.)
+- The 'I' (no iteration numbers) and 'g' (.off file output) switches have no effect when Triangle is compiled with TRILIBRARY defined.
+
+'in', 'out', and 'vorout' are descriptions of the input, the output, and the Voronoi output.  If the 'v' (Voronoi output) switch is not used, 'vorout' may be NULL.  'in' and 'out' may never be NULL.
+
+Certain fields of the input and output structures must be initialized, as described below.
+
+### 结构体说明
+
+The 'triangulateio' structure.
+
+Used to pass data into and out of the triangulate() procedure.
+
+Arrays are used to store points, triangles, markers, and so forth.  In all cases, the first item in any array is stored starting at index [0]. However, that item is item number '1' unless the 'z' switch is used, in which case it is item number '0'.  Hence, you may find it easier to index points (and triangles in the neighbor list) if you use the 'z' switch.  Unless, of course, you're calling Triangle from a Fortran program.
+
+Description of fields (except the 'numberof' fields, which are obvious):
+
+'pointlist':  An array of point coordinates.  The first point's x coordinate is at index [0] and its y coordinate at index [1], followed by the coordinates of the remaining points.  Each point occupies two REALs.
+
+'pointattributelist':  An array of point attributes.  Each point's attributes occupy 'numberofpointattributes' REALs.
+
+'pointmarkerlist':  An array of point markers; one int per point.
+
+'trianglelist':  An array of triangle corners.  The first triangle's first corner is at index [0], followed by its other two corners in counterclockwise order, followed by any other nodes if the triangle represents a nonlinear element.  Each triangle occupies 'numberofcorners' ints.
+
+'triangleattributelist':  An array of triangle attributes. Each triangle's attributes occupy 'numberoftriangleattributes' REALs.
+  
+'trianglearealist':  An array of triangle area constraints; one REAL per triangle.  Input only.
+  
+'neighborlist':  An array of triangle neighbors; three ints per triangle. Output only.
+
+'segmentlist':  An array of segment endpoints.  The first segment's endpoints are at indices [0] and [1], followed by the remaining segments.  Two ints per segment.
+  
+'segmentmarkerlist':  An array of segment markers; one int per segment.  
+
+'holelist':  An array of holes.  The first hole's x and y coordinates are at indices [0] and [1], followed by the remaining holes.  Two REALs per hole.  Input only, although the pointer is copied to the output structure for your convenience.
+
+'regionlist':  An array of regional attributes and area constraints. The first constraint's x and y coordinates are at indices [0] and [1], followed by the regional attribute at index [2], followed by the maximum area at index [3], followed by the remaining area constraints. Four REALs per area constraint.  Note that each regional attribute is used only if you select the 'A' switch, and each area constraint is used only if you select the 'a' switch (with no number following), but omitting one of these switches does not change the memory layout. Input only, although the pointer is copied to the output structure for your convenience.
+
+'edgelist':  An array of edge endpoints.  The first edge's endpoints are at indices [0] and [1], followed by the remaining edges.  Two ints per edge.  Output only.
+
+'edgemarkerlist':  An array of edge markers; one int per edge.  Output only.
+
+'normlist':  An array of normal vectors, used for infinite rays in Voronoi diagrams.  The first normal vector's x and y magnitudes are at indices [0] and [1], followed by the remaining vectors.  For each finite edge in a Voronoi diagram, the normal vector written is the zero vector.  Two REALs per edge.  Output only.
+
+Any input fields that Triangle will examine must be initialized. Furthermore, for each output array that Triangle will write to, you must either provide space by setting the appropriate pointer to pointto the space you want the data written to, or you must initialize the pointer to NULL, which tells Triangle to allocate space for the results. The latter option is preferable, because Triangle always knows exactly how much space to allocate.  The former option is provided mainly for people who need to call Triangle from Fortran code, though it also makes possible some nasty space-saving tricks, like writing the output to the same arrays as the input.
+
+Triangle will not free() any input or output arrays, including those it allocates itself; that's up to you.  You should free arrays allocated by Triangle by calling the trifree() procedure defined below.  (By default, trifree() just calls the standard free() library procedure, but applications that call triangulate() may replace trimalloc() and trifree() in triangle.c to use specialized memory allocators.)
+
+### 结构体初始化
+
+Here's a guide to help you decide which fields you must initialize before you call triangulate().
+
+#### in
+
+- 'pointlist' must always point to a list of points; 'numberofpoints' and 'numberofpointattributes' must be properly set.
+'pointmarkerlist' must either be set to NULL (in which case all markers default to zero), or must point to a list of markers.  If 'numberofpointattributes' is not zero, 'pointattributelist' must point to a list of point attributes.
+- If the 'r' switch is used, 'trianglelist' must point to a list of triangles, and 'numberoftriangles', 'numberofcorners', and 'numberoftriangleattributes' must be properly set.  If 'numberoftriangleattributes' is not zero, 'triangleattributelist' must point to a list of triangle attributes.  If the 'a' switch is used (with no number following), 'trianglearealist' must point to a list of triangle area constraints.  'neighborlist' may be ignored.
+- If the 'p' switch is used, 'segmentlist' must point to a list of segments, 'numberofsegments' must be properly set, and 'segmentmarkerlist' must either be set to NULL (in which case all markers default to zero), or must point to a list of markers.
+- If the 'p' switch is used without the 'r' switch, then 'numberofholes' and 'numberofregions' must be properly set.  If 'numberofholes' is not zero, 'holelist' must point to a list of holes.  If 'numberofregions' is not zero, 'regionlist' must point to a list of region constraints.
+- If the 'p' switch is used, 'holelist', 'numberofholes', 'regionlist', and 'numberofregions' is copied to 'out'.  (You can nonetheless get away with not initializing them if the 'r' switch is used.)
+- 'edgelist', 'edgemarkerlist', 'normlist', and 'numberofedges' may be ignored.
+
+#### out
+
+- 'pointlist' must be initialized (NULL or pointing to memory) unless the 'N' switch is used.  'pointmarkerlist' must be initialized unless the 'N' or 'B' switch is used.  If 'N' is not used and 'in->numberofpointattributes' is not zero, 'pointattributelist' must be initialized.
+- 'trianglelist' must be initialized unless the 'E' switch is used.'neighborlist' must be initialized if the 'n' switch is used.  If the 'E' switch is not used and ('in->numberofelementattributes' is not zero or the 'A' switch is used), 'elementattributelist' must be initialized.  'trianglearealist' may be ignored.
+- 'segmentlist' must be initialized if the 'p' or 'c' switch is used, and the 'P' switch is not used.  'segmentmarkerlist' must also be initialized under these circumstances unless the 'B' switch is used.
+- 'edgelist' must be initialized if the 'e' switch is used. 'edgemarkerlist' must be initialized if the 'e' switch is used and the 'B' switch is not.
+- 'holelist', 'regionlist', 'normlist', and all scalars may be ignored.
+
+#### vorout
+
+(only needed if 'v' switch is used)
+
+- 'pointlist' must be initialized.  If 'in->numberofpointattributes' is not zero, 'pointattributelist' must be initialized. 'pointmarkerlist' may be ignored.
+- 'edgelist' and 'normlist' must both be initialized. 'edgemarkerlist' may be ignored.
+- Everything else may be ignored.
+
+  After a call to triangulate(), the valid fields of 'out' and 'vorout'will depend, in an obvious way, on the choice of switches used.  Note that when the 'p' switch is used, the pointers 'holelist' and 'regionlist' are copied from 'in' to 'out', but no new space is allocated; be careful that you don't free() the same array twice.  On the other hand, Triangle will never copy the 'pointlist' pointer (or any others); new space is allocated for 'out->pointlist', or if the 'N' switch is used, 'out->pointlist' remains uninitialized.
+
+All of the meaningful 'numberof' fields will be properly set; for instance, 'numberofedges' will represent the number of edges in the triangulation whether or not the edges were written.  If segments are not used, 'numberofsegments' will indicate the number of boundary edges.
+
+## triangle -h
+
 A Two-Dimensional Quality Mesh Generator and Delaunay Triangulator.Version 1.6
 
-## 版权说明
+### 版权说明
 
 Copyright 1993, 1995, 1997, 1998, 2002, 2005 Jonathan Richard Shewchuk 2360 Woolsey #H / Berkeley, California 94705-1927 Bugs/comments to jrs@cs.berkeley.edu
 
 Created as part of the Quake project (tools for earthquake simulation). Supported in part by NSF Grant CMS-9318163 and an NSERC 1967 Scholarship. There is no warranty whatsoever.  Use at your own risk. This executable is compiled for double precision arithmetic.
 
-## 功能介绍
+### 功能介绍
 
 Triangle可以生成精确Delaunay三角剖分(exact Delaunay triangulations), 约束Delaunay三角剖分(constrained Delaunay triangulations), 一致Delaunay三角剖分(conforming Delaunay triangulations), Voronoi图(Voronoi diagrams), 以及高质量的三角形网格(high-quality triangular meshes)。
 
@@ -36,16 +145,22 @@ command line switch is specified, your .node input file is read, and the Delauna
 下划线表示它前面的参数/开关(switch)之后可以选择性的输入数字。__而不是指代空格__。
 
 > Underscores indicate that numbers may optionally follow certain switches. Do not leave any space between a switch and its numeric parameter.
-> 
+>
 > input_file must be a file with extension .node, or extension .poly if the -p switch is used.  If -r is used, you must supply .node and .ele files, and possibly a .poly file and an .area file as well.  
 
-## 参数说明
+### 参数说明
 
 The formats of these files are described below.
 
+#### 指令简述
+
+|指令|说明|
+|:---:|:---:|
+|-p|输入顶点时, 使用-p可以生成.|
+
 Command Line Switches:
 
-### -p 读取poly文件
+#### -p 读取poly文件
 
 读取平面直线图(Planar Straight Line Graph, PSLG, *.poly file), 生成一个**受约束的Delaunay三角剖分(constrained Delaunay triangulation, CDT)**。如果使用了`-s`、 `-q`、 `-a`、或`-u`，则会生成一个**一致约束Delaunay三角剖分(conforming constrained Delaunay triangulation, CCDT)**。如果想要生成一个**真正的Delaunay三角剖分(exact Delaunay triangulation, EDT)**，而不是受约束的，则需要使用`-D`。当不使用`-p`时, Triangle会默认读取`.node`文件。
 
@@ -53,27 +168,27 @@ Command Line Switches:
 
 > Reads a Planar Straight Line Graph (.poly file), which can specify vertices, segments, holes, regional attributes, and regional area constraints.  Generates a constrained Delaunay triangulation (CDT) fitting the input; or, if -s, -q, -a, or -u is used, a conforming constrained Delaunay triangulation (CCDT).  If you want a truly Delaunay (not just constrained Delaunay) triangulation, use -D as well.  When -p is not used, Triangle reads a .node file by default.
 
-### -r 优化预输入网格
+#### -r 优化预输入网格
 
 优化从`.node`和`.ele`文件中读取的网格。如果同时使用了`-p`, `.poly`文件也会被读取并用于约束网格中的线段(segments)；如果`-a`也被使用并且没有跟随数字, 则`.area`文件会被读取并对网格施加面积约束。（详见`-a`?）
 
 > Refines a previously generated mesh.  The mesh is read from a .node file and an .ele file.  If -p is also used, a .poly file is read and used to constrain segments in the mesh.  If -a is also used (with no number following), an .area file is read and used to impose area constraints on the mesh.  Further details on refinement appear below.
 
-### -q 提升网格质量
+#### -q 提升网格质量
 
 基于`Paul Chew`和`Jim Ruppert`的混合算法, 通过Delaunay精化生成高质量的网格。通过在网格中增加端点(vertices)来保证所有的角都在20~140度之间。在`-q`之后可以制定一个数字来表示允许的最小角度$\theta$(允许使用小数但不允许指数写法(exponential notation)), 并且最大角度$\phi$与最小角度$\theta$的关系满足，$\phi = 180^{\circ} - 2 \theta$。
 
-> Quality mesh generation by Delaunay refinement (a hybrid of Paul Chew's and Jim Ruppert's algorithms).  Adds vertices to the mesh to ensure that all angles are between 20 and 140 degrees.  An alternative bound on the minimum angle, replacing 20 degrees, may be specified after the `q'.  The specified angle may include a decimal point, but not exponential notation.  Note that a bound of theta degrees on the smallest angle also implies a bound of (180 - 2 theta) on the largest angle.  If the minimum angle is 28.6 degrees or smaller, Triangle is mathematically guaranteed to terminate (assuming infinite precision arithmetic--Triangle may fail to terminate if you run out of precision).  In practice, Triangle often succeeds for minimum angles up to 34 degrees.  For some meshes, however, you might need to reduce the minimum angle to avoid problems associated with insufficient floating-point precision.
+> Quality mesh generation by Delaunay refinement (a hybrid of Paul Chew's and Jim Ruppert's algorithms).  Adds vertices to the mesh to ensure that all angles are between 20 and 140 degrees.  An alternative bound on the minimum angle, replacing 20 degrees, may be specified after the 'q'.  The specified angle may include a decimal point, but not exponential notation.  Note that a bound of theta degrees on the smallest angle also implies a bound of (180 - 2 theta) on the largest angle.  If the minimum angle is 28.6 degrees or smaller, Triangle is mathematically guaranteed to terminate (assuming infinite precision arithmetic--Triangle may fail to terminate if you run out of precision).  In practice, Triangle often succeeds for minimum angles up to 34 degrees.  For some meshes, however, you might need to reduce the minimum angle to avoid problems associated with insufficient floating-point precision.
 
-### -a 限制最大面积
+#### -a 限制最大面积
 
 如果`-a`后面带有数字, 则三角形的面积不会超过它; 如果没有指定数字, 则.rearea文件（如果使用`-r`）或.ply文件（如果不使用`-r`）将指定一组最大面积约束。`.area`文件包含每个三角形单独的面积约束，对"基于后验误差估计(posteriori error estimates)的有限元网格(finite element mesh)精度提升"有帮助。`.poly`文件可以约束所有线段相关区域(segment-bounded region)的面积，所以在三角剖分时使用平面直线图可以控制生成三角形密度。
 
 此外，还可以两次调用`-a`开关来施加固定面积约束和可变面积约束，一次后面有数字，一次不带数字。(没看懂)
 
-> Imposes a maximum triangle area.  If a number follows the `a', no triangle is generated whose area is larger than that number.  If no number is specified, an .area file (if -r is used) or .poly file (if -r is not used) specifies a set of maximum area constraints. An .area file contains a separate area constraint for each triangle, and is useful for refining a finite element mesh based on a posteriori error estimates.  A .poly file can optionally contain an area constraint for each segment-bounded region, thereby controlling triangle densities in a first triangulation of a PSLG. You can impose both a fixed area constraint and a varying area constraint by invoking the -a switch twice, once with and once without a number following. Each area specified may include a decimal point.
+> Imposes a maximum triangle area.  If a number follows the 'a', no triangle is generated whose area is larger than that number.  If no number is specified, an .area file (if -r is used) or .poly file (if -r is not used) specifies a set of maximum area constraints. An .area file contains a separate area constraint for each triangle, and is useful for refining a finite element mesh based on a posteriori error estimates.  A .poly file can optionally contain an area constraint for each segment-bounded region, thereby controlling triangle densities in a first triangulation of a PSLG. You can impose both a fixed area constraint and a varying area constraint by invoking the -a switch twice, once with and once without a number following. Each area specified may include a decimal point.
 
-### -u 约束三角形尺寸
+#### -u 约束三角形尺寸
 
 对三角形尺寸施加一个用户定义(user-defined)的约束。有两种使用方法：一是修改(edit)`triangle.c`代码文件中`triunsuitable()`函数，来添加想要的约束（需要重新编译Triangle）。二是使用符号集(symbol set)`EXTERNAL_TEST`编译`triangle.c`（编译指令`compiler switch -DEXTERNAL_TEST`），然后将triangle与实现triunsuitable()的单独对象文件链接。
 
@@ -81,13 +196,13 @@ Command Line Switches:
 
 > Imposes a user-defined constraint on triangle size.  There are two ways to use this feature.  One is to edit the triunsuitable() procedure in triangle.c to encode any constraint you like, then recompile Triangle.  The other is to compile triangle.c with the EXTERNAL_TEST symbol set (compiler switch -DEXTERNAL_TEST), then link Triangle with a separate object file that implements triunsuitable(). In either case, the -u switch causes the user-defined test to be applied to every triangle.
 
-### -A 浮点属性
+#### -A 浮点属性
 
 为每个三角形附加一个浮点属性，以标识每个三角形所属的分段边界区域(segment-bounded region)。属性由`.poly`文件提供, 如果一个区域(region)在.poly文件宏没有被标记（是否有属性）时，该区域的所有三角形的属性数值为0。`-A`只有在使用了`-p`且不使用`-r`时才会有效。
 
 > Assigns an additional floating-point attribute to each triangle that identifies what segment-bounded region each triangle belongs to. Attributes are assigned to regions by the .poly file.  If a region is not explicitly marked by the .poly file, triangles in that region are assigned an attribute of zero.  The -A switch has an effect only when the -p switch is used and the -r switch is not.
 
-### -c 凸包线段
+#### -c 凸包线段
 
 在三角剖分的凸包(convex hull)上创建线段。意思应该是可以连接边界点形成线段，作为三角形的一条边。
 
@@ -99,7 +214,7 @@ Command Line Switches:
 
 > Creates segments on the convex hull of the triangulation.  If you are triangulating a vertex set, this switch causes a .poly file to be written, containing all edges of the convex hull.  If you are triangulating a PSLG, this switch specifies that the whole convex hull of the PSLG should be triangulated, regardless of what segments the PSLG has.  If you do not use this switch when triangulating a PSLG, Triangle assumes that you have identified the region to be triangulated by surrounding it with segments of the input PSLG.  Beware:  if you are not careful, this switch can cause the introduction of an extremely thin angle between a PSLG segment and a convex hull segment, which can cause overrefinement (and possibly failure if Triangle runs out of precision).  If you are refining a mesh, the -c switch works differently:  it causes a .poly file to be written containing the boundary edges of the mesh (useful if no .poly file was read).
 
-### -D 严密三角剖分
+#### -D 严密三角剖分
 
 严密Delaunay三角剖分。使用`-D`可以保证所有三角形都符合Delaunay，而不仅仅是受约束的Delaunay(constrained Delaunay)；又或是保证所有的Voronoi顶点(Voronoi vertices)都在三角型内部。
 
@@ -107,59 +222,59 @@ Command Line Switches:
 
 > Conforming Delaunay triangulation:  use this switch if you want to ensure that all the triangles in the mesh are Delaunay, and not merely constrained Delaunay; or if you want to ensure that all the Voronoi vertices lie within the triangulation.  (Some finite volume methods have this requirement.)  This switch invokes Ruppert's original algorithm, which splits every subsegment whose diametral circle is encroached.  It usually increases the number of vertices and triangles.
 
-### -j 丢弃点
+#### -j 丢弃点
 
 将output.node文件中不属于任何三角剖分的顶点丢弃。
 
 默认情况下，Triangle会以相同的顺序将输入的顶点文件(input .node file)复制到输出的顶点文件(output .node file)中，不改变输出的顶点文件中点的索引顺序。`-j`可防止重复的输入顶点或被孔“吃掉”的顶点出现在output.node文件中。如果输入顶点文件中存在两个或更多具有完全相同的坐标，则只有第一个顶点出现在输出中。如果丢弃了任何顶点，则输出.node文件中的顶点编号与输入.node文件的顶点编号不同。
 
-> Jettisons vertices that are not part of the final triangulation from the output .node file.  By default, Triangle copies all vertices in the input .node file to the output .node file, in the same order, so their indices do not change.  The -j switch prevents duplicated input vertices, or vertices `eaten' by holes, from appearing in the output .node file.  Thus, if two input vertices have exactly the same coordinates, only the first appears in the output.  If any vertices are jettisoned, the vertex numbering in the output .node file differs from that of the input .node file.
+> Jettisons vertices that are not part of the final triangulation from the output .node file.  By default, Triangle copies all vertices in the input .node file to the output .node file, in the same order, so their indices do not change.  The -j switch prevents duplicated input vertices, or vertices 'eaten' by holes, from appearing in the output .node file.  Thus, if two input vertices have exactly the same coordinates, only the first appears in the output.  If any vertices are jettisoned, the vertex numbering in the output .node file differs from that of the input .node file.
 
-### -e 输出.edge
+#### -e 输出.edge
 
 输出triangle的所有边信息。（记录每条边两个端点的索引值）
 
 > Outputs (to an .edge file) a list of edges of the triangulation.
 
-### -v 输出Voronoi图
+#### -v 输出Voronoi图
 
 输出与三角剖分结果对应的Voronoi图。因为不尝试检测退化(detect degeneracies), 所以一部分Voronoi顶点会重复。 请参阅下面对Voronoi图的讨论。
 
 > Outputs the Voronoi diagram associated with the triangulation. Does not attempt to detect degeneracies, so some Voronoi vertices may be duplicated.  See the discussion of Voronoi diagrams below.
 
-### -n 输出.neigh
+#### -n 输出.neigh
 
 输出所有三角形的相邻三角形信息。（记录相邻三角形的索引值）
 
 > Outputs (to a .neigh file) a list of triangles neighboring each triangle.
 
-### -g 输出.off
+#### -g 输出.off
 
 以对象文件类型(Object File Format, .off)输出网格，便于使用Geomview package查看。
 
 > Outputs the mesh to an Object File Format (.off) file, suitable for viewing with the Geometry Center's Geomview package.
 
-### -B 不输出边界标记
+#### -B 不输出边界标记
 
 输出的`.node`、`.poly`和.`edge`文件中没有边界标记。请参阅下面对边界标记的详细讨论。
 
 > No boundary markers in the output .node, .poly, and .edge output files.  See the detailed discussion of boundary markers below.
 
-### -P 不输出.poly
+#### -P 不输出.poly
 
 不输出.poly文件。节省磁盘空间，但在以后对网格进行细化时，您将失去保持约束段的能力。
 
 > No output .poly file.  Saves disk space, but you lose the ability to maintain constraining segments on later refinements of the mesh.
 
-### -N 不输出.node
+#### -N 不输出.node
 
 > No output .node file.
 
-### -E 不输出.ele
+#### -E 不输出.ele
 
 > No output .ele file.
 
-### -I 无迭代数
+#### -I 无迭代数
 
 抑制`.node`和`.poly`文件的输出，以保证输入文件不会被覆盖。但如果仅输入了`.poly`文件，那么`.node`还是会输出。
 
@@ -169,73 +284,95 @@ Command Line Switches:
 
 > No iteration numbers.  Suppresses the output of .node and .poly files, so your input files won't be overwritten.  (If your input is a .poly file only, a .node file is written.)  Cannot be used with the -r switch, because that would overwrite your input .ele file. Shouldn't be used with the -q, -a, -u, or -s switch if you are using a .node file for input, because no .node file is written, so there is no record of any added Steiner points.
 
-### -O 无孔洞
+#### -O 无孔洞
 
 忽略`.poly`文件中的所有孔洞。
 
 > No holes.  Ignores the holes in the .poly file.
 
-### -X
+#### -X 降低精度
+
+当Triangle会使用浮点值计算以保证测试精度。精确的算法也保证了三角剖分算法的鲁棒性(robustness)。使用`-X`可以禁用精确算法, 这会使处理速度略微提升, 但也会导致无法生成有效的网络。所以不推荐使用。
 
 > No exact arithmetic.  Normally, Triangle uses exact floating-point arithmetic for certain tests if it thinks the inexact tests are not accurate enough.  Exact arithmetic ensures the robustness of the triangulation algorithms, despite floating-point roundoff error. Disabling exact arithmetic with the -X switch causes a small improvement in speed and creates the possibility that Triangle will fail to produce a valid mesh.  Not recommended.
 
-### -z 从0编号
+#### -z 从0编号
 
 从0开始编号, 如果不使用`-z`就是从1开始编号。
 
 > Numbers all items starting from zero (rather than one).  Note that this switch is normally overridden by the value used to number the first vertex of the input .node or .poly file.  However, this switch is useful when calling Triangle from another program.
 
-### -o2
+#### -o2
 
-生成二阶子参数元素，每个元素有六个节点。
-
-（不理解。）
+生成二阶子参数元素，每个元素有六个节点。（不理解。）
 
 > Generates second-order subparametric elements with six nodes each.
 
-### -Y
+#### -Y 边界不生成新顶点
 
-> No new vertices on the boundary.  This switch is useful when the mesh boundary must be preserved so that it conforms to some adjacent mesh.  Be forewarned that you will probably sacrifice much of the quality of the mesh; Triangle will try, but the resulting mesh may contain poorly shaped triangles.  Works well if all the boundary vertices are closely spaced.  Specify this switch twice (`-YY') to prevent all segment splitting, including internal boundaries.
+边界不生成新的顶点。当我们必须保留网格边界以符合某些相邻网格时，-Y非常有用。但是这很可能会降低网格的质量，生成的三角网中可能包含形状非常差的三角形，但如果边界定点间隔很近那么可能不会有很大影响。
 
-### -S
+使用`-YY`可以防止所有分段拆分，包括内部边界。
+
+> No new vertices on the boundary.  This switch is useful when the mesh boundary must be preserved so that it conforms to some adjacent mesh.  Be forewarned that you will probably sacrifice much of the quality of the mesh; Triangle will try, but the resulting mesh may contain poorly shaped triangles.  Works well if all the boundary vertices are closely spaced.  Specify this switch twice ('-YY') to prevent all segment splitting, including internal boundaries.
+
+#### -S Steiner点数量
+
+指定Steiner点的最大数量。
+
+Steiner点指：非输入的，但是满足了最小角度和最大面积约束后被添加进来的顶点(vertices)
+
+默认情况下是不会限制Steiner点数量的，但如果使用了`-S`并且后面没有跟数字，那么Steiner点数量就会被限制为0。Triangle程序总是会在线段相交处添加顶点，即使超过了数量限制。
+
+当Triangle通过[-s指令](#-s)插入线段时，它总是添加足够的顶点以确保PLSG（平面直线图）的所有分段都被恢复，必要时忽略限制。
 
 > Specifies the maximum number of Steiner points (vertices that are not in the input, but are added to meet the constraints on minimum angle and maximum area).  The default is to allow an unlimited number.  If you specify this switch with no number after it, the limit is set to zero.  Triangle always adds vertices at segment intersections, even if it needs to use more vertices than the limit you set.  When Triangle inserts segments by splitting (-s), it always adds enough vertices to ensure that all the segments of the PLSG are recovered, ignoring the limit if necessary.
 
-### -i 增量算法
+#### -i 增量算法
 
 使用增量算法(incremental)而不是分而治之算法(divide-and-conquer algorithm)来构建Delaunay三角剖分。如果分而治之算法失败，请尝试一下。
 
 > Uses an incremental rather than a divide-and-conquer algorithm to construct a Delaunay triangulation.  Try it if the divide-and- conquer algorithm fails.
 
-### -F
+#### -F sweepline算法
+
+使用Steven Fortune的sweepline算法构建Delaunay三角剖分。警告：并非所有计算都使用精确算术。无法保证准确的结果。
 
 > Uses Steven Fortune's sweepline algorithm to construct a Delaunay triangulation.  Warning:  does not use exact arithmetic for all calculations.  An exact result is not guaranteed.
 
-### -l
+#### -l 垂直切割
+
+在分而治之算法(divide-and-conquer)中仅使用垂直切割(vertical cuts)。默认情况下，三角形在垂直和水平剪切之间交替，这通常会提高速度，除非顶点集较小或较短且较宽。这种转变主要是理论上的。
 
 > Uses only vertical cuts in the divide-and-conquer algorithm.  By default, Triangle alternates between vertical and horizontal cuts, which usually improve the speed except with vertex sets that are small or short and wide.  This switch is primarily of theoretical interest.
 
-### -s
+#### -s 分段分割
+
+指定：通过在线段的中点递归分割线段，而不是生成受约束的Delaunay三角剖分，对线段强制应用于三角剖分。
+
+分段分割符合Ruppert的原始算法，但可能会创建不必要的小三角形。这种转变主要是理论上的。
 
 > Specifies that segments should be forced into the triangulation by recursively splitting them at their midpoints, rather than by generating a constrained Delaunay triangulation.  Segment splitting is true to Ruppert's original algorithm, but can create needlessly small triangles.  This switch is primarily of theoretical interest.
 
-### -C
+#### -C 网格一致性
+
+检查最终网格的一致性。使用精确的算术进行检查，即使使用了`-X`降低算法精度也不会影像网格一致性检查的精度。
 
 > Check the consistency of the final mesh.  Uses exact arithmetic for checking, even if the -X switch is used.  Useful if you suspect Triangle is buggy.
 
-### -Q 静默模式
+#### -Q 静默模式
 
 不打印任何中间信息，除非报错。
 
 > Quiet: Suppresses all explanation of what Triangle is doing, unless an error occurs.
 
-### -V 详情
+#### -V 详情
 
 打印Triangle执行过程的详细信息。使用`-V`可以打印算法进展的信息和更详细的统计数据；使用`-VV`可以打印逐顶点的细节，但打印过多信息也会降低软件运行速度；`-VVVV`提供了调试人员所需的信息。
 
 > Verbose:  Gives detailed information about what Triangle is doing. Add more V's for increasing amount of detail.  -V is most useful; itgives information on algorithmic progress and much more detailed statistics.  -VV gives vertex-by-vertex details, and prints so much that Triangle runs much more slowly.  -VVVV gives information only a debugger could love.
 
-## 定义
+### 定义
 
 :::warning
 
@@ -257,11 +394,23 @@ Definitions:
 
   A conforming constrained Delaunay triangulation (CCDT) of a PSLG is a triangulation of a PSLG whose triangles are constrained Delaunay.  New vertices may appear, and input segments may be subdivided into subsegments, but not to guarantee that segments are respected; rather, to improve the quality of the triangles.  The high-quality meshes produced by the -q switch are usually CCDTs, but can be made conforming Delaunay with the -D switch.
 
-## 文件类型
+### 文件类型
+
+:::warning
+软件开发不涉及文件格式说明, 所以就不再细看了
+:::
 
 File Formats:
 
-  All files may contain comments prefixed by the character '#'.  Vertices, triangles, edges, holes, and maximum area constraints must be numbered consecutively, starting from either 1 or 0.  Whichever you choose, all input files must be consistent; if the vertices are numbered from 1, so must be all other objects.  Triangle automatically detects your choice while reading the .node (or .poly) file.  (When calling Triangle from another program, use the -z switch if you wish to number objects from zero.)  Examples of these file formats are given below.
+#### 通用格式说明
+
+所有文件都可以使用`#`符号作为注释标识。
+
+顶点(vertices)、三角形(triangle)、边(edge)、孔(hole)、最大面积约束(maximum area constraints)，这些文件内的信息都必须保证索引号码连续, 编号从0或1开始, 并且所有文件应使用同一个标准。
+
+> All files may contain comments prefixed by the character '#'.  Vertices, triangles, edges, holes, and maximum area constraints must be numbered consecutively, starting from either 1 or 0.  Whichever you choose, all input files must be consistent; if the vertices are numbered from 1, so must be all other objects.  Triangle automatically detects your choice while reading the .node (or .poly) file.  (When calling Triangle from another program, use the -z switch if you wish to number objects from zero.)  Examples of these file formats are given below.
+
+#### 文件说明
 
 ```shell
   .node files:
@@ -271,7 +420,7 @@ File Formats:
 
   The attributes, which are typically floating-point values of physical quantities (such as mass or conductivity) associated with the nodes of a finite element mesh, are copied unchanged to the output mesh.  If -q, -a, -u, -D, or -s is selected, each new Steiner point added to the mesh has attributes assigned to it by linear interpolation.
 
-  If the fourth entry of the first line is `1', the last column of the remainder of the file is assumed to contain boundary markers.  Boundary markers are used to identify boundary vertices and vertices resting on PSLG segments; a complete description appears in a section below.  The .node file produced by Triangle contains boundary markers in the last column unless they are suppressed by the -B switch.
+  If the fourth entry of the first line is '1', the last column of the remainder of the file is assumed to contain boundary markers.  Boundary markers are used to identify boundary vertices and vertices resting on PSLG segments; a complete description appears in a section below.  The .node file produced by Triangle contains boundary markers in the last column unless they are suppressed by the -B switch.
 
 ``` shell
   .ele files:
@@ -381,13 +530,13 @@ Triangulation Iteration Numbers:
 
 Examples of How to Use Triangle:
 
-  'triangle dots' reads vertices from dots.node, and writes their Delaunay triangulation to dots.1.node and dots.1.ele.  (dots.1.node is identical to dots.node.)  `triangle -I dots' writes the triangulation to dots.ele instead.  (No additional .node file is needed, so none is written.)
+  'triangle dots' reads vertices from dots.node, and writes their Delaunay triangulation to dots.1.node and dots.1.ele.  (dots.1.node is identical to dots.node.)  'triangle -I dots' writes the triangulation to dots.ele instead.  (No additional .node file is needed, so none is written.)
 
-  `triangle -pe object.1' reads a PSLG from object.1.poly (and possibly object.1.node, if the vertices are omitted from object.1.poly) and writes its constrained Delaunay triangulation to object.2.node and object.2.ele. The segments are copied to object.2.poly, and all edges are written to object.2.edge.
+  'triangle -pe object.1' reads a PSLG from object.1.poly (and possibly object.1.node, if the vertices are omitted from object.1.poly) and writes its constrained Delaunay triangulation to object.2.node and object.2.ele. The segments are copied to object.2.poly, and all edges are written to object.2.edge.
 
-  `triangle -pq31.5a.1 object' reads a PSLG from object.poly (and possibly object.node), generates a mesh whose angles are all between 31.5 and 117 degrees and whose triangles all have areas of 0.1 or less, and writes the mesh to object.1.node and object.1.ele.  Each segment may be broken up into multiple subsegments; these are written to object.1.poly.
+  'triangle -pq31.5a.1 object' reads a PSLG from object.poly (and possibly object.node), generates a mesh whose angles are all between 31.5 and 117 degrees and whose triangles all have areas of 0.1 or less, and writes the mesh to object.1.node and object.1.ele.  Each segment may be broken up into multiple subsegments; these are written to object.1.poly.
 
-  Here is a sample file `box.poly' describing a square with a square hole:
+  Here is a sample file 'box.poly' describing a square with a square hole:
 
 ```
     # A box with eight vertices in 2D, no attributes, one boundary marker.
@@ -415,7 +564,7 @@ Examples of How to Use Triangle:
      1   1.5 1.5
 ```
 
-  Note that some segments are missing from the outer square, so you must use the '-c' switch.  After 'triangle -pqc box.poly', here is the output file `box.1.node', with twelve vertices.  The last four vertices were added to meet the angle constraint.  Vertices 1, 2, and 9 have markers from segment 1.  Vertices 6 and 8 have markers from segment 4.  All the other vertices but 4 have been marked to indicate that they lie on a boundary.
+  Note that some segments are missing from the outer square, so you must use the '-c' switch.  After 'triangle -pqc box.poly', here is the output file 'box.1.node', with twelve vertices.  The last four vertices were added to meet the angle constraint.  Vertices 1, 2, and 9 have markers from segment 1.  Vertices 6 and 8 have markers from segment 4.  All the other vertices but 4 have been marked to indicate that they lie on a boundary.
   
 ```shell
     12  2  0  1
@@ -434,7 +583,7 @@ Examples of How to Use Triangle:
     # Generated by triangle -pqc box.poly
 ```
 
-  Here is the output file `box.1.ele', with twelve triangles.
+  Here is the output file 'box.1.ele', with twelve triangles.
 
 ```shell
     12  3  0
@@ -485,9 +634,9 @@ Refinement and Area Constraints:
 
   Maximum area constraints in .poly files operate differently from those in .area files.  A maximum area in a .poly file applies to the whole (segment-bounded) region in which a point falls, whereas a maximum area in an .area file applies to only one triangle.  Area constraints in .poly files are used only when a mesh is first generated, whereas area constraints in .area files are used only to refine an existing mesh, and are typically based on a posteriori error estimates resulting from a finite element simulation on that mesh.
 
-  `triangle -rq25 object.1' reads object.1.node and object.1.ele, then refines the triangulation to enforce a 25 degree minimum angle, and then writes the refined triangulation to object.2.node and object.2.ele.
+  'triangle -rq25 object.1' reads object.1.node and object.1.ele, then refines the triangulation to enforce a 25 degree minimum angle, and then writes the refined triangulation to object.2.node and object.2.ele.
 
-  `triangle -rpaa6.2 z.3' reads z.3.node, z.3.ele, z.3.poly, and z.3.area. After reconstructing the mesh and its subsegments, Triangle refines the mesh so that no triangle has area greater than 6.2, and furthermore the triangles satisfy the maximum area constraints in z.3.area.  No angle bound is imposed at all.  The output is written to z.4.node, z.4.ele, and z.4.poly.
+  'triangle -rpaa6.2 z.3' reads z.3.node, z.3.ele, z.3.poly, and z.3.area. After reconstructing the mesh and its subsegments, Triangle refines the mesh so that no triangle has area greater than 6.2, and furthermore the triangles satisfy the maximum area constraints in z.3.area.  No angle bound is imposed at all.  The output is written to z.4.node, z.4.ele, and z.4.poly.
 
   The sequence `triangle -qa1 x`, `triangle -rqa.3 x.1`, `triangle -rqa.1 x.2` creates a sequence of successively finer meshes x.1, x.2, and x.3, suitable for multigrid.
 
@@ -499,7 +648,7 @@ Convex Hulls and Mesh Boundaries:
 
 Voronoi Diagrams:
 
-  The -v switch produces a Voronoi diagram, in files suffixed .v.node and .v.edge.  For example, `triangle -v points' reads points.node, produces its Delaunay triangulation in points.1.node and points.1.ele, and produces its Voronoi diagram in points.1.v.node and points.1.v.edge.  The .v.node file contains a list of all Voronoi vertices, and the .v.edge file contains a list of all Voronoi edges, some of which may be infinite rays.  (The choice of filenames makes it easy to run the set of Voronoi vertices through Triangle, if so desired.)
+  The -v switch produces a Voronoi diagram, in files suffixed .v.node and .v.edge.  For example, 'triangle -v points' reads points.node, produces its Delaunay triangulation in points.1.node and points.1.ele, and produces its Voronoi diagram in points.1.v.node and points.1.v.edge.  The .v.node file contains a list of all Voronoi vertices, and the .v.edge file contains a list of all Voronoi edges, some of which may be infinite rays.  (The choice of filenames makes it easy to run the set of Voronoi vertices through Triangle, if so desired.)
 
   This implementation does not use exact arithmetic to compute the Voronoi vertices, and does not check whether neighboring vertices are identical. Be forewarned that if the Delaunay triangulation is degenerate or near-degenerate, the Voronoi diagram may have duplicate vertices or crossing edges.
 
@@ -519,7 +668,7 @@ Mesh Topology:
 
 Quadratic Elements:
 
-  Triangle generates meshes with subparametric quadratic elements if the -o2 switch is specified.  Quadratic elements have six nodes per element, rather than three.  `Subparametric' means that the edges of the triangles are always straight, so that subparametric quadratic elements are geometrically identical to linear elements, even though they can be used with quadratic interpolating functions.  The three extra nodes of an element fall at the midpoints of the three edges, with the fourth, fifth, and sixth nodes appearing opposite the first, second, and third corners respectively.
+  Triangle generates meshes with subparametric quadratic elements if the -o2 switch is specified.  Quadratic elements have six nodes per element, rather than three.  'Subparametric' means that the edges of the triangles are always straight, so that subparametric quadratic elements are geometrically identical to linear elements, even though they can be used with quadratic interpolating functions.  The three extra nodes of an element fall at the midpoints of the three edges, with the fourth, fifth, and sixth nodes appearing opposite the first, second, and third corners respectively.
 
 Domains with Small Angles:
 
@@ -533,7 +682,7 @@ Statistics:
 
 Exact Arithmetic:
 
-  Triangle uses adaptive exact arithmetic to perform what computational geometers call the 'orientation' and 'incircle' tests.  If the floating- point arithmetic of your machine conforms to the IEEE 754 standard (as most workstations do), and does not use extended precision internal floating-point registers, then your output is guaranteed to be an absolutely true Delaunay or constrained Delaunay triangulation, roundoff error notwithstanding.  The word `adaptive' implies that these arithmetic routines compute the result only to the precision necessary to guarantee correctness, so they are usually nearly as fast as their approximate counterparts.
+  Triangle uses adaptive exact arithmetic to perform what computational geometers call the 'orientation' and 'incircle' tests.  If the floating- point arithmetic of your machine conforms to the IEEE 754 standard (as most workstations do), and does not use extended precision internal floating-point registers, then your output is guaranteed to be an absolutely true Delaunay or constrained Delaunay triangulation, roundoff error notwithstanding.  The word 'adaptive' implies that these arithmetic routines compute the result only to the precision necessary to guarantee correctness, so they are usually nearly as fast as their approximate counterparts.
 
   May CPUs, including Intel x86 processors, have extended precision floating-point registers.  These must be reconfigured so their precision is reduced to memory precision.  Triangle does this if it is compiled correctly.  See the makefile for details.
 
@@ -551,11 +700,11 @@ Troubleshooting:
 
   Please read this section before mailing me bugs.
 
-  `My output mesh has no triangles!'
+  'My output mesh has no triangles!'
 
   If you're using a PSLG, you've probably failed to specify a proper set of bounding segments, or forgotten to use the -c switch.  Or you may have placed a hole badly, thereby eating all your triangles.  To test these possibilities, try again with the -c and -O switches. Alternatively, all your input vertices may be collinear, in which case you can hardly expect to triangulate them.
 
-  `Triangle doesn't terminate, or just crashes.'
+  'Triangle doesn't terminate, or just crashes.'
 
     Bad things can happen when triangles get so small that the distance between their vertices isn't much larger than the precision of your machine's arithmetic.  If you've compiled Triangle for single-precision arithmetic, you might do better by recompiling it for double-precision. Then again, you might just have to settle for more lenient constraints on the minimum angle and the maximum area than you had planned.
 
@@ -585,22 +734,11 @@ Troubleshooting:
 
   If you have problems refining a triangulation not produced by Triangle: Are you sure the triangulation is geometrically valid?  Is it formatted correctly for Triangle?  Are the triangles all listed so the first three vertices are their corners in counterclockwise order?  Are all of the triangles constrained Delaunay?  Triangle's Delaunay refinement algorithm assumes that it starts with a CDT.
 
-Show Me:
-
-  Triangle comes with a separate program named `Show Me', whose primary purpose is to draw meshes on your screen or in PostScript.  Its secondary purpose is to check the validity of your input files, and do so more thoroughly than Triangle does.  Unlike Triangle, Show Me requires that you have the X Windows system.  Sorry, Microsoft Windows users.
-
-Triangle on the Web:
-
-  To see an illustrated version of these instructions, check out
-
-    http://www.cs.cmu.edu/~quake/triangle.html
-
 A Brief Plea:
 
   If you use Triangle, and especially if you use it to accomplish real work, I would like very much to hear from you.  A short letter or email (to jrs@cs.berkeley.edu) describing how you use Triangle will mean a lot to me.  The more people I know are using this program, the more easily I can justify spending time on improvements, which in turn will benefit you.  Also, I can put you on a list to receive email whenever a new version of Triangle is available.
 
   If you use a mesh generated by Triangle in a publication, please include an acknowledgment as well.  And please spell Triangle with a capital 'T'! If you want to include a citation, use Jonathan Richard Shewchuk, ''Triangle: Engineering a 2D Quality Mesh Generator and Delaunay Triangulator,'' in Applied Computational Geometry:  Towards Geometric Engineering (Ming C. Lin and Dinesh Manocha, editors), volume 1148 of Lecture Notes in Computer Science, pages 203-222, Springer-Verlag, Berlin, May 1996.  (From the First ACM Workshop on Applied Computational Geometry.)'
 
-Research credit:
 
- Of course, I can take credit for only a fraction of the ideas that made this mesh generator possible.  Triangle owes its existence to the efforts of many fine computational geometers and other researchers, including Marshall Bern, L. Paul Chew, Kenneth L. Clarkson, Boris Delaunay, Rex A. Dwyer, David Eppstein, Steven Fortune, Leonidas J. Guibas, Donald E. Knuth, Charles L. Lawson, Der-Tsai Lee, Gary L. Miller, Ernst P. Mucke, Steven E. Pav, Douglas M. Priest, Jim Ruppert, Isaac Saias, Bruce J. Schachter, Micha Sharir, Peter W. Shor, Daniel D. Sleator, Jorge Stolfi, Robert E. Tarjan, Alper Ungor, Christopher J. Van Wyk, Noel J. Walkington, and Binhai Zhu.  See the comments at the beginning of the source code for references.
+
