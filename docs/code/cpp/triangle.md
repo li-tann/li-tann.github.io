@@ -8,15 +8,28 @@
 
 ## triangle.h注释文档
 
-If you haven't read Triangle's instructions (run "triangle -h" to read them), you won't understand what follows.
+作者建议先看`triangle -h`, 但我认为先把结构体看懂个大概再回去看开关(switch)更合适...
 
-Triangle must be compiled into an object file (triangle.o) with the  TRILIBRARY symbol defined (generally by using the -DTRILIBRARY compiler switch).  The makefile included with Triangle will do this for you if you run "make trilibrary".  The resulting object file can be called via the procedure triangulate().
+> If you haven't read Triangle's instructions (run "triangle -h" to read them), you won't understand what follows.
 
-If the size of the object file is important to you, you may wish to  generate a reduced version of triangle.o. The REDUCED symbol gets rid of all features that are primarily of research interest. Specifically, the -DREDUCED switch eliminates Triangle's -i, -F, -s, and -C switches. The CDT_ONLY symbol gets rid of all meshing algorithms above and beyond constrained Delaunay triangulation.  Specifically, the -DCDT_ONLY switch eliminates Triangle's -r, -q, -a, -u, -D, -Y, -S, and -s switches.
+编译细节，因为我直接用了vcpkg提供的Triangle包, 所以就不仔细看了...
 
-IMPORTANT:  These definitions (TRILIBRARY, REDUCED, CDT_ONLY) must be made in the makefile or in triangle.c itself.  Putting these definitions in this file (triangle.h) will not create the desired effect.
+总而言之：triangle要用makefile编译，其中有一些可以影响switch的宏定义必须要makefile或triangle.c中修改。
+
+> Triangle must be compiled into an object file (triangle.o) with the  TRILIBRARY symbol defined (generally by using the -DTRILIBRARY compiler switch).  The makefile included with Triangle will do this for you if you run "make trilibrary".  The resulting object file can be called via the procedure triangulate().
+> 
+> If the size of the object file is important to you, you may wish to generate a reduced version of triangle.o. The REDUCED symbol gets rid of all features that are primarily of research interest. Specifically, the -DREDUCED switch eliminates Triangle's -i, -F, -s, and -C switches. The CDT_ONLY symbol gets rid of all meshing algorithms above and beyond constrained Delaunay triangulation.  Specifically, the -DCDT_ONLY switch eliminates Triangle's -r, -q, -a, -u, -D, -Y, -S, and -s switches.
+> 
+> IMPORTANT:  These definitions (TRILIBRARY, REDUCED, CDT_ONLY) must be made in the makefile or in triangle.c itself.  Putting these definitions in this file (triangle.h) will not create the desired effect.
 
 The calling convention for triangulate() follows.
+
+核心内容就是下面的五行代码。
+
+- `triangulate()`是三角剖分函数；
+- `triswitches`是我们要调用的开关；
+- `in`, `out`分别是输入与输出的顶点、线段、三角形、邻接三角形等信息；
+- `vorout` 是输出的voronoi图信息。
 
 ```c
       void triangulate(triswitches, in, out, vorout)                       
@@ -26,16 +39,29 @@ The calling convention for triangulate() follows.
       struct triangulateio *vorout;                                        
 ```
 
-`triswitches` is a string containing the command line switches you wish to invoke.  No initial dash is required. Some suggestions:
+`triswitches`常用指令的使用建议：
 
-- You'll probably find it convenient to use the 'z' switch so that points (and other items) are numbered from zero.  This simplifies indexing, because the first item of any type always starts at index [0] of the corresponding array, whether that item's number is zero or one.
-- You'll probably want to use the 'Q' (quiet) switch in your final code, but you can take advantage of Triangle's printed output (including the 'V' switch) while debugging.
-- If you are not using the 'q', 'a', 'u', 'D', 'j', or 's' switches, then the output points will be identical to the input points, except possibly for the boundary markers.  If you don't need the boundary markers, you should use the 'N' (no nodes output) switch to save memory.  (If you do need boundary markers, but need to save memory, a good nasty trick is to set out->pointlist equal to in->pointlist before calling triangulate(), so that Triangle overwrites the input points with identical copies.)
-- The 'I' (no iteration numbers) and 'g' (.off file output) switches have no effect when Triangle is compiled with TRILIBRARY defined.
+1. 使用`z`可以指定编号从0开始，这很符合C/C++的开发习惯；
+2. 使用`Q`可以开启静默模式，不打印额外的信息（除非报错）；
+3. 如果不使用`q`(三角形角度限制), `a`(三角形面积限制), `u`(约束三角形尺寸), `D`(严密三角剖分), `j`(丢弃重复点), 和`s`(线段分割)则输出的顶点与输入的顶点相同；
+4. 使用`N`可以不输出节点，从而节省内存（如果确实不需要输出节点的话）；
+5. 如果确实需要输出节点但又想节约内存，可以在`triangulate`之前令`out->pointlist = in->pointlist`, 这样程序就会把输出的节点覆盖到输入节点。（？）
+6. 编译时，如果定义了宏TRILIBRARY，那么`I`(无迭代编号)和`g`(输出.off)两个指令就会失效。
 
-'in', 'out', and 'vorout' are descriptions of the input, the output, and the Voronoi output.  If the 'v' (Voronoi output) switch is not used, 'vorout' may be NULL.  'in' and 'out' may never be NULL.
+> `triswitches` is a string containing the command line switches you wish to invoke.  No initial dash is required. Some suggestions:
+> 
+> - You'll probably find it convenient to use the 'z' switch so that points (and other items) are numbered from zero.  This simplifies indexing, because the first item of any type always starts at index [0] of the corresponding array, whether that item's number is zero or one.
+> - You'll probably want to use the 'Q' (quiet) switch in your final code, but you can take advantage of Triangle's printed output (including the 'V' switch) while debugging.
+> - If you are not using the 'q', 'a', 'u', 'D', 'j', or 's' switches, then the output points will be identical to the input points, except possibly for the boundary markers.  If you don't need the boundary markers, you should use the 'N' (no nodes output) switch to save memory.  (If you do need boundary markers, but need to save memory, a good nasty trick is to set out->pointlist equal to in->pointlist before calling triangulate(), so that Triangle overwrites the input points with identical copies.)
+> - The 'I' (no iteration numbers) and 'g' (.off file output) switches have no effect when Triangle is compiled with TRILIBRARY defined.
 
-Certain fields of the input and output structures must be initialized, as described below.
+`in`为输入的点、线、三角形、孔洞、邻接三角形等信息；`out`为输入的点、线、三角形、孔洞、邻接三角形等信息；`vorout`为输出的Voronoi信息。后者可能为空（如果不使用`v`的话），但前两者一定不为空。
+
+执行triangulate前，`in`和`out`结构体的部分信息需要先初始化。
+
+> 'in', 'out', and 'vorout' are descriptions of the input, the output, and the Voronoi output.  If the 'v' (Voronoi output) switch is not used, 'vorout' may be NULL.  'in' and 'out' may never be NULL.
+> 
+> Certain fields of the input and output structures must be initialized, as described below.
 
 ### 结构体说明
 
@@ -47,37 +73,107 @@ Arrays are used to store points, triangles, markers, and so forth.  In all cases
 
 Description of fields (except the 'numberof' fields, which are obvious):
 
-'pointlist':  An array of point coordinates.  The first point's x coordinate is at index [0] and its y coordinate at index [1], followed by the coordinates of the remaining points.  Each point occupies two REALs.
+#### pointlist
 
-'pointattributelist':  An array of point attributes.  Each point's attributes occupy 'numberofpointattributes' REALs.
+顶点的坐标数组，REAL类型（大部分代码里REAL就是double），第一个数字为第1个点的x坐标，第二个数字为第一个点的y坐标，以此类推。所以pointlist总长度等于`numberofpoint * 2`, pointlist数组占用内存长度等于`numberofpoint * 2 * sizeof(REAL)`。
 
-'pointmarkerlist':  An array of point markers; one int per point.
+> 'pointlist':  An array of point coordinates.  The first point's x coordinate is at index [0] and its y coordinate at index [1], followed by the coordinates of the remaining points.  Each point occupies two REALs.
 
-'trianglelist':  An array of triangle corners.  The first triangle's first corner is at index [0], followed by its other two corners in counterclockwise order, followed by any other nodes if the triangle represents a nonlinear element.  Each triangle occupies 'numberofcorners' ints.
+#### pointattributelist
 
-'triangleattributelist':  An array of triangle attributes. Each triangle's attributes occupy 'numberoftriangleattributes' REALs.
+顶点的属性数组, REAL类型, 每个点都有`numberofpointattributes`个属性。
+
+> 'pointattributelist':  An array of point attributes.  Each point's attributes occupy 'numberofpointattributes' REALs.
+
+#### pointmarkerlist
+
+点标记数组（啥意思？）, 每个点有一个标记, 类型为int？
+
+> 'pointmarkerlist':  An array of point markers; one int per point.
+
+#### trianglelist
+
+三角形数组, int类型, `trianglelist[i*3+0], trianglelist[i*3+1], trianglelist[i*3+2]`表示第`i`个三角形三个顶点的索引值（三个角点沿逆时针旋转）。
+
+如果三角形表示非线性元素，则后面是任何其他节点（？）。
+
+每个三角形占用内存为`numberofcorners * sizeof(int)`。(通常是3*4)
+
+> 'trianglelist':  An array of triangle corners.  The first triangle's first corner is at index [0], followed by its other two corners in counterclockwise order, followed by any other nodes if the triangle represents a nonlinear element.  Each triangle occupies 'numberofcorners' ints.
+
+#### triangleattributelist
+
+三角形的属性数组。每个三角形占用内存长度为`numberoftriangleattributes * sizeof(REAL)`。
+
+> 'triangleattributelist':  An array of triangle attributes. Each triangle's attributes occupy 'numberoftriangleattributes' REALs.
   
-'trianglearealist':  An array of triangle area constraints; one REAL per triangle.  Input only.
+#### trianglearealist
+
+三角形的约束面积，每个三角形对应一个`REAL`, 仅在输入时使用。
+
+> 'trianglearealist':  An array of triangle area constraints; one REAL per triangle.  Input only.
   
-'neighborlist':  An array of triangle neighbors; three ints per triangle. Output only.
+#### neighborlist
 
-'segmentlist':  An array of segment endpoints.  The first segment's endpoints are at indices [0] and [1], followed by the remaining segments.  Two ints per segment.
-  
-'segmentmarkerlist':  An array of segment markers; one int per segment.  
+邻接三角形数组，每一个三角形都有三个邻接三角形，对应三个int， 记录三个三角形的索引值（如果没有邻接三角形则该处索引值为-1）。
 
-'holelist':  An array of holes.  The first hole's x and y coordinates are at indices [0] and [1], followed by the remaining holes.  Two REALs per hole.  Input only, although the pointer is copied to the output structure for your convenience.
+> 'neighborlist':  An array of triangle neighbors; three ints per triangle. Output only.
 
-'regionlist':  An array of regional attributes and area constraints. The first constraint's x and y coordinates are at indices [0] and [1], followed by the regional attribute at index [2], followed by the maximum area at index [3], followed by the remaining area constraints. Four REALs per area constraint.  Note that each regional attribute is used only if you select the 'A' switch, and each area constraint is used only if you select the 'a' switch (with no number following), but omitting one of these switches does not change the memory layout. Input only, although the pointer is copied to the output structure for your convenience.
+#### segmentlist
 
-'edgelist':  An array of edge endpoints.  The first edge's endpoints are at indices [0] and [1], followed by the remaining edges.  Two ints per edge.  Output only.
+线段的端点数组，每一个线段都有两个端点，对应两个int，记录两个端点的索引值。
 
-'edgemarkerlist':  An array of edge markers; one int per edge.  Output only.
+> 'segmentlist':  An array of segment endpoints.  The first segment's endpoints are at indices [0] and [1], followed by the remaining segments.  Two ints per segment.
 
-'normlist':  An array of normal vectors, used for infinite rays in Voronoi diagrams.  The first normal vector's x and y magnitudes are at indices [0] and [1], followed by the remaining vectors.  For each finite edge in a Voronoi diagram, the normal vector written is the zero vector.  Two REALs per edge.  Output only.
+#### segmentmarkerlist
 
-Any input fields that Triangle will examine must be initialized. Furthermore, for each output array that Triangle will write to, you must either provide space by setting the appropriate pointer to pointto the space you want the data written to, or you must initialize the pointer to NULL, which tells Triangle to allocate space for the results. The latter option is preferable, because Triangle always knows exactly how much space to allocate.  The former option is provided mainly for people who need to call Triangle from Fortran code, though it also makes possible some nasty space-saving tricks, like writing the output to the same arrays as the input.
+线段标记数组，每个线段对应一个int。
 
-Triangle will not free() any input or output arrays, including those it allocates itself; that's up to you.  You should free arrays allocated by Triangle by calling the trifree() procedure defined below.  (By default, trifree() just calls the standard free() library procedure, but applications that call triangulate() may replace trimalloc() and trifree() in triangle.c to use specialized memory allocators.)
+> 'segmentmarkerlist':  An array of segment markers; one int per segment.  
+
+#### holelist
+
+孔洞数组，`holelist[0], holelist[1]`代表第一个孔洞的第一个点的x和y坐标，剩下的数组是该空洞的其他点（遇到第0点应该就说明第一个孔洞已经成环结束？）。
+
+每个点占用两个`REAL`, 仅限输入, 它的指针会被复制到输出结构体中。
+
+> 'holelist':  An array of holes.  The first hole's x and y coordinates are at indices [0] and [1], followed by the remaining holes.  Two REALs per hole.  Input only, although the pointer is copied to the output structure for your convenience.
+
+#### regionlist
+
+属性与面积约束的数组，`regionlist[0], regionlist[1], regionlist[2], regionlist[3]`分别表示第一个约束的x坐标、y坐标、区域属性(regional attribute)、以及最大面积( maximum area)。每个约束占用四个REAL。
+
+其中，区域属性约束仅在使用`A`时才奏效、区域的面积约束仅在使用`A`并且**没有跟随数字**时才奏效。仅限输入，并且指针被复制到输出的结构体中。
+
+> 'regionlist':  An array of regional attributes and area constraints. The first constraint's x and y coordinates are at indices [0] and [1], followed by the regional attribute at index [2], followed by the maximum area at index [3], followed by the remaining area constraints. Four REALs per area constraint.  Note that each regional attribute is used only if you select the 'A' switch, and each area constraint is used only if you select the 'a' switch (with no number following), but omitting one of these switches does not change the memory layout. Input only, although the pointer is copied to the output structure for your convenience.
+
+#### edgelist
+
+边缘端点的数组。`edgelist[0], edgelist[1]`代表第一条边的两个端点索引，后面是其余边的。每条边占用两个int，仅输出。
+
+> 'edgelist':  An array of edge endpoints.  The first edge's endpoints are at indices [0] and [1], followed by the remaining edges.  Two ints per edge.  Output only.
+
+#### edgemarkerlist
+
+> 'edgemarkerlist':  An array of edge markers; one int per edge.  Output only.
+
+#### normlist
+
+法向量数组，用于Voronoi图的射线(infinite rays)。`normlist[0], normlist[1]`代表第一个法向量的x，y幅度(magnitude)，后面是其余法向量。对于Voronoi图中的每个有限边，所写的法向量是零向量（没太搞懂）。每边两个REAL。仅输出。
+
+> 'normlist':  An array of normal vectors, used for infinite rays in Voronoi diagrams.  The first normal vector's x and y magnitudes are at indices [0] and [1], followed by the remaining vectors.  For each finite edge in a Voronoi diagram, the normal vector written is the zero vector.  Two REALs per edge.  Output only.
+
+#### 内存分配与释放
+
+所有程序需要使用的输入输出项都必须初始化。对于需要使用的数组，需要为其分配空间(`malloc`, `new`也许也可以), 或将指针初始化为`NULL`，程序为结果分配空间（out内的数组设置为`NULL`）。并且更建议使用后者，因为程序可以为各个数组分配正确的空间长度。前者主要是为Fortran提供的。
+
+Triangle不会释放（`free()`）任何输入或输出数组，即使是程序自己分配的空间，同样也需要手动释放内存。
+
+程序提供了`trifree()`函数来释放Triangle分配的数组。默认情况下，`trifree()`只调用标准库中的`free()`，但调用`trianglate()`的应用程序可以替换triangle.c中的`trimalloc()`和`trifree()`来使用特定的内存分配器(memory allocators)。
+
+> Any input fields that Triangle will examine must be initialized. Furthermore, for each output array that Triangle will write to, you must either provide space by setting the appropriate pointer to pointto the space you want the data written to, or you must initialize the pointer to NULL, which tells Triangle to allocate space for the results. The latter option is preferable, because Triangle always knows exactly how much space to allocate.  The former option is provided mainly for people who need to call Triangle from Fortran code, though it also makes possible some nasty space-saving tricks, like writing the output to the same arrays as the input.
+>
+> Triangle will not free() any input or output arrays, including those it allocates itself; that's up to you.  You should free arrays allocated by Triangle by calling the trifree() procedure defined below.  (By default, trifree() just calls the standard free() library procedure, but applications that call triangulate() may replace trimalloc() and trifree() in triangle.c to use specialized memory allocators.)
 
 ### 结构体初始化
 
