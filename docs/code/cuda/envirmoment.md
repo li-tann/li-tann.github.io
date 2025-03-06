@@ -1,5 +1,6 @@
 ---
 custom_edit_url: null
+sidebar_position: 1
 last_update:
     author: li-tann
 tags: [Cpp, CUDA]

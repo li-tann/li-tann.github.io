@@ -1,29 +1,12 @@
 ---
-title: VSCode Vcpkg 
+title: vcpkg 
 custom_edit_url: null
 last_update:
     author: li-tann
-tags: [CMake]
+tags: [CMake, vcpkg]
 ---
 
-# vscode + cmake + vcpkg
-
-## cmake
-
-`crtl`+`shift`+`p`，输入`setting`，打开用户设置或打开工作区域设置
-
-添加如下代码，以设置cmake环境：
-
-```json
-"cmake.cmakePath": "D:\\CMake\\bin\\cmake.exe",
-"cmake.ctestPath": "D:\\CMake\\bin\\ctest.exe",
-```
-
-`cmake.generator`可以指定编译器，但容易有问题
-
-一般可以在vscode最下方直接选择编译器类型。
-
-## vcpkg
+# vcpkg
 
 在setting中设置vcpkg
 

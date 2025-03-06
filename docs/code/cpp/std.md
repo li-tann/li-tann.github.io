@@ -1,12 +1,12 @@
 ---
-sidebar_position: 2
+title: standard
 custom_edit_url: null
 last_update:
     author: li-tann
 tags: [Cpp, Std]
 ---
 
-# Std
+# C++标准库
 
 一些标准库的使用方法
 
@@ -240,7 +240,7 @@ if (pipe != nullptr) {
 
 ## map
 
-### map与三种函数关联的方法
+### 关联函数的三种方法
 
 通过map容器，将枚举或字符串与函数（通过函数指针或std::function等方法）相关联, 可以实现在循环中根据枚举或字符串选择函数的功能。
 
@@ -351,6 +351,101 @@ return std::make_tuple(true, "inheritance read(ldsarXml_to_sbJson::read) success
 
 该方法在类中写函数, 使用map+函数指针的方式同样可以实现。
 
+## regex
+
+regex使用的正则表达式语言是ECMAScript
+
+### 常用语法
+
+- `[]`: 字符集，可存放**多个字符**
+- `{}`: 计数，表示字符/字符集**次数**
+- `()`: 子模式，改变**优先级**，对一块区域整体性操作
+- `^` :起始字符；若在[]中则表示否定
+- `$` :终止字符
+- `\|` :或
+
+字符集：
+
+- `.` : 任意一个单字符
+- `\d`: 一个十进制数字
+- `\l`: 一个小写字母
+- `\s`: 一个空白符（空格、制表符等）
+- `\u`: 一个大写字母
+- `\w`: 一个字母（a-zA-Z）或数字（0~9）或下划线（_）
+- `\D`: 除了`\d`之外的其他字符
+- `\L`: 除了`\l`之外的其他字符
+- `\S`: 除了`\s`之外的其他字符
+- `\U`: 除了`\u`之外的其他字符
+- `\W`: 除了`\w`之外的其他字符
+- `[abc]` 表示字符串包含"a"、"b"、"c"任意一项
+- `[a-z]` 表示字符串中包含a~z中的任意一项
+- `[a-zA-Z0-9]` 表示字符串中包含包含有大小写不限的字母和数字
+
+计数(重复):
+
+- `{n}`  字符/字符集严格重复n次
+- `{n,}` 字符/字符集至少重复n次
+- `{n,m}` 字符/字符集至少重复n次，最多重复m次
+- `*:{0,}` 不存在或存在任意次数均满足条件
+- `+:{1,}` 存在且只撒后出现1次满足条件
+- `?:{0,1}`不存在或仅存在1次满足条件
+
+子模式:
+
+为了指定模式中的子模式，用括号将其括起来
+
+`(\d*:)?(\d+)`：它表示字符串前半部分可以为空，若非空，则是任意长度的数字后接一个冒号，后半部分是一个或多个数字的序列。
+
+贪婪与非贪婪:
+
+正则表达式默认是趋向于最大长度的匹配，即贪婪模式，对于字符串`string("gitbook isn't a book")`和匹配规则`"git.*book"`,贪婪模式下得到的结果为`"gitbook isn't a book"`;
+
+而在计数符（量词）后直接加一个问号`？`，即为非贪婪模式。`git.*?book`，非贪婪模式下得到的结果为`"gitbook"`
+
+### 常用指令
+
+- 整数 `"^[-|+]?[0-9]+$"`
+- 非负整数 `"^\\d+$"`
+- 浮点数 `c"^(-?\\d+)(\\.\\d+)?$"`
+- 英文字母字符串 `"^[A-Za-z]+$"`
+- 年-月-日`"^(d{2}|d{4})-((0([1-9]{1}))|(1[0-2]))-(([0-2]([1-9]{1}))|(3[0|1]))$"`
+
+### 代码示例
+
+函数判断是否为string是否为数字：
+
+```cpp
+bool isnum(std::string str)
+{
+    bool bInt, bFloat;
+    std::regex reg_integer("^[-|+]?\\d*$");
+    std::regex reg_float("^[-|+]?\\d+\\.\\d*$");
+    std::smatch results;
+
+    //bInt = std::regex_match(str, reg_integer);
+    bInt = std::regex_search(str, results, reg_integer);
+    if (bInt)
+        return bInt;
+    //bFloat = std::regex_match(str, reg_float);
+    bFloat = std::regex_search(str, results, reg_float);
+    return bFloat;
+}
+```
+
+代码中results为返回的匹配的字符串，但未使用。
+
+`std::regex_search(seq, m, r, mft)`函数中,
+
+`seq`可以是一个string、一个表示范围的一对迭代器以及一个指向空字符结尾的字符数组的指针；
+
+`m`是一个macth对象，用来保存匹配结果的相关细节。m和seq必须具有兼容的类型；
+
+（smatch表示string类型的输入序列，cmatch表示字符数组序列，wsmatch表示宽字符串（wstring）输入，wcmatch表示款字符数组）
+
+`r`是一个正则表达式；
+
+`mft`是一个可选的regex_constants::match_flag_type值，详见C++Primer（第5版）659页。
+
 ## terminal(cmd) color
 
 windows, linux控制台打印彩色文字
@@ -441,3 +536,118 @@ std::cout<<"\033[45m[FATAL]\033[0m:"<<"this is a fatal information"<<std::endl;
 - `\033[47m` 白色背景
   
 等等...后面还有很多但与颜色无关。
+
+## 实用小函数
+
+### 读取二进制float数据
+
+``` C++
+bool slcRead(const char *src,float *fReal, float *fImag)
+{
+    ifstream inFile(src, ifstream::binary); //二进制读方式打开
+    if (!inFile) {
+        printf("ERROR: File open failed...\nFilepath is %s",string(src));
+        return false;
+    }
+    bool bReal = true;
+    int num = 0;
+    unsigned int value2;
+    while (inFile.read((char*)&value2, 4)) { //一直读到文件结束
+        //高低位字节变换
+        unsigned int idata1, idata2, idata3, idata4;
+        idata1 = 255 & (value2 >> 24);
+        idata2 = 255 & (value2 >> 16);
+        idata3 = 255 & (value2 >> 8);
+        idata4 = 255 & value2;
+        char str[9];
+        sprintf(str, "%02x%02x%02x%02x", idata4, idata3, idata2, idata1);
+        str[8] = 0;
+        float a;
+        sscanf(str, "%x", &a);
+        //分别存储到fReal和fImag中
+        if (bReal) {
+            fReal[num] = a;
+            bReal = false;
+            //printf("%d:real %f,\t", num2, a);
+        }
+        else {
+            fImag[num] = a;
+            bReal = true;
+            num++;
+            //printf("imag %f\n", a);
+        }
+    }
+    return true;
+}
+```
+
+### 根据指定标识符分割字符串
+
+```cpp
+void strSplit_ver2(std::string input, std::vector<std::string>& output, std::string split, bool clearVector = true)
+{
+    if(clearVector)
+        output.clear();
+    std::string::size_type pos1, pos2;
+    pos1 = input.find_first_not_of(split);
+    pos2 = input.find(split,pos1);
+
+    if (pos1 == std::string::npos) {
+        return;
+    }
+    if (pos2 == std::string::npos) {
+        output.push_back(input.substr(pos1));
+        return;
+    }
+    output.push_back(input.substr(pos1, pos2 - pos1));
+    strSplit_ver2(input.substr(pos2 + 1), output, split,false);
+    
+}
+```
+
+### 2的n次方检测方法
+
+```cpp
+bool check_2n(uint x)
+{
+    if(x == 0)
+        return false;
+    int y = x&(x-1);
+    if(y==0)
+        return true;
+    return false;
+}
+```
+
+原理:
+
+$$
+\begin{matrix}
+    2^4&(001000) \\ &\& \\ 2^4-1&(000111)
+\end{matrix}
+\rArr
+0(000000)
+$$
+
+### 计算数组长度
+
+动态数组:
+
+```cpp
+size_t x = 20;
+double * arr = new double [x];
+std::cout<<_msize(arr)/sizeof(*arr)<<std::endl;
+// cmd: 20
+```
+
+静态数组:
+
+```cpp
+double arr[15];
+std::cout<<sizeof(arr)/sizeof(*arr)<<std::endl;
+// cmd: 15
+```
+
+检测数组为动态或静态的方法:
+
+如果使用计算动态数组长度的方式计算静态数组会导致异常报错（_msize问题），而用计算静态数组长度的方式计算动态数组则会返回0（sizeof(arr_a) < sizeof(*arr_a), 返回整数0）.

@@ -1,3 +1,11 @@
+---
+title: triangle
+custom_edit_url: null
+last_update:
+    author: li-tann
+tags: [Cpp, triangle]
+---
+
 # Triangle
 
 :::info

@@ -1,11 +1,10 @@
 ---
+title: tinyxml
 custom_edit_url: null
 last_update:
     author: li-tann
 tags: [Cpp, Tinyxml]
 ---
-
-# TinyXML
 
 这是个很小但又很常用的库，没有过多的内容所以不需要再创建子文件。
 
@@ -19,7 +18,7 @@ tinyxml2则需要调用外部库的形式使用，但只需要添加一个.h和d
 
 tinyxml2好像优化了代码以减少异常情况?
 
-## TinyXML1
+## TinyXML
 
 ### 首先设置根目录
 
