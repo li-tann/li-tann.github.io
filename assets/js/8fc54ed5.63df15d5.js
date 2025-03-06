@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[1333],{31928:e=>{e.exports=JSON.parse('{"tag":{"label":"vcpkg","permalink":"/docs/tags/vcpkg","allTagsPath":"/docs/tags","count":1,"items":[{"id":"code/cmake/vcpkg","title":"vcpkg","description":"\u5728setting\u4e2d\u8bbe\u7f6evcpkg","permalink":"/docs/code/cmake/vcpkg"}],"unlisted":false}}')}}]);
